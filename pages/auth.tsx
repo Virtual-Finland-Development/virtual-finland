@@ -13,7 +13,7 @@ export default function AuthPage() {
   const [isLoading, setLoading] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const router = useRouter();
-  const { provider, loginCode, logout, error, type } = router.query;
+  const { provider, loginCode, logout, intent, error, type } = router.query;
 
   const handleAuth = useCallback(async () => {
     try {
@@ -43,15 +43,18 @@ export default function AuthPage() {
   }, [handleAuth, loginCode, provider, router]);
 
   useEffect(() => {
-    if (logout) {
-      if (logout === 'success') {
+    if (logout || intent === 'LogoutRequest') {
+      if (
+        logout === 'success' ||
+        (type === 'info' && error === 'Already logged out')
+      ) {
         logOut();
       } else {
         setLoading(false);
         setAuthError(error ? (error as string) : 'Logging out failed.');
       }
     }
-  }, [error, logOut, logout]);
+  }, [error, intent, logOut, logout, type]);
 
   if (isLoading) {
     return <Loading />;

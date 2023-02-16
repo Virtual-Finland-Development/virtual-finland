@@ -35,9 +35,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
             return (
               <main>
-                <RouteSentry>
-                  <Component {...pageProps} />
-                </RouteSentry>
+                <Component {...pageProps} />
               </main>
             );
           }}

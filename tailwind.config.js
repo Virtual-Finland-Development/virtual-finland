@@ -5,7 +5,17 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'suomifi-light': '#2A6EBB',
+        'suomifi-dark': '#00347A',
+        'suomifi-blue-bg': '#EAF2FA',
+      },
+      borderColor: {
+        'suomifi-light': '#2A6EBB',
+        'suomifi-dark': '#00347A',
+      },
+    },
   },
   plugins: [],
 };

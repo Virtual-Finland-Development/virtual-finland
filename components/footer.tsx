@@ -62,7 +62,10 @@ function Help() {
 
 function Social() {
   return (
-    <Block variant="section" className="bg-suomifi-blue-bg-dark pt-2 pb-14 p-6">
+    <Block
+      variant="section"
+      className="bg-suomifi-blue-bg-dark px-4 pt-2 pb-14 p-6"
+    >
       <div className="container flex flex-col gap-6">
         <div className="flex flex-col gap-3 text-white border-b py-6">
           <div className="flex flex-row items-center gap-2">

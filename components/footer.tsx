@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { GrFacebook, GrTwitter } from 'react-icons/gr';
 import { Block, Icon } from 'suomifi-ui-components';
 import CustomHeading from './custom-heading';
 import CustomLink from './custom-link';
@@ -64,8 +65,15 @@ function Social() {
     <Block variant="section" className="bg-suomifi-blue-bg-dark pt-2 pb-14 p-6">
       <div className="container flex flex-col gap-6">
         <div className="flex flex-col gap-3 text-white border-b py-6">
-          <CustomText>@livinginfinland</CustomText>
-          <CustomText>@livinginfinland</CustomText>
+          <div className="flex flex-row items-center gap-2">
+            <GrTwitter />
+            <CustomText>@livinginfinland</CustomText>
+          </div>
+
+          <div className="flex flex-row items-center gap-2">
+            <GrFacebook />
+            <CustomText>@livinginfinland</CustomText>
+          </div>
         </div>
         <Image
           src="/images/your_europe_logo.svg"

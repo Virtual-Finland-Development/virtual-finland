@@ -19,7 +19,8 @@ module.exports = {
       colors: {
         'suomifi-light': '#2A6EBB',
         'suomifi-dark': '#00347A',
-        'suomifi-blue-bg': '#EAF2FA',
+        'suomifi-blue-bg-light': '#EAF2FA',
+        'suomifi-blue-bg-dark': '#003479',
         'suomifi-orange': '#e36209',
       },
       borderColor: {

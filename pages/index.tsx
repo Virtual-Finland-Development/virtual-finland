@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Block, Button, StaticIcon, Text } from 'suomifi-ui-components';
 import CustomHeading from '@/components/custom-heading';
 import CustomLink from '@/components/custom-link';
@@ -5,7 +6,7 @@ import CustomLink from '@/components/custom-link';
 export default function HomePage() {
   return (
     <>
-      <Block variant="section" className="bg-suomifi-blue-bg px-4 py-6">
+      <Block variant="section" className="bg-suomifi-blue-bg-light px-4 py-6">
         <CustomHeading variant="h2" suomiFiBlue="dark">
           The only service you need for moving into Finland
         </CustomHeading>
@@ -40,7 +41,7 @@ export default function HomePage() {
         </div>
       </Block>
 
-      <Block variant="section" className="bg-suomifi-blue-bg px-4 py-6">
+      <Block variant="section" className="bg-suomifi-blue-bg-light px-4 py-6">
         <CustomHeading variant="h2" suomiFiBlue="dark">
           Start by creating your profile
         </CustomHeading>
@@ -50,6 +51,13 @@ export default function HomePage() {
       </Block>
 
       <Block variant="section" className="bg-white px-4 py-6">
+        <Image
+          src="/images/woman-laptop.jpg"
+          alt="Woman with laptop"
+          width={330}
+          height={165}
+          className="w-full md:w-auto mb-6"
+        />
         <CustomHeading variant="h2" suomiFiBlue="dark">
           What can I do here?
         </CustomHeading>
@@ -88,7 +96,7 @@ export default function HomePage() {
           I’m coming to Finland to
         </CustomHeading>
         <div className="flex flex-col mt-4">
-          <div className="bg-suomifi-blue-bg flex flex-row items-center gap-6 py-2">
+          <div className="bg-suomifi-blue-bg-light flex flex-row items-center gap-6 py-2">
             <StaticIcon icon="doctor" className="h-16 w-16 flex-shrink-0" />
             <CustomLink href="#" bold={true}>
               work
@@ -100,7 +108,7 @@ export default function HomePage() {
               study
             </CustomLink>
           </div>
-          <div className="bg-suomifi-blue-bg flex flex-row items-center gap-6 py-2">
+          <div className="bg-suomifi-blue-bg-light flex flex-row items-center gap-6 py-2">
             <StaticIcon icon="shop" className="h-16 w-16 flex-shrink-0" />
             <CustomLink href="#" bold={true}>
               create business
@@ -112,7 +120,7 @@ export default function HomePage() {
               along with family
             </CustomLink>
           </div>
-          <div className="bg-suomifi-blue-bg flex flex-row items-center gap-6 py-2">
+          <div className="bg-suomifi-blue-bg-light flex flex-row items-center gap-6 py-2">
             <StaticIcon icon="catalog" className="h-16 w-16 flex-shrink-0" />
             <CustomLink href="#" bold={true}>
               other

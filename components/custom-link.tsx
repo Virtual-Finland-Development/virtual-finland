@@ -7,14 +7,21 @@ import {
 } from 'suomifi-ui-components';
 import tw from 'twin.macro';
 
-type LinkProps = Omit<SuomiFiLinkProps, 'href'> &
-  Omit<NextLinkProps, 'as' | 'passHref' | 'children'> & { bold?: boolean };
+interface StyledProps {
+  bold?: boolean;
+  base?: boolean;
+}
 
-const StyledLink = styled(SuomiFiLink)<{ bold?: boolean }>`
+const StyledLink = styled(SuomiFiLink)<StyledProps>`
   ${props => props.bold && tw`font-bold`}
+  ${props => props.base && tw`text-base`}
 `;
 
-const CustomLink = forwardRef<HTMLAnchorElement, LinkProps>(
+type CustomLinkProps = Omit<SuomiFiLinkProps, 'href'> &
+  Omit<NextLinkProps, 'as' | 'passHref' | 'children'> &
+  StyledProps;
+
+const CustomLink = forwardRef<HTMLAnchorElement, CustomLinkProps>(
   ({ href, prefetch, replace, scroll, shallow, locale, ...rest }, ref) => {
     return (
       <NextLink

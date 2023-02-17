@@ -9,6 +9,7 @@ import {
   Text,
 } from 'suomifi-ui-components';
 import api from '@/lib/api';
+import CustomHeading from '@/components/custom-heading';
 import CustomLink from '@/components/custom-link';
 
 export default function HomePage() {
@@ -22,9 +23,9 @@ export default function HomePage() {
   return (
     <>
       <Block variant="section" className="bg-suomifi-blue-bg px-4 py-6">
-        <Heading variant="h2">
+        <CustomHeading variant="h2" suomiFiBlue="dark">
           The only service you need for moving into Finland
-        </Heading>
+        </CustomHeading>
         <div className="flex flex-col mt-8">
           <StaticIcon icon="archive" className="h-16 w-16" />
           <Text>
@@ -47,14 +48,18 @@ export default function HomePage() {
       </Block>
 
       <Block variant="section" className="bg-suomifi-blue-bg px-4 py-6">
-        <Heading variant="h2">Start by creating your profile</Heading>
+        <CustomHeading variant="h2" suomiFiBlue="dark">
+          Start by creating your profile
+        </CustomHeading>
         <div className="py-4">
           <Button>Create profile</Button>
         </div>
       </Block>
 
       <Block variant="section" className="bg-white px-4 py-6">
-        <Heading variant="h2">What can I do here?</Heading>
+        <CustomHeading variant="h2" suomiFiBlue="dark">
+          What can I do here?
+        </CustomHeading>
         <div className="flex flex-col mt-4">
           <Text>
             Choose who you’re presenting and click for more information about
@@ -80,7 +85,9 @@ export default function HomePage() {
       </Block>
 
       <Block variant="section" className="bg-white px-4 py-6">
-        <Heading variant="h2">{`I'm coming finland to`}</Heading>
+        <CustomHeading variant="h2" suomiFiBlue="dark">
+          {`I'm coming finland to`}
+        </CustomHeading>
         <div className="flex flex-col mt-4">
           <div className="bg-suomifi-blue-bg flex flex-row items-center gap-6">
             <StaticIcon icon="archive" className="h-16 w-16 flex-shrink-0" />

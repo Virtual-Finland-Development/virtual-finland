@@ -16,6 +16,7 @@ import {
   ServiceNavigationItem,
 } from 'suomifi-ui-components';
 import tw from 'twin.macro';
+import CustomHeading from './custom-heading';
 
 const navigation = [
   { name: 'Home', href: '#', current: true },
@@ -31,12 +32,6 @@ const MobileMenuToggleButton = styled(Button).attrs({
   variant: 'secondaryNoBorder',
 })``;
 
-const MainHeading = styled(Heading).attrs({
-  variant: 'h4',
-})`
-  ${tw`text-suomifi-light`}
-`;
-
 export default function MainNavigation() {
   return (
     <header>
@@ -49,7 +44,9 @@ export default function MainNavigation() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="relative flex h-14 items-center justify-between">
                 <Link href="/">
-                  <MainHeading>LIVING IN FINLAND</MainHeading>
+                  <CustomHeading variant="h4" suomiFiBlue="light">
+                    LIVING IN FINLAND
+                  </CustomHeading>
                 </Link>
                 <ul className="hidden md:flex gap-4">
                   {navigation.map(item => (
@@ -63,14 +60,14 @@ export default function MainNavigation() {
                     Log in
                   </Button>
                 </div>
-                <LanguageMenu name="FI">
-                  <LanguageMenuItem onSelect={() => {}} selected>
+                <LanguageMenu name="EN">
+                  <LanguageMenuItem onSelect={() => {}}>
                     Suomeksi (FI)
                   </LanguageMenuItem>
                   <LanguageMenuItem onSelect={() => {}}>
                     På Svenska (SV)
                   </LanguageMenuItem>
-                  <LanguageMenuItem onSelect={() => {}}>
+                  <LanguageMenuItem onSelect={() => {}} selected>
                     In English (EN)
                   </LanguageMenuItem>
                 </LanguageMenu>

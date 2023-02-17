@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { Button, Heading } from 'suomifi-ui-components';
 import api from '@/lib/api';
 import { useAuth } from '@/context/auth-context';
-import Loading from '@/components/loading';
+import Loading from '@/components/ui/loading';
 
 export default function LoginPage() {
   const { isAuthenticated } = useAuth();

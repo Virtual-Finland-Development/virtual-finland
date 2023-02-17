@@ -2,7 +2,7 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { LoadingSpinner } from 'suomifi-ui-components';
 import { AuthConsumer, AuthProvider } from '@/context/auth-context';
-import MainLayout from '@/components/main-layout';
+import MainLayout from '@/components/layout/main-layout';
 import RouteSentry from '@/components/route-sentry';
 import '@/styles/globals.css';
 

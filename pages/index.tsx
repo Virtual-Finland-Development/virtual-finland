@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Block, Button, StaticIcon, Text } from 'suomifi-ui-components';
-import CustomHeading from '@/components/custom-heading';
-import CustomLink from '@/components/custom-link';
+import CustomHeading from '@/components/ui/custom-heading';
+import CustomLink from '@/components/ui/custom-link';
 
 export default function HomePage() {
   return (

@@ -1,6 +1,6 @@
-import { Fragment } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import styled from 'styled-components';
 import {
@@ -16,7 +16,7 @@ import {
   ServiceNavigationItem,
 } from 'suomifi-ui-components';
 import tw from 'twin.macro';
-import CustomHeading from './custom-heading';
+import CustomHeading from '../ui/custom-heading';
 
 const navigation = [
   { name: 'Home', href: '#', current: true },

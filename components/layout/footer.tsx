@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { GrFacebook, GrTwitter } from 'react-icons/gr';
 import { Block, Icon } from 'suomifi-ui-components';
-import CustomHeading from './custom-heading';
-import CustomLink from './custom-link';
-import CustomText from './custom-text';
+import CustomHeading from '../ui/custom-heading';
+import CustomLink from '../ui/custom-link';
+import CustomText from '../ui/custom-text';
 
 const HELP_LINKS = [
   { href: '#', label: 'Who runs this service?' },

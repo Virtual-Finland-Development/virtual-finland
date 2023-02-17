@@ -1,5 +1,5 @@
-import { forwardRef } from 'react';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
+import { forwardRef } from 'react';
 import styled from 'styled-components';
 import {
   Link as SuomiFiLink,

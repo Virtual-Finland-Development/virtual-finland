@@ -1,20 +1,19 @@
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
 import { forwardRef } from 'react';
-import styled from 'styled-components';
 import {
   Link as SuomiFiLink,
   LinkProps as SuomiFiLinkProps,
 } from 'suomifi-ui-components';
-import tw from 'twin.macro';
+import tw, { styled } from 'twin.macro';
 
 interface StyledProps {
-  bold?: boolean;
-  base?: boolean;
+  $bold?: boolean;
+  $base?: boolean;
 }
 
 const StyledLink = styled(SuomiFiLink)<StyledProps>`
-  ${props => props.bold && tw`font-bold`}
-  ${props => props.base && tw`text-base`}
+  ${props => props.$bold && tw`font-bold`}
+  ${props => props.$base && tw`text-base`}
 `;
 
 type CustomLinkProps = Omit<SuomiFiLinkProps, 'href'> &
@@ -22,7 +21,7 @@ type CustomLinkProps = Omit<SuomiFiLinkProps, 'href'> &
   StyledProps;
 
 const CustomLink = forwardRef<HTMLAnchorElement, CustomLinkProps>(
-  ({ href, prefetch, replace, scroll, shallow, locale, ...rest }, ref) => {
+  ({ href, replace, scroll, shallow, locale, $bold, $base, children }, ref) => {
     return (
       <NextLink
         href={href}
@@ -33,7 +32,9 @@ const CustomLink = forwardRef<HTMLAnchorElement, CustomLinkProps>(
         passHref
         legacyBehavior
       >
-        <StyledLink href="" ref={ref} {...rest} />
+        <StyledLink href="" ref={ref} $bold={$bold} $base={$base}>
+          {children}
+        </StyledLink>
       </NextLink>
     );
   }

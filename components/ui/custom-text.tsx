@@ -1,15 +1,14 @@
-import styled from 'styled-components';
 import { Text } from 'suomifi-ui-components';
-import tw from 'twin.macro';
+import tw, { styled } from 'twin.macro';
 
 interface StyledProps {
-  base?: boolean;
-  bold?: boolean;
+  $base?: boolean;
+  $bold?: boolean;
 }
 
 const StyledText = styled(Text)<StyledProps>`
-  ${({ base }) => base && tw`text-base`}
-  ${({ bold }) => bold && tw`font-bold`}
+  ${({ $base }) => $base && tw`text-base`}
+  ${({ $bold }) => $bold && tw`font-bold`}
   color: inherit;
 `;
 
@@ -18,6 +17,11 @@ interface Props extends StyledProps {
 }
 
 export default function CustomText(props: Props) {
-  const { children, ...rest } = props;
-  return <StyledText {...rest}>{children}</StyledText>;
+  const { children, $bold, $base, ...rest } = props;
+
+  return (
+    <StyledText {...rest} $bold={$bold} $base={$base}>
+      {children}
+    </StyledText>
+  );
 }

@@ -1,13 +1,8 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { Fragment } from 'react';
+import Link, { LinkProps } from 'next/link';
+import { ReactNode } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import styled from 'styled-components';
 import {
   Button,
-  Dropdown,
-  DropdownItem,
-  Heading,
   Icon,
   LanguageMenu,
   LanguageMenuItem,
@@ -15,7 +10,7 @@ import {
   ServiceNavigation,
   ServiceNavigationItem,
 } from 'suomifi-ui-components';
-import tw from 'twin.macro';
+import tw, { styled } from 'twin.macro';
 import CustomHeading from '../ui/custom-heading';
 
 const navigation = [
@@ -31,6 +26,18 @@ function classNames(...classes: any) {
 const MobileMenuToggleButton = styled(Button).attrs({
   variant: 'secondaryNoBorder',
 })``;
+
+interface MobileLink extends LinkProps {
+  children: ReactNode;
+}
+
+function MobileLink({ onClick, children, href }: MobileLink) {
+  return (
+    <Link href={href} passHref legacyBehavior>
+      <RouterLink onClick={onClick}>{children}</RouterLink>
+    </Link>
+  );
+}
 
 export default function MainNavigation() {
   return (
@@ -60,7 +67,7 @@ export default function MainNavigation() {
                     Log in
                   </Button>
                 </div>
-                <LanguageMenu name="EN">
+                <LanguageMenu name="EN" tw="font-bold">
                   <LanguageMenuItem onSelect={() => {}}>
                     Suomeksi (FI)
                   </LanguageMenuItem>
@@ -97,9 +104,7 @@ export default function MainNavigation() {
                     key={item.name}
                     selected={item.name === 'Home'}
                   >
-                    <Link href={item.href}>
-                      <RouterLink>{item.name}</RouterLink>
-                    </Link>
+                    <MobileLink href={item.href}>{item.name}</MobileLink>
                   </ServiceNavigationItem>
                 ))}
               </ServiceNavigation>

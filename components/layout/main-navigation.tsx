@@ -1,4 +1,5 @@
 import Link, { LinkProps } from 'next/link';
+import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import {
@@ -9,14 +10,16 @@ import {
   RouterLink,
   ServiceNavigation,
   ServiceNavigationItem,
+  Text,
 } from 'suomifi-ui-components';
 import tw, { styled } from 'twin.macro';
+import api from '@/lib/api';
+import { useAuth } from '@/context/auth-context';
 import CustomHeading from '../ui/custom-heading';
 
 const navigation = [
-  { name: 'Home', href: '#', current: true },
-  { name: 'Page 1', href: '#', current: false },
-  { name: 'Page 2', href: '#', current: false },
+  { name: 'Home', href: '/', current: true },
+  { name: 'Profile', href: '/profile', current: false },
 ];
 
 function classNames(...classes: any) {
@@ -25,7 +28,9 @@ function classNames(...classes: any) {
 
 const MobileMenuToggleButton = styled(Button).attrs({
   variant: 'secondaryNoBorder',
-})``;
+})`
+  ${tw`p-0`}
+`;
 
 interface MobileLink extends LinkProps {
   children: ReactNode;
@@ -39,7 +44,23 @@ function MobileLink({ onClick, children, href }: MobileLink) {
   );
 }
 
+const NavItem = styled.li<{ $active: boolean }>(({ $active }) => [
+  tw`border-b-4 py-2 px-4 mx-7 border-b-transparent hover:border-b-suomifi-light`,
+  $active && tw`border-b-suomifi-light`,
+  `a {
+    font-weight: 700;
+  }`,
+]);
+
 export default function MainNavigation() {
+  const { isAuthenticated, userEmail, setLoading } = useAuth();
+  const router = useRouter();
+
+  const logoutHandler = () => {
+    setLoading();
+    api.auth.directToAuthGwLogout();
+  };
+
   return (
     <header>
       <Disclosure
@@ -48,66 +69,102 @@ export default function MainNavigation() {
       >
         {({ open }) => (
           <>
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto container px-4 lg:px-0">
+              {/* max-w-7xl */}
+              {/* sm:px-6 lg:px-8 */}
               <div className="relative flex h-14 items-center justify-between">
                 <Link href="/">
                   <CustomHeading variant="h4" suomiFiBlue="light">
                     LIVING IN FINLAND
                   </CustomHeading>
                 </Link>
-                <ul className="hidden md:flex gap-4">
-                  {navigation.map(item => (
-                    <li key={item.name}>
-                      <Link href={item.href}>{item.name}</Link>
-                    </li>
-                  ))}
-                </ul>
-                <div className="hidden md:block">
-                  <Button className="hidden" icon="login">
-                    Log in
+                <div className="flex flex-row gap-6">
+                  <LanguageMenu name="In English (EN)" tw="font-bold">
+                    <LanguageMenuItem onSelect={() => {}}>
+                      Suomeksi (FI)
+                    </LanguageMenuItem>
+                    <LanguageMenuItem onSelect={() => {}}>
+                      På Svenska (SV)
+                    </LanguageMenuItem>
+                    <LanguageMenuItem onSelect={() => {}} selected>
+                      In English (EN)
+                    </LanguageMenuItem>
+                  </LanguageMenu>
+                  {isAuthenticated && (
+                    <div className="hidden md:flex flex-col items-end">
+                      <Text tw="text-base font-bold">{userEmail}</Text>
+                      <Button
+                        variant="secondaryNoBorder"
+                        tw="text-xs min-h-0 p-0"
+                        onClick={logoutHandler}
+                      >
+                        LOG OUT
+                      </Button>
+                    </div>
+                  )}
+                  <div className="sm:hidden">
+                    <Disclosure.Button as={MobileMenuToggleButton}>
+                      {open ? (
+                        <Icon
+                          icon="close"
+                          className="block h-6 w-6"
+                          aria-hidden="true"
+                        />
+                      ) : (
+                        <Icon
+                          icon="menu"
+                          className="block h-6 w-6"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </Disclosure.Button>
+                  </div>
+                </div>
+              </div>
+              {isAuthenticated && (
+                <div className="sm:hidden flex flex-row items-center justify-between pb-1 -mt-1">
+                  <Text tw="text-sm font-bold">{userEmail}</Text>
+                  <Button
+                    variant="secondaryNoBorder"
+                    tw="text-xs min-h-0 p-0"
+                    onClick={logoutHandler}
+                  >
+                    LOG OUT
                   </Button>
                 </div>
-                <LanguageMenu name="EN" tw="font-bold">
-                  <LanguageMenuItem onSelect={() => {}}>
-                    Suomeksi (FI)
-                  </LanguageMenuItem>
-                  <LanguageMenuItem onSelect={() => {}}>
-                    På Svenska (SV)
-                  </LanguageMenuItem>
-                  <LanguageMenuItem onSelect={() => {}} selected>
-                    In English (EN)
-                  </LanguageMenuItem>
-                </LanguageMenu>
-                <div className="sm:hidden">
-                  <Disclosure.Button as={MobileMenuToggleButton}>
-                    {open ? (
-                      <Icon
-                        icon="close"
-                        className="block h-6 w-6"
-                        aria-hidden="true"
-                      />
-                    ) : (
-                      <Icon
-                        icon="menu"
-                        className="block h-6 w-6"
-                        aria-hidden="true"
-                      />
-                    )}
-                  </Disclosure.Button>
-                </div>
+              )}
+            </div>
+            <div className="hidden lg:block border-t border-t-gray-300">
+              <div className="container">
+                <ul className="hidden md:flex flex-wrap gap-4 -mx-7">
+                  {navigation.map(item => (
+                    <NavItem
+                      key={item.name}
+                      $active={router.pathname === item.href}
+                    >
+                      <Link href={item.href}>
+                        <Text>{item.name}</Text>
+                      </Link>
+                    </NavItem>
+                  ))}
+                </ul>
               </div>
             </div>
             <Disclosure.Panel className="sm:hidden border-t border-solid border-gray-300 absolute bg-white w-full border-b border-b-suomifi-light">
-              <ServiceNavigation aria-label="Mobile navigation">
-                {navigation.map(item => (
-                  <ServiceNavigationItem
-                    key={item.name}
-                    selected={item.name === 'Home'}
-                  >
-                    <MobileLink href={item.href}>{item.name}</MobileLink>
-                  </ServiceNavigationItem>
-                ))}
-              </ServiceNavigation>
+              {({ close }) => (
+                <ServiceNavigation aria-label="Mobile navigation">
+                  {navigation.map(item => (
+                    <ServiceNavigationItem
+                      key={item.name}
+                      selected={router.pathname === item.href}
+                    >
+                      <MobileLink href={item.href} onClick={() => close()}>
+                        {item.name}
+                      </MobileLink>
+                    </ServiceNavigationItem>
+                  ))}
+                </ServiceNavigation>
+              )}
             </Disclosure.Panel>
           </>
         )}

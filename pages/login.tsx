@@ -15,11 +15,11 @@ export default function LoginPage() {
     api.auth.directToAuthGwLogin();
   };
 
-  useEffect(() => {
+  /*  useEffect(() => {
     if (isAuthenticated) {
       router.push('/');
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, router]); */
 
   return (
     <div className="flex flex-col justify-center items-center gap-6">

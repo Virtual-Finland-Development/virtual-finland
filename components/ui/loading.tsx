@@ -6,7 +6,7 @@ interface Props {
 }
 
 export default function Loading(props: Props) {
-  const { status = 'loading', text = 'Loading' } = props;
+  const { status = 'loading', text = '' } = props;
 
   return (
     <LoadingSpinner

@@ -1,12 +1,18 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { LoadingSpinner } from 'suomifi-ui-components';
+import { useRouter } from 'next/router';
+import tw from 'twin.macro';
 import { AuthConsumer, AuthProvider } from '@/context/auth-context';
 import MainLayout from '@/components/layout/main-layout';
+import Loading from '@/components/ui/loading';
 import 'suomifi-ui-components/dist/main.css';
 import '@/styles/globals.css';
 
+const Container = tw.div`container flex items-center justify-center h-screen`;
+
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+
   return (
     <AuthProvider>
       <Head>
@@ -15,28 +21,35 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <MainLayout>
-        <AuthConsumer>
-          {provider => {
-            if (!provider) {
-              return null;
-            }
+      <AuthConsumer>
+        {provider => {
+          if (!provider) {
+            return null;
+          }
 
-            /* if (provider.isLoading) {
-              return (
-                <LoadingSpinner
-                  status="loading"
-                  text="Loading"
-                  textAlign="right"
-                  variant="normal"
-                />
-              );
-            } */
+          if (provider.isLoading) {
+            return (
+              <Container>
+                <Loading />
+              </Container>
+            );
+          }
 
-            return <Component {...pageProps} />;
-          }}
-        </AuthConsumer>
-      </MainLayout>
+          if (router.pathname === '/auth') {
+            return (
+              <Container>
+                <Component {...pageProps} />
+              </Container>
+            );
+          }
+
+          return (
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          );
+        }}
+      </AuthConsumer>
     </AuthProvider>
   );
 }

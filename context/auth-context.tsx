@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import {
   ReactNode,
   createContext,
@@ -6,15 +7,17 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { useRouter } from 'next/router';
 import { getUnixTime, parseISO } from 'date-fns';
 import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
 import { LoggedInState } from '@/types';
 import api from '@/lib/api';
 
 interface AuthContextProps {
   isAuthenticated: boolean;
   isLoading: boolean;
+  userEmail: string | null;
+  setLoading: () => void;
   logIn: (loggedInState: LoggedInState) => void;
   logOut: () => void;
 }
@@ -29,6 +32,7 @@ const AuthConsumer = AuthContext.Consumer;
 function AuthProvider(props: AuthProviderProps) {
   const { children } = props;
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isLoading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -38,6 +42,8 @@ function AuthProvider(props: AuthProviderProps) {
 
       if (token) {
         // api.client.defaults.headers.Authorization = `Bearer ${token}`;
+        const { email }: { email: string | undefined } = jwt_decode(token);
+        setUserEmail(email || null);
         setIsAuthenticated(true);
       }
 
@@ -55,7 +61,11 @@ function AuthProvider(props: AuthProviderProps) {
         Cookies.set('idToken', loggedInState.idToken, {
           expires: getUnixTime(parseISO(loggedInState.expiresAt)),
         });
+        const { email }: { email: string | undefined } = jwt_decode(
+          loggedInState.idToken
+        );
         // api.defaults.headers.Authorization = `Bearer ${token.token}`;
+        setUserEmail(email || null);
         setIsAuthenticated(true);
         router.push('/');
       }
@@ -66,12 +76,22 @@ function AuthProvider(props: AuthProviderProps) {
   const logOut = useCallback(() => {
     Cookies.remove('idToken');
     // delete api.client.defaults.headers.Authorization;
+    setUserEmail(null);
     setIsAuthenticated(false);
     router.push('/');
   }, [router]);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isLoading, logIn, logOut }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        isLoading,
+        userEmail,
+        setLoading: () => setLoading(true),
+        logIn,
+        logOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

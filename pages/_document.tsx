@@ -2,6 +2,10 @@ import Document, { DocumentContext } from 'next/document';
 import React from 'react';
 import { ServerStyleSheet } from 'styled-components';
 
+/**
+ * Set up as part of twin + tailwind + styled-components + next config example
+ * https://github.com/ben-rogerson/twin.examples/tree/master/next-styled-components-typescript#add-the-server-stylesheet
+ */
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheet();

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import styled from 'styled-components';
 import { Block } from 'suomifi-ui-components';
+import { styled } from 'twin.macro';
 import Footer from './footer';
 import MainNavigation from './main-navigation';
 

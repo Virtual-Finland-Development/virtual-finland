@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Block, Button, StaticIcon, Text } from 'suomifi-ui-components';
+import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 import CustomLink from '@/components/ui/custom-link';
 
@@ -8,7 +9,7 @@ export default function HomePage() {
   const router = useRouter();
 
   return (
-    <>
+    <Page title="Home">
       <Block variant="section" className="bg-suomifi-blue-bg-light px-4 py-6">
         <CustomHeading variant="h2" suomiFiBlue="dark">
           The only service you need for moving into Finland
@@ -133,6 +134,6 @@ export default function HomePage() {
           </div>
         </div>
       </Block>
-    </>
+    </Page>
   );
 }

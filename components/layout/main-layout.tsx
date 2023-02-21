@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { Block } from 'suomifi-ui-components';
 import { styled } from 'twin.macro';
 import Footer from './footer';
 import MainNavigation from './main-navigation';
@@ -16,9 +15,7 @@ export default function MainLayout({ children }: Props) {
   return (
     <>
       <MainNavigation />
-      <Container>
-        <Block variant="main">{children}</Block>
-      </Container>
+      <Container>{children}</Container>
       <Footer />
     </>
   );

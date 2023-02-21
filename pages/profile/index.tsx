@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Block, Button, Text, TextInput } from 'suomifi-ui-components';
 import api from '@/lib/api';
+import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 
 export default function ProfilePage() {
@@ -12,7 +13,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <>
+    <Page title="Profile">
       <Block variant="section" className="px-4 py-6 bg-white">
         <CustomHeading variant="h2" suomiFiBlue="dark">
           Create your profile
@@ -37,6 +38,6 @@ export default function ProfilePage() {
           <Button>Create profile</Button>
         </form>
       </Block>
-    </>
+    </Page>
   );
 }

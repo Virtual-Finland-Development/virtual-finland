@@ -20,8 +20,8 @@ import CustomHeading from '../ui/custom-heading';
 import CustomLink from '../ui/custom-link';
 
 const navigation = [
-  { name: 'Home', href: '/', current: true },
-  { name: 'Profile', href: '/profile', current: false },
+  { name: 'Home', href: '/' },
+  { name: 'Profile', href: '/profile' },
 ];
 
 const MobileMenuToggleButton = styled(Button).attrs({
@@ -37,7 +37,9 @@ interface MobileLink extends LinkProps {
 function MobileLink({ onClick, children, href }: MobileLink) {
   return (
     <Link href={href} passHref legacyBehavior>
-      <RouterLink onClick={onClick}>{children}</RouterLink>
+      <RouterLink onClick={onClick} tw="(normal-case)!">
+        {children}
+      </RouterLink>
     </Link>
   );
 }
@@ -91,14 +93,76 @@ function DesktopMenuPopover() {
   );
 }
 
-export default function MainNavigation() {
-  const { isAuthenticated, userEmail, setLoading } = useAuth();
+function DesktopNavigation() {
   const router = useRouter();
+
+  return (
+    <div className="hidden lg:block border-t border-t-gray-300">
+      <div className="container">
+        <ul className="hidden md:flex flex-wrap gap-4 -mx-7">
+          {navigation.map(item => (
+            <DesktopNavItem
+              key={item.name}
+              $active={router.pathname === item.href}
+            >
+              <Link href={item.href}>
+                <Text>{item.name}</Text>
+              </Link>
+            </DesktopNavItem>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+function MobileNavigationPanel() {
+  const router = useRouter();
+
+  return (
+    <Disclosure.Panel className="md:hidden absolute border-t border-solid border-gray-300 bg-white w-full border-b border-b-suomifi-light">
+      {({ close }) => (
+        <ServiceNavigation aria-label="Mobile navigation">
+          {navigation.map(item => (
+            <ServiceNavigationItem
+              key={item.name}
+              selected={router.pathname === item.href}
+            >
+              <MobileLink href={item.href} onClick={() => close()}>
+                {item.name}
+              </MobileLink>
+            </ServiceNavigationItem>
+          ))}
+        </ServiceNavigation>
+      )}
+    </Disclosure.Panel>
+  );
+}
+
+function UserControl({ className }: { className: string }) {
+  const { userEmail, setLoading } = useAuth();
 
   const logoutHandler = () => {
     setLoading();
     api.auth.directToAuthGwLogout();
   };
+
+  return (
+    <div className={className}>
+      <Text tw="text-sm lg:text-base font-bold">{userEmail}</Text>
+      <Button
+        variant="secondaryNoBorder"
+        tw="text-xs min-h-0 p-0"
+        onClick={logoutHandler}
+      >
+        LOG OUT
+      </Button>
+    </div>
+  );
+}
+
+export default function MainNavigation() {
+  const { isAuthenticated } = useAuth();
 
   return (
     <header>
@@ -153,16 +217,7 @@ export default function MainNavigation() {
 
                   {/* Desktop user info / log out */}
                   {isAuthenticated && (
-                    <div className="hidden md:flex flex-col items-end">
-                      <Text tw="text-base font-bold">{userEmail}</Text>
-                      <Button
-                        variant="secondaryNoBorder"
-                        tw="text-xs min-h-0 p-0"
-                        onClick={logoutHandler}
-                      >
-                        LOG OUT
-                      </Button>
-                    </div>
+                    <UserControl className="hidden md:flex flex-col items-end" />
                   )}
 
                   {/* Desktop menu popover */}
@@ -172,54 +227,15 @@ export default function MainNavigation() {
 
               {/* Mobile user info / log out */}
               {isAuthenticated && (
-                <div className="md:hidden flex flex-row items-center justify-between pb-1 -mt-1">
-                  <Text tw="text-sm font-bold">{userEmail}</Text>
-                  <Button
-                    variant="secondaryNoBorder"
-                    tw="text-xs min-h-0 p-0"
-                    onClick={logoutHandler}
-                  >
-                    LOG OUT
-                  </Button>
-                </div>
+                <UserControl className="md:hidden flex flex-row items-center justify-between pb-1 -mt-1" />
               )}
             </div>
 
             {/* Desktop navigation */}
-            <div className="hidden lg:block border-t border-t-gray-300">
-              <div className="container">
-                <ul className="hidden md:flex flex-wrap gap-4 -mx-7">
-                  {navigation.map(item => (
-                    <DesktopNavItem
-                      key={item.name}
-                      $active={router.pathname === item.href}
-                    >
-                      <Link href={item.href}>
-                        <Text>{item.name}</Text>
-                      </Link>
-                    </DesktopNavItem>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            <DesktopNavigation />
 
             {/* Mobile navigation disclosure panel */}
-            <Disclosure.Panel className="md:hidden border-t border-solid border-gray-300 absolute bg-white w-full border-b border-b-suomifi-light">
-              {({ close }) => (
-                <ServiceNavigation aria-label="Mobile navigation">
-                  {navigation.map(item => (
-                    <ServiceNavigationItem
-                      key={item.name}
-                      selected={router.pathname === item.href}
-                    >
-                      <MobileLink href={item.href} onClick={() => close()}>
-                        {item.name}
-                      </MobileLink>
-                    </ServiceNavigationItem>
-                  ))}
-                </ServiceNavigation>
-              )}
-            </Disclosure.Panel>
+            <MobileNavigationPanel />
           </>
         )}
       </Disclosure>

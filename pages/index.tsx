@@ -11,21 +11,6 @@ export default function HomePage() {
 
   return (
     <>
-      <button
-        onClick={() =>
-          openModal({
-            title: 'Motaali',
-            content: <div>terve terve</div>,
-            footerContent: (
-              <div>
-                footer here<button onClick={closeModal}>close</button>
-              </div>
-            ),
-          })
-        }
-      >
-        open modaali
-      </button>
       <Block variant="section" className="bg-suomifi-blue-bg-light px-4 py-6">
         <CustomHeading variant="h2" suomiFiBlue="dark">
           The only service you need for moving into Finland

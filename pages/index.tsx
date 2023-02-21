@@ -1,14 +1,31 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Block, Button, StaticIcon, Text } from 'suomifi-ui-components';
+import { useModal } from '@/context/modal-context';
 import CustomHeading from '@/components/ui/custom-heading';
 import CustomLink from '@/components/ui/custom-link';
 
 export default function HomePage() {
   const router = useRouter();
+  const { openModal, closeModal } = useModal();
 
   return (
     <>
+      <button
+        onClick={() =>
+          openModal({
+            title: 'Motaali',
+            content: <div>terve terve</div>,
+            footerContent: (
+              <div>
+                footer here<button onClick={closeModal}>close</button>
+              </div>
+            ),
+          })
+        }
+      >
+        open modaali
+      </button>
       <Block variant="section" className="bg-suomifi-blue-bg-light px-4 py-6">
         <CustomHeading variant="h2" suomiFiBlue="dark">
           The only service you need for moving into Finland

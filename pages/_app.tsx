@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import tw from 'twin.macro';
 import { AuthConsumer, AuthProvider } from '@/context/auth-context';
+import { ModalProvider } from '@/context/modal-context';
 import MainLayout from '@/components/layout/main-layout';
 import Loading from '@/components/ui/loading';
 import 'suomifi-ui-components/dist/main.css';
@@ -44,9 +45,11 @@ export default function App({ Component, pageProps }: AppProps) {
           }
 
           return (
-            <MainLayout>
-              <Component {...pageProps} />
-            </MainLayout>
+            <ModalProvider>
+              <MainLayout>
+                <Component {...pageProps} />
+              </MainLayout>
+            </ModalProvider>
           );
         }}
       </AuthConsumer>

@@ -22,6 +22,7 @@ import CustomLink from '../ui/custom-link';
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Profile', href: '/profile' },
+  { name: 'Company', href: '/company' },
 ];
 
 const MobileMenuToggleButton = styled(Button).attrs({

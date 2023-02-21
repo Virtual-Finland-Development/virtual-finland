@@ -1,13 +1,11 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Block, Button, StaticIcon, Text } from 'suomifi-ui-components';
-import { useModal } from '@/context/modal-context';
 import CustomHeading from '@/components/ui/custom-heading';
 import CustomLink from '@/components/ui/custom-link';
 
 export default function HomePage() {
   const router = useRouter();
-  const { openModal, closeModal } = useModal();
 
   return (
     <>

@@ -69,7 +69,7 @@ function DesktopMenuPopover() {
             {navigation.map(item => (
               <div
                 key={item.href}
-                className="flex flex-row items-center justify-start gap-4 w-80 odd:border-b border-b-gray-300 p-4"
+                className="flex flex-row items-center justify-start gap-4 w-80 border-b last:border-none border-b-gray-300 p-4"
               >
                 <>
                   <StaticIcon

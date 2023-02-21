@@ -5,6 +5,7 @@ import {
   ModalTitle,
   Modal as SuomiFiModal,
 } from 'suomifi-ui-components';
+import useDimensions from '@/hooks/use-dimensions';
 
 interface Props {
   title: string;
@@ -23,11 +24,13 @@ export default function Modal(props: Props) {
     closeModal,
   } = props;
 
+  const { width } = useDimensions();
+
   return (
     <SuomiFiModal
       appElementId="__next"
       visible
-      // variant="smallScreen"
+      variant={width > 640 ? 'default' : 'smallScreen'}
       onEscKeyDown={() => closeOnEsc && closeModal()}
     >
       <ModalContent>

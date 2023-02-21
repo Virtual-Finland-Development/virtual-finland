@@ -17,16 +17,16 @@ function getDimensions() {
 }
 
 export default function useDimensions() {
-  const [windowDimensions, setWindowDimensions] = useState(getDimensions());
+  const [dimensions, setDimensions] = useState(getDimensions());
 
   useEffect(() => {
     const handleResize = () => {
-      setWindowDimensions(getDimensions());
+      setDimensions(getDimensions());
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  return windowDimensions;
+  return dimensions;
 }

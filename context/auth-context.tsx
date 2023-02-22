@@ -55,8 +55,6 @@ function AuthProvider(props: AuthProviderProps) {
 
   const logIn = useCallback(
     async (loggedInState: LoggedInState) => {
-      console.log(loggedInState);
-
       if (loggedInState) {
         Cookies.set('idToken', loggedInState.idToken, {
           expires: getUnixTime(parseISO(loggedInState.expiresAt)),
@@ -67,7 +65,8 @@ function AuthProvider(props: AuthProviderProps) {
         // api.defaults.headers.Authorization = `Bearer ${token.token}`;
         setUserEmail(email || null);
         setIsAuthenticated(true);
-        router.push('/');
+        const redirectPath = localStorage.getItem('redirectPath');
+        router.push(redirectPath || '/');
       }
     },
     [router]

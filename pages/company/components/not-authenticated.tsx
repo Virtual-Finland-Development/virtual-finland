@@ -7,7 +7,7 @@ import CustomText from '@/components/ui/custom-text';
 
 export default function NotAuthenticated() {
   const loginHandler = () => {
-    api.auth.directToAuthGwLogin();
+    api.auth.directToAuthGwLogin('/company');
   };
 
   return (

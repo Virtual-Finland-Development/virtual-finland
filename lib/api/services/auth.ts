@@ -4,7 +4,11 @@ import { generateAppContextHash } from '@/lib/utils';
 import apiClient from '../api-client';
 import { AUTH_GW_BASE_URL } from '../endpoints';
 
-export function directToAuthGwLogin() {
+export function directToAuthGwLogin(redirectPath?: string) {
+  if (redirectPath) {
+    localStorage.setItem('redirectPath', redirectPath);
+  }
+
   window.location.assign(
     `${AUTH_GW_BASE_URL}/auth/openid/testbed/authentication-request?appContext=${generateAppContextHash()}`
   );
@@ -13,6 +17,7 @@ export function directToAuthGwLogin() {
 export function directToAuthGwLogout() {
   const idToken = Cookies.get('idToken');
   Cookies.remove('idToken');
+  localStorage.removeItem('redirectPath');
 
   window.location.assign(
     `${AUTH_GW_BASE_URL}/auth/openid/testbed/logout-request?appContext=${generateAppContextHash()}&idToken=${idToken}`

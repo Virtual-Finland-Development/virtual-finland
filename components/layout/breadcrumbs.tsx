@@ -1,7 +1,11 @@
 import Link, { LinkProps } from 'next/link';
 import { useRouter } from 'next/router';
-import { ReactNode } from 'react';
-import { Breadcrumb, BreadcrumbLink } from 'suomifi-ui-components';
+import { forwardRef } from 'react';
+import {
+  Breadcrumb,
+  BreadcrumbLink,
+  BreadcrumbLinkProps,
+} from 'suomifi-ui-components';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -9,22 +13,21 @@ const navigation = [
   { name: 'Company', href: '/company' },
 ];
 
-interface BreadcrumbCustomLinkProps extends LinkProps {
-  children: ReactNode;
-  current: boolean;
-}
+type CustomLinkProps = LinkProps & BreadcrumbLinkProps;
 
-function BreadcrumbCustomLink({
-  children,
-  href,
-  current,
-}: BreadcrumbCustomLinkProps) {
-  return (
-    <Link href={href} passHref legacyBehavior>
-      <BreadcrumbLink current={current}>{children}</BreadcrumbLink>
-    </Link>
-  );
-}
+const BreadcrumbCustomLink = forwardRef<HTMLAnchorElement, CustomLinkProps>(
+  (props, ref) => {
+    const { onClick, href, current, children } = props;
+
+    return (
+      <BreadcrumbLink href={href} onClick={onClick} current={current}>
+        {children}
+      </BreadcrumbLink>
+    );
+  }
+);
+
+BreadcrumbCustomLink.displayName = 'BreadcrumbCustomLink';
 
 export default function BreadCrumbs() {
   const router = useRouter();
@@ -43,13 +46,14 @@ export default function BreadCrumbs() {
               (router.pathname !== '/' && item.href.includes(router.pathname))
           )
           .map(item => (
-            <BreadcrumbCustomLink
-              key={item.href}
-              href={item.href}
-              current={router.pathname === item.href}
-            >
-              {item.name}
-            </BreadcrumbCustomLink>
+            <Link key={item.href} href={item.href} passHref legacyBehavior>
+              <BreadcrumbCustomLink
+                href=""
+                current={router.pathname === item.href}
+              >
+                {item.name}
+              </BreadcrumbCustomLink>
+            </Link>
           ))}
       </Breadcrumb>
     </div>

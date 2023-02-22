@@ -13,12 +13,14 @@ export default function NotAuthenticated() {
   return (
     <>
       <Block variant="section" className="px-4 py-6 bg-white">
-        <div className="grid grid-cols-2 grid-rows-1">
+        <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1">
           <div className="bg-suomifi-light text-white flex flex-col gap-8 items-center justify-center px-4 py-8">
-            <StaticIcon
-              icon="buildings"
-              className="h-16 w-16 flex-shrink-0 bg-white rounded-full"
-            />
+            <div className="hidden md:block">
+              <StaticIcon
+                icon="buildings"
+                className="h-16 w-16 flex-shrink-0 bg-white rounded-full"
+              />
+            </div>
             <CustomHeading variant="h2" center>
               Register or modify company information
             </CustomHeading>
@@ -30,7 +32,7 @@ export default function NotAuthenticated() {
               Identification
             </Button>
           </div>
-          <div className="object-cover">
+          <div className="hidden md:block">
             <Image
               src="/images/man-laptop.jpg"
               alt="Man with laptop"

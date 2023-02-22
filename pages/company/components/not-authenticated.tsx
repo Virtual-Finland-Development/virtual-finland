@@ -2,7 +2,6 @@ import Image from 'next/image';
 import { Block, Button, Text } from 'suomifi-ui-components';
 import { StaticIcon } from 'suomifi-ui-components';
 import api from '@/lib/api';
-import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 import CustomText from '@/components/ui/custom-text';
 
@@ -12,7 +11,7 @@ export default function NotAuthenticated() {
   };
 
   return (
-    <Page title="Company">
+    <>
       <Block variant="section" className="px-4 py-6 bg-white">
         <div className="grid grid-cols-2 grid-rows-1">
           <div className="bg-suomifi-light text-white flex flex-col gap-8 items-center justify-center px-4 py-8">
@@ -56,6 +55,6 @@ export default function NotAuthenticated() {
           </Text>
         </div>
       </Block>
-    </Page>
+    </>
   );
 }

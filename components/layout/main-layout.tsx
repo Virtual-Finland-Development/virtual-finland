@@ -4,7 +4,7 @@ import Footer from './footer';
 import MainNavigation from './main-navigation';
 
 const Container = styled.div.attrs({
-  className: 'container flex flex-col h-full',
+  className: 'container flex flex-col h-full flex-1',
 })``;
 
 interface Props {

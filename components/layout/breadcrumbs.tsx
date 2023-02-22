@@ -29,7 +29,7 @@ function BreadcrumbCustomLink({
 export default function BreadCrumbs() {
   const router = useRouter();
 
-  if (router.pathname === '/') {
+  if (['/', '/404'].includes(router.pathname)) {
     return null;
   }
 

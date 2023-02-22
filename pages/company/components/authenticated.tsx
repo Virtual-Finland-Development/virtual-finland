@@ -1,10 +1,9 @@
 import { Block, Text } from 'suomifi-ui-components';
-import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 
 export default function Authenticated() {
   return (
-    <Page title="Company">
+    <>
       <Block variant="section" className="px-4 py-6 bg-white">
         <CustomHeading variant="h2" suomiFiBlue="dark">
           Company page
@@ -21,6 +20,6 @@ export default function Authenticated() {
           </Text>
         </div>
       </Block>
-    </Page>
+    </>
   );
 }

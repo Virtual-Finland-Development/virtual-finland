@@ -6,6 +6,7 @@ const withTwin = require('./withTwin.js');
 
 const nextConfig = {
   reactStrictMode: false,
+  pageExtensions: ['page.tsx'],
   images: {
     remotePatterns: [
       {

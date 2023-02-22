@@ -104,7 +104,10 @@ function DesktopNavigation() {
           {navigation.map(item => (
             <DesktopNavItem
               key={item.name}
-              $active={router.pathname === item.href}
+              $active={
+                (item.href === '/' && router.pathname === item.href) ||
+                (item.href !== '/' && router.pathname.includes(item.href))
+              }
             >
               <Link href={item.href}>
                 <Text>{item.name}</Text>

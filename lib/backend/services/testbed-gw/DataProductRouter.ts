@@ -3,7 +3,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getForwardableHeaders } from "../../framework-helpers";
 
-export const TestbedGWConfiguration: { gatewayEndpoint: string, dataProducts: Record<string, any>} = {
+export const TestbedGWConfiguration: { gatewayEndpoint: string, dataProducts: Record<string, { defaultDataSource: string }>} = {
     gatewayEndpoint: 'https://gateway.testbed.fi',
     dataProducts: {
         'draft/Weather/Current/Metric': {
@@ -16,11 +16,6 @@ const DataProductRouter = {
     
     async execute(dataProduct: string, dataSource: string | undefined, req: NextApiRequest, res: NextApiResponse) {
 
-        if (req.method !== 'POST') {
-            res.status(400).json({ message: 'Bad request' })
-            return;
-        }
-
         const endpointUrl = this.getDataProductEndpoint(dataProduct, dataSource);
         if (!endpointUrl) {
             res.status(400).json({ message: 'Bad request: data product' })
@@ -29,7 +24,7 @@ const DataProductRouter = {
 
         try {
             const response = await fetch(endpointUrl, {
-                method: req.method,
+                method: "POST",
                 headers: getForwardableHeaders(req.headers, { 'Content-Type': 'application/json' }),
                 body: JSON.stringify(req.body),
             });

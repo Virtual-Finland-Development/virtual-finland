@@ -130,7 +130,10 @@ function MobileNavigationPanel() {
           {navigation.map(item => (
             <ServiceNavigationItem
               key={item.name}
-              selected={router.pathname === item.href}
+              selected={
+                (item.href === '/' && router.pathname === item.href) ||
+                (item.href !== '/' && router.pathname.includes(item.href))
+              }
             >
               <MobileLink href={item.href} onClick={() => close()}>
                 {item.name}

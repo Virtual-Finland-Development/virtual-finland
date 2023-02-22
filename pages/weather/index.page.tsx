@@ -23,14 +23,14 @@ export default function Weather() {
         <CustomHeading variant="h2" suomiFiBlue="dark">
           Check weather data
         </CustomHeading>
+        <Text>
+          Test testbed gateway with call to get weather data
+        </Text>
 
         <TextInput labelText="Longitude" value={inputs.weather.lon} />
         <TextInput labelText="Latitude" value={inputs.weather.lat} />
 
         <div className="flex flex-col mt-8 gap-6">
-          <Text>
-            Choose which service to use to log in to Living in Finland.
-          </Text>
           <Button onClick={fetchWeather} disabled={isLoading}>
             {isLoading ? 'Loading...' : 'Check weather data'}
           </Button>

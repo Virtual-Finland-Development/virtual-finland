@@ -3,7 +3,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getForwardableHeaders } from "../../framework-helpers";
 
-export const TestbedGWConfiguration: { gatewayEndpoint: string, dataProducts: Record<string, { defaultDataSource: string }>} = {
+const TestbedGWConfiguration = {
     gatewayEndpoint: 'https://gateway.testbed.fi',
     dataProducts: {
         'draft/Weather/Current/Metric': {
@@ -12,9 +12,11 @@ export const TestbedGWConfiguration: { gatewayEndpoint: string, dataProducts: Re
     },
 }
 
+export type DataProduct = keyof typeof TestbedGWConfiguration.dataProducts;
+
 const DataProductRouter = {
     
-    async execute(dataProduct: string, dataSource: string | undefined, req: NextApiRequest, res: NextApiResponse) {
+    async execute(dataProduct: DataProduct, dataSource: string | undefined, req: NextApiRequest, res: NextApiResponse) {
 
         const endpointUrl = this.getDataProductEndpoint(dataProduct, dataSource);
         if (!endpointUrl) {
@@ -36,7 +38,7 @@ const DataProductRouter = {
         }
     },
 
-    getDataProductEndpoint(dataProduct: string, dataSource?: string) {
+    getDataProductEndpoint(dataProduct: DataProduct, dataSource?: string) {
         const dataProductConfig = TestbedGWConfiguration.dataProducts[dataProduct];
         if (dataProductConfig) {
             const { defaultDataSource } = dataProductConfig;

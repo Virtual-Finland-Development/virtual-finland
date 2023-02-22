@@ -1,4 +1,5 @@
 // DataProductRouter
+import axios from 'axios';
 
 import { NextApiRequest, NextApiResponse } from "next";
 import { getForwardableHeaders } from "../../framework-helpers";
@@ -25,13 +26,10 @@ const DataProductRouter = {
         }
 
         try {
-            const response = await fetch(endpointUrl, {
-                method: "POST",
+            const response = await axios.post(endpointUrl, req.body, {
                 headers: getForwardableHeaders(req.headers, { 'Content-Type': 'application/json' }),
-                body: JSON.stringify(req.body),
             });
-            const data = await response.json();
-            res.status(200).json(data);
+            res.status(response.status).json(response.data);
         } catch (error: any) {
             console.error(error);
             res.status(500).json({ message: error.message, stack: error.stack })

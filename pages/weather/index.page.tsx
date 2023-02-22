@@ -12,7 +12,7 @@ export default function Weather() {
   const fetchWeather = () => {
     setLoading(true);
     api.testbedGW.getDataProduct('draft/Weather/Current/Metric', inputs.weather).then((res) => {
-      outputs.weather = res;
+      outputs.weather = res.data;
       setLoading(false);
     });
   };

@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { ReactNode } from 'react';
 import { Block } from 'suomifi-ui-components';
-import BreadCrumbs from './breadcrumbs';
+import Breadcrumbs from './breadcrumbs';
 
 interface Props {
   title: string;
@@ -17,7 +17,7 @@ export default function Page(props: Props) {
         <title>{title} - Living in Finland</title>
       </Head>
       <Block variant="main">
-        <BreadCrumbs />
+        <Breadcrumbs />
         <div className="md:my-8 md:border">{children}</div>
       </Block>
     </>

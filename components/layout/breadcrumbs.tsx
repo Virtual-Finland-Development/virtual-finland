@@ -44,7 +44,7 @@ BreadcrumbCustomLink.displayName = 'BreadcrumbCustomLink';
 
 const homeBreadcrumb = { label: 'home', href: '/' };
 
-export default function BreadCrumbs() {
+export default function Breadcrumbs() {
   const router = useRouter();
 
   const breadcrumbs: Breadcrumb[] = useMemo(() => {

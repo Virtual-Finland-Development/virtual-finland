@@ -27,6 +27,9 @@ module.exports = {
         'suomifi-light': '#2A6EBB',
         'suomifi-dark': '#00347A',
       },
+      width: {
+        'suomifi-input-default': '290px',
+      },
     },
   },
   plugins: [],

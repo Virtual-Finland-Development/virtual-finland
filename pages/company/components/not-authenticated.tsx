@@ -22,11 +22,11 @@ export default function NotAuthenticated() {
               />
             </div>
             <CustomHeading variant="h2" center>
-              Register or modify company information
+              Establish a company or modify company information
             </CustomHeading>
             <CustomText $center>
-              Identify yourself into Company. You can then register and modify
-              existing company information.
+              Identify yourself into Company. You can then establish a company
+              or modify existing company information.
             </CustomText>
             <Button icon="login" variant="inverted" onClick={loginHandler}>
               Identification

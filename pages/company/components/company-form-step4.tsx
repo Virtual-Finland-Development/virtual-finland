@@ -1,12 +1,9 @@
-import {
-  Controller,
-  SubmitHandler,
-  useFieldArray,
-  useForm,
-} from 'react-hook-form';
-import { Button, SingleSelect, TextInput } from 'suomifi-ui-components';
+import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import { Button } from 'suomifi-ui-components';
+import { useCompanyForm } from '@/context/company-form-context';
+import FormInput from '@/components/form/form-input';
+import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
-import { useCompanyForm } from '../../../context/company-form-context';
 
 interface FormProps {
   shareSeries: {
@@ -90,60 +87,26 @@ export default function CompanyFormStep3() {
             className="flex flex-col items-start gap-3 border-b border-b-gray-300 pb-6 w-full"
           >
             <div className="flex flex-col gap-4">
-              <Controller
+              <FormSingleSelect
                 name={`shareSeries.${index}.shareSeriesClass`}
                 control={control}
                 rules={{ required: 'Share value is required.' }}
-                render={({ field: { onChange }, fieldState: { error } }) => (
-                  <SingleSelect
-                    labelText="Share series class"
-                    noItemsText={undefined}
-                    visualPlaceholder="Select class"
-                    ariaOptionsAvailableText="Options available"
-                    clearButtonLabel="clear"
-                    itemAdditionHelpText=""
-                    status={error && 'error'}
-                    statusText={error && error.message}
-                    items={SHARE_SERIES_CLASS_OPTIONS}
-                    defaultSelectedItem={
-                      field.shareSeriesClass && {
-                        labelText: field.shareSeriesClass,
-                        uniqueItemId: field.shareSeriesClass,
-                      }
-                    }
-                    onItemSelect={selected => {
-                      onChange(selected);
-                    }}
-                  />
-                )}
+                items={SHARE_SERIES_CLASS_OPTIONS}
+                labelText="Share series class"
               />
-              <Controller
+              <FormInput
+                type="number"
                 name={`shareSeries.${index}.numberOfShares`}
                 control={control}
                 rules={{ required: 'Number of shares is required.' }}
-                render={({ field, fieldState: { error } }) => (
-                  <TextInput
-                    type="number"
-                    labelText="Number of shares"
-                    status={error && 'error'}
-                    statusText={error && error.message}
-                    {...field}
-                  />
-                )}
+                labelText="Number of shares"
               />
-              <Controller
+              <FormInput
+                type="number"
                 name={`shareSeries.${index}.shareValue`}
                 control={control}
                 rules={{ required: 'Share value is required.' }}
-                render={({ field, fieldState: { error } }) => (
-                  <TextInput
-                    type="number"
-                    labelText="Share value (€)"
-                    status={error && 'error'}
-                    statusText={error && error.message}
-                    {...field}
-                  />
-                )}
+                labelText="Share value (€)"
               />
             </div>
             <Button

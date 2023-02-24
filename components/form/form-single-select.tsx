@@ -1,0 +1,57 @@
+import {
+  Control,
+  Controller,
+  FieldValues,
+  Path,
+  RegisterOptions,
+} from 'react-hook-form';
+import { SingleSelect } from 'suomifi-ui-components';
+
+interface SelectInputControllerProps<T extends FieldValues> {
+  name: Path<T>;
+  rules?: RegisterOptions;
+  control: Control<T>;
+}
+
+interface Props<T extends FieldValues> extends SelectInputControllerProps<T> {
+  labelText: string;
+  hintText?: string;
+  optionalText?: string;
+  items: { labelText: string; uniqueItemId: string; disabled?: boolean }[];
+}
+
+export default function FormSingleSelect<T extends FieldValues>(
+  props: Props<T>
+) {
+  const { name, rules, control, labelText, hintText, optionalText, items } =
+    props;
+
+  return (
+    <Controller
+      name={name}
+      rules={rules}
+      control={control}
+      render={({ field: { onChange, value }, fieldState: { error } }) => (
+        <SingleSelect
+          labelText={labelText}
+          hintText={hintText}
+          optionalText={optionalText}
+          noItemsText={undefined}
+          visualPlaceholder="Type to search"
+          ariaOptionsAvailableText="Options available"
+          clearButtonLabel="clear"
+          itemAdditionHelpText=""
+          status={error && 'error'}
+          statusText={error && error.message}
+          items={items}
+          defaultSelectedItem={
+            value && items.find(item => item.uniqueItemId === value)
+          }
+          onItemSelect={selected => {
+            onChange(selected);
+          }}
+        />
+      )}
+    />
+  );
+}

@@ -37,7 +37,7 @@ const SHARE_SERIES_CLASS_OPTIONS = [
 ];
 
 export default function CompanyFormStep4() {
-  const { values, setValues } = useCompanyForm();
+  const { values, setValues, setStep } = useCompanyForm();
 
   const {
     handleSubmit,
@@ -65,6 +65,7 @@ export default function CompanyFormStep4() {
 
   const onSubmit: SubmitHandler<FormProps> = values => {
     setValues(values, 'shareSeries');
+    setStep(4);
   };
 
   const appendShareSeries = () => {

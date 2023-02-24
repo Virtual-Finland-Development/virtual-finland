@@ -17,7 +17,8 @@ type Step =
   | 'boardMembers';
 
 interface CompanyFormContextProps {
-  steps: { label: string; isDone: boolean }[];
+  step: number;
+  setStep: (step: number) => void;
   values: Partial<NonListedCompany>;
   setValues: (values: Partial<NonListedCompany>, currentStep: Step) => void;
   isStepDone: (step: Step) => boolean;
@@ -61,7 +62,7 @@ function nextRoute(currentStep: Step): string | undefined {
 
 function CompanyFormProvider(props: CompanyFormProviderProps) {
   const { children } = props;
-  const [steps, setSteps] = useState([{ label: 'Step 1', isDone: false }]);
+  const [step, setStep] = useState(0);
   const [values, setValues] = useState<Partial<NonListedCompany>>({});
   const router = useRouter();
 
@@ -98,7 +99,7 @@ function CompanyFormProvider(props: CompanyFormProviderProps) {
     (values: Partial<NonListedCompany>, currentStep: Step) => {
       setValues(prev => ({ ...prev, ...values }));
       const pathName = `/company/establishment/${nextRoute(currentStep)}`;
-      router.push(pathName);
+      // router.push(pathName);
     },
     [router]
   );
@@ -106,7 +107,8 @@ function CompanyFormProvider(props: CompanyFormProviderProps) {
   return (
     <CompanyFormContext.Provider
       value={{
-        steps,
+        step,
+        setStep: step => setStep(step),
         values,
         setValues: setValuesAndNextStep,
         isStepDone,

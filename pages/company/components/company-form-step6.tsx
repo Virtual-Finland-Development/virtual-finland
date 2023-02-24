@@ -32,7 +32,7 @@ const COUNTRY_OPTIONS = [
 ];
 
 export default function CompanyFormStep6() {
-  const { values, setValues } = useCompanyForm();
+  const { values, setValues, setStep } = useCompanyForm();
 
   const {
     handleSubmit,
@@ -63,6 +63,7 @@ export default function CompanyFormStep6() {
 
   const onSubmit: SubmitHandler<FormProps> = values => {
     setValues(values, 'boardMembers');
+    setStep(6);
   };
 
   const appendShareSeries = () => {

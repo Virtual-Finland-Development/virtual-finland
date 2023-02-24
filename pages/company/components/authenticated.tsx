@@ -22,9 +22,7 @@ export default function Authenticated() {
             mollit anim id est laborum.
           </Text>
 
-          <Button
-            onClick={() => router.push('/company/establishment/registrant')}
-          >
+          <Button onClick={() => router.push('/company/establishment')}>
             Establish company
           </Button>
         </div>

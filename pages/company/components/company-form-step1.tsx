@@ -15,7 +15,7 @@ interface FormProps {
 }
 
 export default function CompanyFormStep1() {
-  const { values, setValues } = useCompanyForm();
+  const { values, setValues, setStep } = useCompanyForm();
 
   const {
     handleSubmit,
@@ -28,6 +28,7 @@ export default function CompanyFormStep1() {
 
   const onSubmit: SubmitHandler<FormProps> = values => {
     setValues(values, 'registrant');
+    setStep(1);
   };
 
   return (

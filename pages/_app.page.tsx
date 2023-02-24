@@ -48,11 +48,11 @@ export default function App({ Component, pageProps }: AppProps) {
 
           return (
             <ModalProvider>
-              <CompanyFormProvider>
-                <MainLayout>
-                  <Component {...pageProps} />
-                </MainLayout>
-              </CompanyFormProvider>
+              {/*   <CompanyFormProvider> */}
+              <MainLayout>
+                <Component {...pageProps} />
+              </MainLayout>
+              {/*  </CompanyFormProvider> */}
             </ModalProvider>
           );
         }}

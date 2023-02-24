@@ -13,7 +13,8 @@ type Step =
   | 'companyDetails'
   | 'companyAddress'
   | 'shareSeries'
-  | 'managingDirectors';
+  | 'managingDirectors'
+  | 'boardMembers';
 
 interface CompanyFormContextProps {
   steps: { label: string; isDone: boolean }[];
@@ -34,7 +35,7 @@ const CompanyFormConsumer = CompanyFormContext.Consumer;
 
 function nextRoute(currentStep: Step): string | undefined {
   let nextRoute: string | undefined;
-
+  console.log(currentStep);
   switch (currentStep) {
     case 'registrant':
       nextRoute = 'company-details';
@@ -48,10 +49,13 @@ function nextRoute(currentStep: Step): string | undefined {
     case 'shareSeries':
       nextRoute = 'managing-directors';
       break;
+    case 'managingDirectors':
+      nextRoute = 'board-members';
+      break;
     default:
       nextRoute = undefined;
   }
-
+  console.log(nextRoute);
   return nextRoute;
 }
 
@@ -79,6 +83,10 @@ function CompanyFormProvider(props: CompanyFormProviderProps) {
           return isStepDone('companyDetails');
         case 'shareSeries':
           return isStepDone('companyAddress');
+        case 'managingDirectors':
+          return isStepDone('shareSeries');
+        case 'boardMembers':
+          return isStepDone('managingDirectors');
         default:
           return false;
       }

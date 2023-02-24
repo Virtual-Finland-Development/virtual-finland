@@ -35,12 +35,12 @@ const NAV_ITEMS = [
     label: '5. Managing directors',
     step: 'managingDirectors' as Step,
   },
-  /* {
+  {
     href: '/company/establishment/board-members',
     label: '6. Board members',
-    status: 'coming' as Status,
+    step: 'boardMembers' as Step,
   },
-  {
+  /* {
     href: '/company/establishment/step7',
     label: '7. Auditor',
     status: 'coming' as Status,

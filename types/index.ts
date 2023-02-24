@@ -71,10 +71,20 @@ export type ManagingDirectors = {
   nationality: string;
 };
 
+export type BoardMembers = {
+  role: 'chairperson' | 'member' | 'deputy member';
+  givenName: string;
+  middleNames: string;
+  lastName: string;
+  dateOfBirth: string;
+  nationality: string;
+};
+
 export type NonListedCompany = {
   registrant: Registrant;
   companyDetails: CompanyDetails;
   companyAddress: CompanyAddress;
   shareSeries: ShareSeries[];
   managingDirectors: ManagingDirectors[];
+  boardMembers: BoardMembers[];
 };

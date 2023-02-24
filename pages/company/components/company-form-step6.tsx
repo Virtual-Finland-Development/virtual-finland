@@ -1,24 +1,19 @@
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
+import type { BoardMembers } from '@/types';
 import { useCompanyForm } from '@/context/company-form-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
 
 interface FormProps {
-  managingDirectors: {
-    role: 'director' | 'deputy director';
-    givenName: string;
-    middleNames: string;
-    lastName: string;
-    dateOfBirth: string;
-    nationality: string;
-  }[];
+  boardMembers: BoardMembers[];
 }
 
 const ROLE_OPTIONS = [
-  { labelText: 'Director', uniqueItemId: 'director' },
-  { labelText: 'Debuty director', uniqueItemId: 'debuty director' },
+  { labelText: 'Chair person', uniqueItemId: 'chairperson' },
+  { labelText: 'Member', uniqueItemId: 'member' },
+  { labelText: 'Debuty member', uniqueItemId: 'debuty member' },
 ];
 
 const COUNTRY_OPTIONS = [
@@ -36,7 +31,7 @@ const COUNTRY_OPTIONS = [
   },
 ];
 
-export default function CompanyFormStep5() {
+export default function CompanyFormStep6() {
   const { values, setValues } = useCompanyForm();
 
   const {
@@ -45,12 +40,12 @@ export default function CompanyFormStep5() {
     formState: { errors },
   } = useForm<FormProps>({
     mode: 'onSubmit',
-    defaultValues: values?.managingDirectors
-      ? { managingDirectors: values.managingDirectors }
+    defaultValues: values?.boardMembers
+      ? { boardMembers: values.boardMembers }
       : {
-          managingDirectors: [
+          boardMembers: [
             {
-              role: 'director',
+              role: 'chairperson',
               givenName: '',
               middleNames: '',
               lastName: '',
@@ -63,16 +58,16 @@ export default function CompanyFormStep5() {
 
   const { fields, append, remove } = useFieldArray<FormProps>({
     control,
-    name: 'managingDirectors',
+    name: 'boardMembers',
   });
 
   const onSubmit: SubmitHandler<FormProps> = values => {
-    setValues(values, 'managingDirectors');
+    setValues(values, 'boardMembers');
   };
 
   const appendShareSeries = () => {
     append({
-      role: 'director',
+      role: 'chairperson',
       givenName: '',
       middleNames: '',
       lastName: '',
@@ -97,40 +92,40 @@ export default function CompanyFormStep5() {
           >
             <div className="flex flex-col gap-4">
               <FormSingleSelect
-                name={`managingDirectors.${index}.role`}
+                name={`boardMembers.${index}.role`}
                 control={control}
                 rules={{ required: 'Role is required.' }}
                 items={ROLE_OPTIONS}
                 labelText="Role"
               />
               <FormInput
-                name={`managingDirectors.${index}.givenName`}
+                name={`boardMembers.${index}.givenName`}
                 control={control}
                 rules={{ required: 'Given name is required.' }}
                 labelText="Given name"
               />
               <FormInput
-                name={`managingDirectors.${index}.lastName`}
+                name={`boardMembers.${index}.lastName`}
                 control={control}
                 rules={{ required: 'Last name is required.' }}
                 labelText="Last name"
               />
               <FormInput
-                name={`managingDirectors.${index}.middleNames`}
+                name={`boardMembers.${index}.middleNames`}
                 control={control}
                 rules={{ required: 'Given name is required.' }}
                 labelText="Middle names"
               />
               <FormInput
                 type="date"
-                name={`managingDirectors.${index}.dateOfBirth`}
+                name={`boardMembers.${index}.dateOfBirth`}
                 control={control}
                 rules={{ required: 'Date of birth is required.' }}
                 labelText="Date of birth"
                 hintText="Select from date picker"
               />
               <FormSingleSelect
-                name={`managingDirectors.${index}.nationality`}
+                name={`boardMembers.${index}.nationality`}
                 control={control}
                 items={COUNTRY_OPTIONS}
                 labelText="Nationality"

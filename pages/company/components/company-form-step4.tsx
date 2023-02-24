@@ -36,7 +36,7 @@ const SHARE_SERIES_CLASS_OPTIONS = [
   },
 ];
 
-export default function CompanyFormStep3() {
+export default function CompanyFormStep4() {
   const { values, setValues } = useCompanyForm();
 
   const {

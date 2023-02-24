@@ -99,13 +99,16 @@ export default function CompanyFormStep2() {
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <DateInput
               labelText="Founding date"
+              hintText="Select from date picker"
               datePickerEnabled
               className="!w-suomifi-input-default"
               status={error && 'error'}
               statusText={error && error.message}
               value={value ? format(new Date(value), 'dd.MM.yyyy') : ''}
-              onChange={({ date }) => {
-                onChange(format(date, 'yyyy-MM-dd'));
+              onChange={({ date, value }) => {
+                if (date instanceof Date && !isNaN(date.getTime())) {
+                  onChange(format(date, 'yyyy-MM-dd'));
+                }
               }}
             />
           )}
@@ -158,14 +161,17 @@ export default function CompanyFormStep2() {
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <DateInput
               labelText="Settlement date"
+              hintText="Select from date picker"
               optionalText="optional"
               datePickerEnabled
               className="!w-suomifi-input-default"
               status={error && 'error'}
               statusText={error && error.message}
               value={value ? format(new Date(value), 'dd.MM.yyyy') : ''}
-              onChange={({ date }) => {
-                onChange(format(date, 'yyyy-MM-dd'));
+              onChange={({ date, value }) => {
+                if (date instanceof Date && !isNaN(date.getTime())) {
+                  onChange(format(date, 'yyyy-MM-dd'));
+                }
               }}
             />
           )}

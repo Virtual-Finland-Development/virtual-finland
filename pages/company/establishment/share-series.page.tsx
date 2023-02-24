@@ -1,7 +1,7 @@
 import CompanyFormStep4 from '../components/company-form-step4';
 import Wrapper from './wrapper';
 
-export default function Step4() {
+export default function ShareSeries() {
   return (
     <Wrapper>
       <CompanyFormStep4 />

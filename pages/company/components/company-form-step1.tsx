@@ -27,8 +27,7 @@ export default function CompanyFormStep1() {
   });
 
   const onSubmit: SubmitHandler<FormProps> = values => {
-    console.log(values);
-    setValues(values);
+    setValues(values, 'registrant');
   };
 
   return (

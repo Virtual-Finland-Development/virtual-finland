@@ -33,8 +33,7 @@ export default function CompanyFormStep2() {
   });
 
   const onSubmit: SubmitHandler<FormProps> = values => {
-    console.log(values);
-    setValues(values);
+    setValues(values, 'companyDetails');
   };
 
   return (

@@ -5,44 +5,38 @@ import {
   WizardNavigation,
   WizardNavigationItem,
 } from 'suomifi-ui-components';
+import { useCompanyForm } from '@/context/company-form-context';
+import { Step } from '@/context/company-form-context';
 import useDimensions from '@/hooks/use-dimensions';
-
-type Status =
-  | 'default'
-  | 'disabled'
-  | 'completed'
-  | 'coming'
-  | 'current'
-  | 'current-completed';
 
 const NAV_ITEMS = [
   {
-    href: '/company/establishment',
+    href: '/company/establishment/registrant',
     label: '1. Registrant',
-    status: 'completed' as Status,
+    step: 'registrant' as Step,
   },
   {
-    href: '/company/establishment/step2',
+    href: '/company/establishment/company-details',
     label: '2. Company details',
-    status: 'default' as Status,
+    step: 'companyDetails' as Step,
   },
   {
-    href: '/company/establishment/step3',
+    href: '/company/establishment/company-address',
     label: '3. Company address',
-    status: 'default' as Status,
+    step: 'companyAddress' as Step,
   },
   {
-    href: '/company/establishment/step4',
+    href: '/company/establishment/share-series',
     label: '4. Share series',
-    status: 'default' as Status,
+    step: 'shareSeries' as Step,
   },
   {
-    href: '/company/establishment/step5',
+    href: '/company/establishment/managing-directors',
     label: '5. Managing directors',
-    status: 'default' as Status,
+    step: 'managingDirectors' as Step,
   },
-  {
-    href: '/company/establishment/step6',
+  /* {
+    href: '/company/establishment/board-members',
     label: '6. Board members',
     status: 'coming' as Status,
   },
@@ -50,24 +44,35 @@ const NAV_ITEMS = [
     href: '/company/establishment/step7',
     label: '7. Auditor',
     status: 'coming' as Status,
-  },
+  }, */
 ];
 
 export default function CompanyWizardNav() {
   const router = useRouter();
   const { width } = useDimensions();
+  const { isStepDone, isPrevStepDone } = useCompanyForm();
 
   return (
     <WizardNavigation
-      heading="Steps"
-      aria-label="Company wizard steps"
+      heading="Company Establishment"
+      aria-label="Company establishment wizard steps"
       initiallyExpanded={false}
       variant={width > 768 ? 'default' : 'smallScreen'}
     >
       {NAV_ITEMS.map(item => (
         <WizardNavigationItem
           key={item.href}
-          status={router.pathname === item.href ? 'current' : item.status}
+          status={
+            router.pathname === item.href
+              ? isStepDone(item.step)
+                ? 'current-completed'
+                : 'current'
+              : isStepDone(item.step)
+              ? 'completed'
+              : isPrevStepDone(item.step)
+              ? 'default'
+              : 'coming'
+          }
         >
           <Link href={item.href} passHref legacyBehavior>
             <RouterLink>{item.label}</RouterLink>

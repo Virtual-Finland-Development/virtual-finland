@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
-import { useCompanyForm } from '@/context/company-form-context';
+import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import CustomHeading from '@/components/ui/custom-heading';
 
@@ -20,7 +20,7 @@ interface FormProps {
 }
 
 export default function CompanyFormStep3() {
-  const { values, setValues, setStep } = useCompanyForm();
+  const { values, setValues } = useCompanyContext();
 
   const {
     handleSubmit,
@@ -35,7 +35,6 @@ export default function CompanyFormStep3() {
 
   const onSubmit: SubmitHandler<FormProps> = values => {
     setValues(values, 'companyAddress');
-    setStep(3);
   };
 
   return (

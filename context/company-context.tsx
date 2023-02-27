@@ -16,51 +16,35 @@ type Step =
   | 'managingDirectors'
   | 'boardMembers';
 
-interface CompanyFormContextProps {
+const steps = [
+  'registrant' as Step,
+  'companyDetails' as Step,
+  'companyAddress' as Step,
+  'shareSeries' as Step,
+  'managingDirectors' as Step,
+  'boardMembers' as Step,
+];
+
+interface CompanyContextProps {
+  steps: Step[];
   step: number;
-  setStep: (step: number) => void;
+  setStep: (stepNumber: number) => void;
   values: Partial<NonListedCompany>;
   setValues: (values: Partial<NonListedCompany>, currentStep: Step) => void;
   isStepDone: (step: Step) => boolean;
   isPrevStepDone: (currentStep: Step) => boolean;
 }
 
-interface CompanyFormProviderProps {
+interface CompanyProviderProps {
   children: ReactNode;
 }
 
-const CompanyFormContext = createContext<CompanyFormContextProps | undefined>(
+const CompanyContext = createContext<CompanyContextProps | undefined>(
   undefined
 );
-const CompanyFormConsumer = CompanyFormContext.Consumer;
+const CompanyContextConsumer = CompanyContext.Consumer;
 
-function nextRoute(currentStep: Step): string | undefined {
-  let nextRoute: string | undefined;
-  console.log(currentStep);
-  switch (currentStep) {
-    case 'registrant':
-      nextRoute = 'company-details';
-      break;
-    case 'companyDetails':
-      nextRoute = 'company-address';
-      break;
-    case 'companyAddress':
-      nextRoute = 'share-series';
-      break;
-    case 'shareSeries':
-      nextRoute = 'managing-directors';
-      break;
-    case 'managingDirectors':
-      nextRoute = 'board-members';
-      break;
-    default:
-      nextRoute = undefined;
-  }
-  console.log(nextRoute);
-  return nextRoute;
-}
-
-function CompanyFormProvider(props: CompanyFormProviderProps) {
+function CompanyContextProvider(props: CompanyProviderProps) {
   const { children } = props;
   const [step, setStep] = useState(0);
   const [values, setValues] = useState<Partial<NonListedCompany>>({});
@@ -98,15 +82,15 @@ function CompanyFormProvider(props: CompanyFormProviderProps) {
   const setValuesAndNextStep = useCallback(
     (values: Partial<NonListedCompany>, currentStep: Step) => {
       setValues(prev => ({ ...prev, ...values }));
-      const pathName = `/company/establishment/${nextRoute(currentStep)}`;
-      // router.push(pathName);
+      setStep(steps.indexOf(currentStep) + 1);
     },
-    [router]
+    []
   );
 
   return (
-    <CompanyFormContext.Provider
+    <CompanyContext.Provider
       value={{
+        steps,
         step,
         setStep: step => setStep(step),
         values,
@@ -116,19 +100,19 @@ function CompanyFormProvider(props: CompanyFormProviderProps) {
       }}
     >
       {children}
-    </CompanyFormContext.Provider>
+    </CompanyContext.Provider>
   );
 }
 
-function useCompanyForm() {
-  const context = useContext(CompanyFormContext) as CompanyFormContextProps;
+function useCompanyContext() {
+  const context = useContext(CompanyContext) as CompanyContextProps;
 
   if (!context) {
-    throw new Error('useAuth must be used within AuthProvider.');
+    throw new Error('useCompanyContext must be used within CompanyProvider.');
   }
 
   return context;
 }
 
 export type { Step };
-export { CompanyFormProvider, CompanyFormConsumer, useCompanyForm };
+export { CompanyContextProvider, CompanyContextConsumer, useCompanyContext };

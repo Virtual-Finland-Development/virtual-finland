@@ -1,7 +1,7 @@
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
 import type { BoardMembers } from '@/types';
-import { useCompanyForm } from '@/context/company-form-context';
+import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
@@ -32,7 +32,7 @@ const COUNTRY_OPTIONS = [
 ];
 
 export default function CompanyFormStep6() {
-  const { values, setValues, setStep } = useCompanyForm();
+  const { values, setValues } = useCompanyContext();
 
   const {
     handleSubmit,
@@ -63,7 +63,6 @@ export default function CompanyFormStep6() {
 
   const onSubmit: SubmitHandler<FormProps> = values => {
     setValues(values, 'boardMembers');
-    setStep(6);
   };
 
   const appendShareSeries = () => {
@@ -84,7 +83,7 @@ export default function CompanyFormStep6() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-4 items-start">
-        <CustomHeading variant="h3">Managing directors</CustomHeading>
+        <CustomHeading variant="h3">Board members</CustomHeading>
 
         {fields.map((field, index) => (
           <div

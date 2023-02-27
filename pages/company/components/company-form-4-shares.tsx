@@ -1,6 +1,6 @@
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
-import { useCompanyForm } from '@/context/company-form-context';
+import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
@@ -37,7 +37,7 @@ const SHARE_SERIES_CLASS_OPTIONS = [
 ];
 
 export default function CompanyFormStep4() {
-  const { values, setValues, setStep } = useCompanyForm();
+  const { values, setValues } = useCompanyContext();
 
   const {
     handleSubmit,
@@ -65,7 +65,6 @@ export default function CompanyFormStep4() {
 
   const onSubmit: SubmitHandler<FormProps> = values => {
     setValues(values, 'shareSeries');
-    setStep(4);
   };
 
   const appendShareSeries = () => {

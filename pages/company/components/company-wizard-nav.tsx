@@ -1,12 +1,10 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import {
   RouterLink,
   WizardNavigation,
   WizardNavigationItem,
 } from 'suomifi-ui-components';
-import { useCompanyForm } from '@/context/company-form-context';
-import { Step } from '@/context/company-form-context';
+import { useCompanyContext } from '@/context/company-context';
+import { Step } from '@/context/company-context';
 import useDimensions from '@/hooks/use-dimensions';
 
 const NAV_ITEMS = [
@@ -54,9 +52,8 @@ const NAV_ITEMS = [
 ];
 
 export default function CompanyWizardNav() {
-  const router = useRouter();
   const { width } = useDimensions();
-  const { isStepDone, isPrevStepDone, step, setStep } = useCompanyForm();
+  const { isStepDone, isPrevStepDone, step, setStep } = useCompanyContext();
 
   return (
     <WizardNavigation
@@ -68,17 +65,6 @@ export default function CompanyWizardNav() {
       {NAV_ITEMS.map(item => (
         <WizardNavigationItem
           key={item.href}
-          /* status={
-            router.pathname === item.href
-              ? isStepDone(item.step)
-                ? 'current-completed'
-                : 'current'
-              : isStepDone(item.step)
-              ? 'completed'
-              : isPrevStepDone(item.step)
-              ? 'default'
-              : 'coming'
-          } */
           status={
             step === item.stepNumber
               ? isStepDone(item.step)
@@ -91,11 +77,9 @@ export default function CompanyWizardNav() {
               : 'coming'
           }
         >
-          {/* <Link href={item.href} passHref legacyBehavior> */}
           <RouterLink onClick={() => setStep(item.stepNumber)}>
             {item.label}
           </RouterLink>
-          {/* </Link> */}
         </WizardNavigationItem>
       ))}
     </WizardNavigation>

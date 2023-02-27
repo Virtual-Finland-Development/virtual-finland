@@ -3,7 +3,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import tw from 'twin.macro';
 import { AuthConsumer, AuthProvider } from '@/context/auth-context';
-import { CompanyFormProvider } from '@/context/company-form-context';
 import { ModalProvider } from '@/context/modal-context';
 import MainLayout from '@/components/layout/main-layout';
 import Loading from '@/components/ui/loading';
@@ -48,11 +47,9 @@ export default function App({ Component, pageProps }: AppProps) {
 
           return (
             <ModalProvider>
-              {/*   <CompanyFormProvider> */}
               <MainLayout>
                 <Component {...pageProps} />
               </MainLayout>
-              {/*  </CompanyFormProvider> */}
             </ModalProvider>
           );
         }}

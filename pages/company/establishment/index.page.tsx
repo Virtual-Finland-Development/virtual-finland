@@ -4,6 +4,7 @@ import {
   CompanyContextConsumer,
   CompanyContextProvider,
 } from '@/context/company-context';
+import AuthSentry from '@/components/auth-sentry';
 import Page from '@/components/layout/page';
 import CompanyRegistrant from '../components/company-form-1-registrant';
 import CompanyDetails from '../components/company-form-2-details';
@@ -25,46 +26,48 @@ const companyWizardSteps = [
 export default function Establishment() {
   return (
     <Page title="Company Establishment">
-      <CompanyContextProvider>
-        <CompanyContextConsumer>
-          {provider => {
-            if (!provider) {
-              return null;
-            }
+      <AuthSentry redirectPath="/company">
+        <CompanyContextProvider>
+          <CompanyContextConsumer>
+            {provider => {
+              if (!provider) {
+                return null;
+              }
 
-            const { steps, step, setStep } = provider;
+              const { steps, step, setStep } = provider;
 
-            return (
-              <>
-                <div className="block md:hidden px-4 py-6">
-                  <div className="border">
-                    <CompanyWizardNav />
-                  </div>
-                </div>
-
-                <Block variant="section" className="bg-white">
-                  <div className="flex flex-col md:flex-row">
-                    <div className="hidden md:block border-r px-4 py-6 flex-shrink-0">
+              return (
+                <>
+                  <div className="block md:hidden px-4 py-6">
+                    <div className="border">
                       <CompanyWizardNav />
                     </div>
-                    <div className="px-4 py-6 w-full">
-                      {step > 0 && (
-                        <Button
-                          variant="secondary"
-                          onClick={() => setStep(step - 1)}
-                        >
-                          Back
-                        </Button>
-                      )}
-                      {companyWizardSteps[step]}
-                    </div>
                   </div>
-                </Block>
-              </>
-            );
-          }}
-        </CompanyContextConsumer>
-      </CompanyContextProvider>
+
+                  <Block variant="section" className="bg-white">
+                    <div className="flex flex-col md:flex-row">
+                      <div className="hidden md:block border-r px-4 py-6 flex-shrink-0">
+                        <CompanyWizardNav />
+                      </div>
+                      <div className="px-4 py-6 w-full">
+                        {step > 0 && (
+                          <Button
+                            variant="secondary"
+                            onClick={() => setStep(step - 1)}
+                          >
+                            Back
+                          </Button>
+                        )}
+                        {companyWizardSteps[step]}
+                      </div>
+                    </div>
+                  </Block>
+                </>
+              );
+            }}
+          </CompanyContextConsumer>
+        </CompanyContextProvider>
+      </AuthSentry>
     </Page>
   );
 }

@@ -1,78 +1,51 @@
-import { Block } from 'suomifi-ui-components';
-import { Button } from 'suomifi-ui-components';
-import {
-  CompanyContextConsumer,
-  CompanyContextProvider,
-} from '@/context/company-context';
-import AuthSentry from '@/components/auth-sentry';
-import Page from '@/components/layout/page';
-import CompanyRegistrant from '../components/company-form-1-registrant';
-import CompanyDetails from '../components/company-form-2-details';
-import CompanyAddress from '../components/company-form-3-address';
-import CompanyShares from '../components/company-form-4-shares';
-import CompanyDirectors from '../components/company-form-5-directors';
-import CompanyMembers from '../components/company-form-6-members';
-import CompanyAuditor from '../components/company-form-7-auditor';
-import CompanyWizardNav from '../components/company-wizard-nav';
-import 'twin.macro';
-
-const companyWizardSteps = [
-  <CompanyRegistrant key="registrant" />,
-  <CompanyDetails key="details" />,
-  <CompanyAddress key="address" />,
-  <CompanyShares key="shares" />,
-  <CompanyDirectors key="directors" />,
-  <CompanyMembers key="members" />,
-  <CompanyAuditor key="auditor" />,
-];
+import { useRouter } from 'next/router';
+import { Block, Button, Text } from 'suomifi-ui-components';
+import CustomHeading from '@/components/ui/custom-heading';
+import CompanyPagesWrapper from '../components/company-pages-wrapper';
 
 export default function Establishment() {
+  const router = useRouter();
+
   return (
-    <Page title="Company Establishment">
-      <AuthSentry redirectPath="/company">
-        <CompanyContextProvider>
-          <CompanyContextConsumer>
-            {provider => {
-              if (!provider) {
-                return null;
+    <CompanyPagesWrapper>
+      <div className="md:border">
+        <Block variant="section" className="px-4 py-6 bg-white">
+          <CustomHeading variant="h2" suomiFiBlue="dark">
+            Company Establishment
+          </CustomHeading>
+          <div className="flex flex-col mt-8 gap-6 items-start">
+            <Text>
+              Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod
+              tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim
+              veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid
+              ex ea commodi consequat. Quis aute iure reprehenderit in voluptate
+              velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+              obcaecat cupiditat non proident, sunt in culpa qui officia
+              deserunt mollit anim id est laborum.
+            </Text>
+
+            <Button
+              onClick={() => router.push('/company/establishment/company-info')}
+            >
+              Fill company information
+            </Button>
+            <Button
+              onClick={() =>
+                router.push('/company/establishment/beneficial-owners')
               }
-
-              const { step, setStep } = provider;
-
-              return (
-                <>
-                  <div className="block md:hidden px-4 py-6">
-                    <div className="border">
-                      <CompanyWizardNav />
-                    </div>
-                  </div>
-
-                  <Block variant="section" className="bg-white">
-                    <div className="flex flex-col md:flex-row">
-                      <div className="hidden md:block border-r py-6 flex-shrink-0">
-                        <CompanyWizardNav />
-                      </div>
-                      <div className="px-4 py-6 w-full">
-                        {step > 0 && (
-                          <Button
-                            variant="secondaryNoBorder"
-                            icon="arrowLeft"
-                            tw="p-0 min-h-0 mb-4 text-base"
-                            onClick={() => setStep(step - 1)}
-                          >
-                            BACK
-                          </Button>
-                        )}
-                        {companyWizardSteps[step]}
-                      </div>
-                    </div>
-                  </Block>
-                </>
-              );
-            }}
-          </CompanyContextConsumer>
-        </CompanyContextProvider>
-      </AuthSentry>
-    </Page>
+            >
+              Add beneficial owners
+            </Button>
+            <Button
+              onClick={() =>
+                router.push('/company/establishment/signatory-rights')
+              }
+            >
+              Add signatory rights
+            </Button>
+          </div>
+        </Block>
+      </div>
+    </CompanyPagesWrapper>
   );
 }

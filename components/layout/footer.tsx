@@ -19,7 +19,7 @@ function Help() {
   return (
     <>
       <Block variant="section" className="bg-white px-4 py-6">
-        <div className="container">
+        <div className="container md:px-4">
           <CustomHeading variant="h4">Helpful links</CustomHeading>
           <ul className="mt-4">
             {HELP_LINKS.map(item => (
@@ -39,7 +39,7 @@ function Help() {
         </div>
       </Block>
       <Block variant="section" className="bg-suomifi-blue-bg-light px-4 py-6">
-        <div className="container">
+        <div className="container md:px-4">
           <CustomHeading variant="h4">Do you need help?</CustomHeading>
           <div className="mt-4 flex flex-col gap-2">
             <div className="flex flex-col gap-1">

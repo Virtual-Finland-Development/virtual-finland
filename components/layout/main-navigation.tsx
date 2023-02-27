@@ -98,8 +98,8 @@ function DesktopNavigation() {
   const router = useRouter();
 
   return (
-    <div className="hidden lg:block border-t border-t-gray-300">
-      <div className="container">
+    <div className="hidden md:block border-t border-t-gray-300">
+      <div className="container px-4">
         <ul className="hidden md:flex flex-wrap gap-4 -mx-7">
           {navigation.map(item => (
             <DesktopNavItem
@@ -124,7 +124,7 @@ function MobileNavigationPanel() {
   const router = useRouter();
 
   return (
-    <Disclosure.Panel className="md:hidden absolute border-t border-solid border-gray-300 bg-white w-full border-b border-b-suomifi-light">
+    <Disclosure.Panel className="md:hidden absolute border-t border-solid border-gray-300 bg-white w-full border-b border-b-suomifi-light z-10">
       {({ close }) => (
         <ServiceNavigation aria-label="Mobile navigation">
           {navigation.map(item => (
@@ -179,7 +179,7 @@ export default function MainNavigation() {
       >
         {({ open }) => (
           <>
-            <div className="container px-4 lg:px-0">
+            <div className="container px-4">
               <div className="relative flex h-14 items-center justify-between">
                 {/* Main heading */}
                 <Link href="/">

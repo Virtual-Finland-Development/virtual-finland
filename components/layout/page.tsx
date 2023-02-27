@@ -5,11 +5,12 @@ import Breadcrumbs from './breadcrumbs';
 
 interface Props {
   title: string;
+  withBorder?: boolean;
   children: ReactNode;
 }
 
 export default function Page(props: Props) {
-  const { title, children } = props;
+  const { title, withBorder = true, children } = props;
 
   return (
     <>
@@ -18,7 +19,9 @@ export default function Page(props: Props) {
       </Head>
       <Block variant="main">
         <Breadcrumbs />
-        <div className="md:my-8 md:border">{children}</div>
+        <div className={`md:my-8 ${withBorder ? 'md:border' : ''}`}>
+          {children}
+        </div>
       </Block>
     </>
   );

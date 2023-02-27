@@ -44,10 +44,10 @@ export default function CompanyWizardNav() {
 
   return (
     <WizardNavigation
-      heading="Company Establishment"
+      heading="Company information"
       aria-label="Company establishment wizard steps"
       initiallyExpanded={false}
-      variant={width > 768 ? 'default' : 'smallScreen'}
+      variant={width > 1024 ? 'default' : 'smallScreen'}
     >
       {NAV_ITEMS.map((item, index) => (
         <WizardNavigationItem

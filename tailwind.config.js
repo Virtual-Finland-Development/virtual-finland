@@ -1,4 +1,15 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin');
+
+const capitalizeFirst = plugin(({ addUtilities }) => {
+  const newUtilities = {
+    '.capitalize-first:first-letter': {
+      textTransform: 'uppercase',
+    },
+  };
+  addUtilities(newUtilities);
+});
+
 module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx}',
@@ -9,10 +20,10 @@ module.exports = {
       center: true,
       screens: {
         sm: '640px',
-        md: '768px',
-        lg: '1024px',
-        xl: '1024px',
-        '2xl': '1024px',
+        md: '720px',
+        lg: '960px',
+        xl: '1140px',
+        '2xl': '1140px',
       },
     },
     extend: {
@@ -32,5 +43,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [capitalizeFirst],
 };

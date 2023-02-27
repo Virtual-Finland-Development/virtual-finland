@@ -41,7 +41,7 @@ export default function Establishment() {
 
               return (
                 <>
-                  <div className="block md:hidden py-6">
+                  <div className="block md:hidden px-4 py-6">
                     <div className="border">
                       <CompanyWizardNav />
                     </div>
@@ -49,7 +49,7 @@ export default function Establishment() {
 
                   <Block variant="section" className="bg-white">
                     <div className="flex flex-col md:flex-row">
-                      <div className="hidden md:block border-r px-4 py-6 flex-shrink-0">
+                      <div className="hidden md:block border-r py-6 flex-shrink-0">
                         <CompanyWizardNav />
                       </div>
                       <div className="px-4 py-6 w-full">

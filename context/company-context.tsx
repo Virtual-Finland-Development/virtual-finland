@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import {
   ReactNode,
   createContext,
@@ -14,7 +13,8 @@ type Step =
   | 'companyAddress'
   | 'shareSeries'
   | 'managingDirectors'
-  | 'boardMembers';
+  | 'boardMembers'
+  | 'auditor';
 
 const steps = [
   'registrant' as Step,
@@ -23,6 +23,7 @@ const steps = [
   'shareSeries' as Step,
   'managingDirectors' as Step,
   'boardMembers' as Step,
+  'auditor' as Step,
 ];
 
 interface CompanyContextProps {
@@ -48,7 +49,6 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const { children } = props;
   const [step, setStep] = useState(0);
   const [values, setValues] = useState<Partial<NonListedCompany>>({});
-  const router = useRouter();
 
   const isStepDone = useCallback(
     (step: Step) => {
@@ -72,6 +72,8 @@ function CompanyContextProvider(props: CompanyProviderProps) {
           return isStepDone('shareSeries');
         case 'boardMembers':
           return isStepDone('managingDirectors');
+        case 'auditor':
+          return isStepDone('boardMembers');
         default:
           return false;
       }

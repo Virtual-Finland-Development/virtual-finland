@@ -1,20 +1,16 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
+import type { Registrant } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormPhoneInput from '@/components/form/form-phone-input';
 import CustomHeading from '@/components/ui/custom-heading';
 
 interface FormProps {
-  registrant: {
-    givenName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: string;
-  };
+  registrant: Registrant;
 }
 
-export default function CompanyFormStep1() {
+export default function CompanyRegistrant() {
   const { values, setValues } = useCompanyContext();
 
   const {

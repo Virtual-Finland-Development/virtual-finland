@@ -80,11 +80,17 @@ export type BoardMembers = {
   nationality: string;
 };
 
-export type NonListedCompany = {
+export type Auditor = {
+  companyName: string;
+  nationalIdentifier: string;
+};
+
+export interface NonListedCompany {
   registrant: Registrant;
   companyDetails: CompanyDetails;
   companyAddress: CompanyAddress;
   shareSeries: ShareSeries[];
   managingDirectors: ManagingDirectors[];
   boardMembers: BoardMembers[];
-};
+  auditor: Auditor;
+}

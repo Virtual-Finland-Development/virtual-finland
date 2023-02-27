@@ -31,7 +31,7 @@ const COUNTRY_OPTIONS = [
   },
 ];
 
-export default function CompanyFormStep6() {
+export default function CompanyBoardMembers() {
   const { values, setValues } = useCompanyContext();
 
   const {

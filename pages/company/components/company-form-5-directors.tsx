@@ -1,19 +1,13 @@
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
+import type { ManagingDirectors } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
 
 interface FormProps {
-  managingDirectors: {
-    role: 'director' | 'deputy director';
-    givenName: string;
-    middleNames: string;
-    lastName: string;
-    dateOfBirth: string;
-    nationality: string;
-  }[];
+  managingDirectors: ManagingDirectors[];
 }
 
 const ROLE_OPTIONS = [
@@ -36,7 +30,7 @@ const COUNTRY_OPTIONS = [
   },
 ];
 
-export default function CompanyFormStep5() {
+export default function CompanyManagingDirectors() {
   const { values, setValues } = useCompanyContext();
 
   const {

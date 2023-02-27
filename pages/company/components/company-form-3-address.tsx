@@ -1,25 +1,15 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
+import type { CompanyAddress } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import CustomHeading from '@/components/ui/custom-heading';
 
 interface FormProps {
-  companyAddress: {
-    fullAddress: string;
-    thoroughfare: string;
-    locatorDesignator: string;
-    locatorName: string;
-    addressArea: string;
-    postCode: string;
-    postName: string;
-    poBox: string;
-    adminUnitLevel1: string;
-    adminUnitLevel2: string;
-  };
+  companyAddress: CompanyAddress;
 }
 
-export default function CompanyFormStep3() {
+export default function CompanyAddress() {
   const { values, setValues } = useCompanyContext();
 
   const {

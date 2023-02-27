@@ -9,46 +9,33 @@ import useDimensions from '@/hooks/use-dimensions';
 
 const NAV_ITEMS = [
   {
-    href: '/company/establishment/registrant',
     label: '1. Registrant',
     step: 'registrant' as Step,
-    stepNumber: 0,
   },
   {
-    href: '/company/establishment/company-details',
     label: '2. Company details',
     step: 'companyDetails' as Step,
-    stepNumber: 1,
   },
   {
-    href: '/company/establishment/company-address',
     label: '3. Company address',
     step: 'companyAddress' as Step,
-    stepNumber: 2,
   },
   {
-    href: '/company/establishment/share-series',
     label: '4. Share series',
     step: 'shareSeries' as Step,
-    stepNumber: 3,
   },
   {
-    href: '/company/establishment/managing-directors',
     label: '5. Managing directors',
     step: 'managingDirectors' as Step,
-    stepNumber: 4,
   },
   {
-    href: '/company/establishment/board-members',
     label: '6. Board members',
     step: 'boardMembers' as Step,
-    stepNumber: 5,
   },
-  /* {
-    href: '/company/establishment/step7',
+  {
     label: '7. Auditor',
-    status: 'coming' as Status,
-  }, */
+    step: 'auditor' as Step,
+  },
 ];
 
 export default function CompanyWizardNav() {
@@ -62,11 +49,11 @@ export default function CompanyWizardNav() {
       initiallyExpanded={false}
       variant={width > 768 ? 'default' : 'smallScreen'}
     >
-      {NAV_ITEMS.map(item => (
+      {NAV_ITEMS.map((item, index) => (
         <WizardNavigationItem
-          key={item.href}
+          key={item.step}
           status={
-            step === item.stepNumber
+            step === index
               ? isStepDone(item.step)
                 ? 'current-completed'
                 : 'current'
@@ -77,9 +64,7 @@ export default function CompanyWizardNav() {
               : 'coming'
           }
         >
-          <RouterLink onClick={() => setStep(item.stepNumber)}>
-            {item.label}
-          </RouterLink>
+          <RouterLink onClick={() => setStep(index)}>{item.label}</RouterLink>
         </WizardNavigationItem>
       ))}
     </WizardNavigation>

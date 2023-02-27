@@ -1,24 +1,16 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
+import type { CompanyDetails } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
 
 interface FormProps {
-  companyDetails: {
-    name: string;
-    alternativeName: string;
-    foundingDate: string;
-    industrySector: string;
-    shareCapital: number;
-    settlementDeposit: number;
-    settlementDate: number;
-    countryOfResidence: string;
-  };
+  companyDetails: CompanyDetails;
 }
 
-export default function CompanyFormStep2() {
+export default function CompanyDetails() {
   const { values, setValues } = useCompanyContext();
 
   const {

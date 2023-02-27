@@ -1,16 +1,13 @@
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
+import type { ShareSeries } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
 
 interface FormProps {
-  shareSeries: {
-    shareSeriesClass: 'A' | 'B' | 'C' | 'D' | 'E';
-    numberOfShares: number;
-    shareValue: number;
-  }[];
+  shareSeries: ShareSeries[];
 }
 
 const SHARE_SERIES_CLASS_OPTIONS = [
@@ -36,7 +33,7 @@ const SHARE_SERIES_CLASS_OPTIONS = [
   },
 ];
 
-export default function CompanyFormStep4() {
+export default function CompanyShareSeries() {
   const { values, setValues } = useCompanyContext();
 
   const {

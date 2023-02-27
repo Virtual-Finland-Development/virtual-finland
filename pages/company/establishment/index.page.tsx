@@ -12,7 +12,9 @@ import CompanyAddress from '../components/company-form-3-address';
 import CompanyShares from '../components/company-form-4-shares';
 import CompanyDirectors from '../components/company-form-5-directors';
 import CompanyMembers from '../components/company-form-6-members';
+import CompanyAuditor from '../components/company-form-7-auditor';
 import CompanyWizardNav from '../components/company-wizard-nav';
+import 'twin.macro';
 
 const companyWizardSteps = [
   <CompanyRegistrant key="registrant" />,
@@ -21,6 +23,7 @@ const companyWizardSteps = [
   <CompanyShares key="shares" />,
   <CompanyDirectors key="directors" />,
   <CompanyMembers key="members" />,
+  <CompanyAuditor key="auditor" />,
 ];
 
 export default function Establishment() {
@@ -34,11 +37,11 @@ export default function Establishment() {
                 return null;
               }
 
-              const { steps, step, setStep } = provider;
+              const { step, setStep } = provider;
 
               return (
                 <>
-                  <div className="block md:hidden px-4 py-6">
+                  <div className="block md:hidden py-6">
                     <div className="border">
                       <CompanyWizardNav />
                     </div>
@@ -52,10 +55,12 @@ export default function Establishment() {
                       <div className="px-4 py-6 w-full">
                         {step > 0 && (
                           <Button
-                            variant="secondary"
+                            variant="secondaryNoBorder"
+                            icon="arrowLeft"
+                            tw="p-0 min-h-0 mb-4 text-base"
                             onClick={() => setStep(step - 1)}
                           >
-                            Back
+                            BACK
                           </Button>
                         )}
                         {companyWizardSteps[step]}

@@ -63,6 +63,7 @@ export default function Home() {
           width={330}
           height={165}
           className="w-full md:w-auto mb-6"
+          priority
         />
         <CustomHeading variant="h2" suomiFiBlue="dark">
           What can I do here?

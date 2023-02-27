@@ -23,38 +23,55 @@ export default function Auth() {
       });
 
       logIn(loggedInState);
+      const redirectPath = localStorage.getItem('redirectPath');
+      router.push(redirectPath || '/');
     } catch (error: any) {
       console.log(error);
       setLoading(false);
       setAuthError(error ? (error as string) : 'Logging out failed.');
     }
-  }, [logIn, loginCode]);
+  }, [logIn, loginCode, router]);
 
-  useEffect(() => {
+  const routerActions = useCallback(() => {
+    setLoading(true);
+
     if (provider && loginCode) {
-      setLoading(true);
-
       if (provider === AuthProvider.TESTBED) {
         handleAuth();
       } else {
         router.push('/');
       }
-    }
-  }, [handleAuth, loginCode, provider, router]);
-
-  useEffect(() => {
-    if (logout || intent === 'LogoutRequest') {
+    } else if (logout || intent === 'LogoutRequest') {
       if (
         logout === 'success' ||
         (type === 'info' && error === 'Already logged out')
       ) {
         logOut();
+        router.push('/');
       } else {
         setLoading(false);
         setAuthError(error ? (error as string) : 'Logging out failed.');
       }
+    } else {
+      router.push('/');
     }
-  }, [error, intent, logOut, logout, type]);
+  }, [
+    error,
+    handleAuth,
+    intent,
+    logOut,
+    loginCode,
+    logout,
+    provider,
+    router,
+    type,
+  ]);
+
+  useEffect(() => {
+    if (router.isReady) {
+      routerActions();
+    }
+  }, [router.isReady, router.query, routerActions]);
 
   if (isLoading) {
     return <Loading />;

@@ -32,13 +32,14 @@ export default function NotAuthenticated() {
               Identification
             </Button>
           </div>
-          <div className="hidden md:block">
+          <div className="hidden md:block relative">
             <Image
               src="/images/man-laptop.jpg"
               alt="Man with laptop"
-              width={495}
-              height={388}
-              className="object-cover h-full w-full"
+              className="object-cover"
+              fill
+              sizes="(max-width: 1200px) 50%, 100%"
+              priority
             />
           </div>
         </div>

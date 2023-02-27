@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import {
   ReactNode,
   createContext,
@@ -34,13 +33,12 @@ function AuthProvider(props: AuthProviderProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isLoading, setLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
     const loadTokenFromCookie = () => {
       const token = Cookies.get('idToken');
 
-      if (token) {
+      if (token && token !== 'undefined') {
         // api.client.defaults.headers.Authorization = `Bearer ${token}`;
         const { email }: { email: string | undefined } = jwt_decode(token);
         setUserEmail(email || null);
@@ -53,32 +51,26 @@ function AuthProvider(props: AuthProviderProps) {
     loadTokenFromCookie();
   }, []);
 
-  const logIn = useCallback(
-    async (loggedInState: LoggedInState) => {
-      if (loggedInState) {
-        Cookies.set('idToken', loggedInState.idToken, {
-          expires: getUnixTime(parseISO(loggedInState.expiresAt)),
-        });
-        const { email }: { email: string | undefined } = jwt_decode(
-          loggedInState.idToken
-        );
-        // api.defaults.headers.Authorization = `Bearer ${token.token}`;
-        setUserEmail(email || null);
-        setIsAuthenticated(true);
-        const redirectPath = localStorage.getItem('redirectPath');
-        router.push(redirectPath || '/');
-      }
-    },
-    [router]
-  );
+  const logIn = useCallback(async (loggedInState: LoggedInState) => {
+    if (loggedInState) {
+      Cookies.set('idToken', loggedInState.idToken, {
+        expires: getUnixTime(parseISO(loggedInState.expiresAt)),
+      });
+      const { email }: { email: string | undefined } = jwt_decode(
+        loggedInState.idToken
+      );
+      // api.defaults.headers.Authorization = `Bearer ${token.token}`;
+      setUserEmail(email || null);
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   const logOut = useCallback(() => {
     Cookies.remove('idToken');
     // delete api.client.defaults.headers.Authorization;
     setUserEmail(null);
     setIsAuthenticated(false);
-    router.push('/');
-  }, [router]);
+  }, []);
 
   return (
     <AuthContext.Provider

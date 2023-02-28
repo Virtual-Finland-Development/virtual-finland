@@ -1,13 +1,13 @@
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
-import type { ShareSeries } from '@/types';
+import type { ShareSeries2 } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
 
 interface FormProps {
-  shareSeries: ShareSeries[];
+  shareSeries: ShareSeries2[];
 }
 
 const SHARE_SERIES_CLASS_OPTIONS = [
@@ -33,9 +33,9 @@ const SHARE_SERIES_CLASS_OPTIONS = [
   },
 ];
 
-export default function CompanyShareSeries() {
+export default function BeneficialOwnersShareSeries() {
   const {
-    values: { company },
+    values: { beneficialOwners },
     setValues,
   } = useCompanyContext();
 
@@ -45,14 +45,15 @@ export default function CompanyShareSeries() {
     formState: { errors },
   } = useForm<FormProps>({
     mode: 'onSubmit',
-    defaultValues: company?.shareSeries
-      ? { shareSeries: company.shareSeries }
+    defaultValues: beneficialOwners?.shareSeries
+      ? { shareSeries: beneficialOwners.shareSeries }
       : {
           shareSeries: [
             {
               shareSeriesClass: 'A',
               numberOfShares: 0,
               shareValue: 0,
+              votesPerShare: 0,
             },
           ],
         },
@@ -65,13 +66,18 @@ export default function CompanyShareSeries() {
 
   const onSubmit: SubmitHandler<FormProps> = values => {
     setValues(
-      { company: { shareSeries: values.shareSeries } },
-      'company.shareSeries'
+      { beneficialOwners: { shareSeries: values.shareSeries } },
+      'beneficialOwners.shareSeries'
     );
   };
 
   const appendShareSeries = () => {
-    append({ shareSeriesClass: 'A', numberOfShares: 0, shareValue: 0 });
+    append({
+      shareSeriesClass: 'A',
+      numberOfShares: 0,
+      shareValue: 0,
+      votesPerShare: 0,
+    });
   };
 
   const removeShareSeries = (index: number) => {
@@ -109,6 +115,13 @@ export default function CompanyShareSeries() {
                 control={control}
                 rules={{ required: 'Share value is required.' }}
                 labelText="Share value (€)"
+              />
+              <FormInput
+                type="number"
+                name={`shareSeries.${index}.votesPerShare`}
+                control={control}
+                rules={{ required: 'Votes per share is required.' }}
+                labelText="Votes per share"
               />
             </div>
             <Button

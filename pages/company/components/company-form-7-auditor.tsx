@@ -10,7 +10,10 @@ interface FormProps {
 }
 
 export default function CompanyAuditor() {
-  const { values, setValues } = useCompanyContext();
+  const {
+    values: { company },
+    setValues,
+  } = useCompanyContext();
 
   const {
     handleSubmit,
@@ -18,13 +21,13 @@ export default function CompanyAuditor() {
     formState: { errors },
   } = useForm<FormProps>({
     mode: 'onSubmit',
-    defaultValues: values?.auditor && {
-      auditor: values.auditor,
+    defaultValues: company?.auditor && {
+      auditor: company.auditor,
     },
   });
 
   const onSubmit: SubmitHandler<FormProps> = values => {
-    setValues(values, 'auditor');
+    setValues({ company: { auditor: values.auditor } }, 'company.auditor');
   };
 
   return (

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
   RouterLink,
   WizardNavigation,
@@ -7,49 +8,75 @@ import { useCompanyContext } from '@/context/company-context';
 import { Step } from '@/context/company-context';
 import useDimensions from '@/hooks/use-dimensions';
 
-const NAV_ITEMS = [
+const COMPANY_STEPS = [
   {
     label: '1. Registrant',
-    step: 'registrant' as Step,
+    step: 'company.registrant' as Step,
   },
   {
     label: '2. Company details',
-    step: 'companyDetails' as Step,
+    step: 'company.companyDetails' as Step,
   },
   {
     label: '3. Company address',
-    step: 'companyAddress' as Step,
+    step: 'company.companyAddress' as Step,
   },
   {
     label: '4. Share series',
-    step: 'shareSeries' as Step,
+    step: 'company.shareSeries' as Step,
   },
   {
     label: '5. Managing directors',
-    step: 'managingDirectors' as Step,
+    step: 'company.managingDirectors' as Step,
   },
   {
     label: '6. Board members',
-    step: 'boardMembers' as Step,
+    step: 'company.boardMembers' as Step,
   },
   {
     label: '7. Auditor',
-    step: 'auditor' as Step,
+    step: 'company.auditor' as Step,
   },
 ];
 
-export default function CompanyWizardNav() {
+const BENEFICIAL_OWNER_STEPS = [
+  { label: '1. Share series', step: 'beneficialOwners.shareSeries' as Step },
+  { label: '2. Shareholders', step: 'beneficialOwners.shareholders' as Step },
+];
+
+const SIGNATORY_RIGHTS_STEPS = [
+  { label: '1. Share Series', step: 'beneficialOwners.shareSeries' as Step },
+];
+
+interface Props {
+  heading: string;
+  wizardType: 'company' | 'beneficialOwners' | 'signatoryRights';
+}
+
+export default function CompanyWizardNav(props: Props) {
+  const { heading, wizardType } = props;
   const { width } = useDimensions();
   const { isStepDone, isPrevStepDone, step, setStep } = useCompanyContext();
 
+  const navSteps = useMemo(() => {
+    if (wizardType === 'company') {
+      return COMPANY_STEPS;
+    } else if (wizardType === 'beneficialOwners') {
+      return BENEFICIAL_OWNER_STEPS;
+    } else if (wizardType === 'signatoryRights') {
+      return SIGNATORY_RIGHTS_STEPS;
+    }
+    return [];
+  }, [wizardType]);
+
   return (
     <WizardNavigation
-      heading="Company information"
+      heading={heading}
       aria-label="Company establishment wizard steps"
       initiallyExpanded={false}
       variant={width > 1024 ? 'default' : 'smallScreen'}
     >
-      {NAV_ITEMS.map((item, index) => (
+      {navSteps.map((item, index) => (
         <WizardNavigationItem
           key={item.step}
           status={

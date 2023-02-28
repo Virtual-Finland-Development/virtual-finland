@@ -11,7 +11,10 @@ interface FormProps {
 }
 
 export default function CompanyDetails() {
-  const { values, setValues } = useCompanyContext();
+  const {
+    values: { company },
+    setValues,
+  } = useCompanyContext();
 
   const {
     handleSubmit,
@@ -19,13 +22,16 @@ export default function CompanyDetails() {
     formState: { errors },
   } = useForm<FormProps>({
     mode: 'onSubmit',
-    defaultValues: values?.companyDetails && {
-      companyDetails: values.companyDetails,
+    defaultValues: company?.companyDetails && {
+      companyDetails: company.companyDetails,
     },
   });
 
   const onSubmit: SubmitHandler<FormProps> = values => {
-    setValues(values, 'companyDetails');
+    setValues(
+      { company: { companyDetails: values.companyDetails } },
+      'company.companyDetails'
+    );
   };
 
   return (

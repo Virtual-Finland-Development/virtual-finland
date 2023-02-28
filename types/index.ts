@@ -23,7 +23,7 @@ export type LoggedInState = {
 };
 
 /**
- * NonListedCompany/Establishment
+ * NonListedCompany
  */
 export type Registrant = {
   givenName: string;
@@ -93,4 +93,52 @@ export interface NonListedCompany {
   managingDirectors: ManagingDirectors[];
   boardMembers: BoardMembers[];
   auditor: Auditor;
+}
+
+/**
+ * NonListedCompany/BeneficialOwners
+ */
+
+export type ShareSeries2 = ShareSeries & { votesPerShare: number };
+
+export type Owrnership = {
+  shareSeriesClass: 'A' | 'B' | 'C' | 'D' | 'E';
+  quantity: number;
+};
+
+export type Shareholder = {
+  name: string;
+  ownership: Owrnership;
+};
+
+export interface BenecifialOwners {
+  shareSeries: ShareSeries2[];
+  shareholders: Shareholder[];
+  ownerships: Owrnership[];
+}
+
+/**
+ * NonListedCompany/SignatoryRights
+ */
+export interface SigningRight {
+  personalID: string;
+  givenName: string;
+  middleNames: string;
+  lastName: string;
+  dateOfBirth: string;
+  nationality: string;
+  fullAddress: string;
+  thoroughfare: string;
+  locatorDesignator: string;
+  locatorName: string;
+  addressArea: string;
+  postCode: string;
+  postName: string;
+  poBox: string;
+  adminUnitLevel1: string;
+  adminUnitLevel2: string;
+}
+
+export interface SignatoryRights {
+  signinRights: SigningRight[];
 }

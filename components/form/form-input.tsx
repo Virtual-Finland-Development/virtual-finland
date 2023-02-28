@@ -46,8 +46,8 @@ export default function FormInput<T extends FieldValues>(props: Props<T>) {
         <>
           {type === 'date' ? (
             <DateInput
-              labelText="Founding date"
-              hintText="Select from date picker"
+              labelText={labelText}
+              hintText={hintText}
               datePickerEnabled
               className="!w-suomifi-input-default"
               status={error && 'error'}

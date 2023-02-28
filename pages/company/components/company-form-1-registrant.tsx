@@ -11,7 +11,10 @@ interface FormProps {
 }
 
 export default function CompanyRegistrant() {
-  const { values, setValues } = useCompanyContext();
+  const {
+    values: { company },
+    setValues,
+  } = useCompanyContext();
 
   const {
     handleSubmit,
@@ -19,11 +22,14 @@ export default function CompanyRegistrant() {
     formState: { errors },
   } = useForm<FormProps>({
     mode: 'onSubmit',
-    defaultValues: values?.registrant && { registrant: values.registrant },
+    defaultValues: company?.registrant && { registrant: company.registrant },
   });
 
   const onSubmit: SubmitHandler<FormProps> = values => {
-    setValues(values, 'registrant');
+    setValues(
+      { company: { registrant: values.registrant } },
+      'company.registrant'
+    );
   };
 
   return (

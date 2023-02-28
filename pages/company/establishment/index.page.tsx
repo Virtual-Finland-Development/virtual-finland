@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { Block, Button, Text } from 'suomifi-ui-components';
+import { CompanyContextProvider } from '@/context/company-context';
 import CustomHeading from '@/components/ui/custom-heading';
 import CompanyPagesWrapper from '../components/company-pages-wrapper';
 
@@ -49,3 +50,5 @@ export default function Establishment() {
     </CompanyPagesWrapper>
   );
 }
+
+Establishment.provider = CompanyContextProvider;

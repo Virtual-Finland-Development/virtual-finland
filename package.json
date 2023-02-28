@@ -22,6 +22,8 @@
     "eslint-config-next": "13.1.6",
     "js-cookie": "^3.0.1",
     "jwt-decode": "^3.1.2",
+    "lodash.get": "^4.4.2",
+    "lodash.merge": "^4.6.2",
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -36,6 +38,8 @@
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.20.0",
     "@ianvs/prettier-plugin-sort-imports": "^3.7.1",
+    "@types/lodash.get": "^4.4.7",
+    "@types/lodash.merge": "^4.6.7",
     "autoprefixer": "^10.4.13",
     "babel-loader": "^9.1.2",
     "babel-plugin-macros": "^3.1.0",

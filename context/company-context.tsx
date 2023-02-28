@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import {
   ReactNode,
   createContext,
@@ -5,33 +6,51 @@ import {
   useContext,
   useState,
 } from 'react';
-import type { NonListedCompany } from '@/types';
+import lodash_get from 'lodash.get';
+import lodash_merge from 'lodash.merge';
+import type {
+  BenecifialOwners,
+  NonListedCompany,
+  SignatoryRights,
+} from '@/types';
+
+interface CompanyContextValues {
+  company: Partial<NonListedCompany>;
+  beneficialOwners: Partial<BenecifialOwners>;
+  signatoryRights: SignatoryRights;
+}
 
 type Step =
-  | 'registrant'
-  | 'companyDetails'
-  | 'companyAddress'
-  | 'shareSeries'
-  | 'managingDirectors'
-  | 'boardMembers'
-  | 'auditor';
+  | 'company.registrant'
+  | 'company.companyDetails'
+  | 'company.companyAddress'
+  | 'company.shareSeries'
+  | 'company.managingDirectors'
+  | 'company.boardMembers'
+  | 'company.auditor'
+  | 'beneficialOwners.shareSeries'
+  | 'beneficialOwners.shareholders'
+  | 'signatoryRights.signinRights';
 
 const steps = [
-  'registrant' as Step,
-  'companyDetails' as Step,
-  'companyAddress' as Step,
-  'shareSeries' as Step,
-  'managingDirectors' as Step,
-  'boardMembers' as Step,
-  'auditor' as Step,
+  'company.registrant' as Step,
+  'company.companyDetails' as Step,
+  'company.companyAddress' as Step,
+  'company.shareSeries' as Step,
+  'company.managingDirectors' as Step,
+  'company.boardMembers' as Step,
+  'company.auditor' as Step,
+  'beneficialOwners.shareSeries' as Step,
+  'beneficialOwners.shareholders' as Step,
+  'SignatoryRights.signinRights' as Step,
 ];
 
 interface CompanyContextProps {
   steps: Step[];
   step: number;
   setStep: (stepNumber: number) => void;
-  values: Partial<NonListedCompany>;
-  setValues: (values: Partial<NonListedCompany>, currentStep: Step) => void;
+  values: Partial<CompanyContextValues>;
+  setValues: (values: Partial<CompanyContextValues>, currentStep: Step) => void;
   isStepDone: (step: Step) => boolean;
   isPrevStepDone: (currentStep: Step) => boolean;
 }
@@ -48,11 +67,12 @@ const CompanyContextConsumer = CompanyContext.Consumer;
 function CompanyContextProvider(props: CompanyProviderProps) {
   const { children } = props;
   const [step, setStep] = useState(0);
-  const [values, setValues] = useState<Partial<NonListedCompany>>({});
+  const [values, setValues] = useState<Partial<CompanyContextValues>>({});
+  const router = useRouter();
 
   const isStepDone = useCallback(
     (step: Step) => {
-      return Boolean(values[step]);
+      return Boolean(lodash_get(values, step));
     },
     [values]
   );
@@ -60,20 +80,24 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const isPrevStepDone = useCallback(
     (currentStep: Step) => {
       switch (currentStep) {
-        case 'registrant':
+        case 'company.registrant':
           return true;
-        case 'companyDetails':
-          return isStepDone('registrant');
-        case 'companyAddress':
-          return isStepDone('companyDetails');
-        case 'shareSeries':
-          return isStepDone('companyAddress');
-        case 'managingDirectors':
-          return isStepDone('shareSeries');
-        case 'boardMembers':
-          return isStepDone('managingDirectors');
-        case 'auditor':
-          return isStepDone('boardMembers');
+        case 'company.companyDetails':
+          return isStepDone('company.registrant');
+        case 'company.companyAddress':
+          return isStepDone('company.companyDetails');
+        case 'company.shareSeries':
+          return isStepDone('company.companyAddress');
+        case 'company.managingDirectors':
+          return isStepDone('company.shareSeries');
+        case 'company.boardMembers':
+          return isStepDone('company.managingDirectors');
+        case 'company.auditor':
+          return isStepDone('company.boardMembers');
+        case 'beneficialOwners.shareSeries':
+          return true;
+        case 'beneficialOwners.shareholders':
+          return isStepDone('beneficialOwners.shareSeries');
         default:
           return false;
       }
@@ -82,11 +106,18 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   );
 
   const setValuesAndNextStep = useCallback(
-    (values: Partial<NonListedCompany>, currentStep: Step) => {
-      setValues(prev => ({ ...prev, ...values }));
-      setStep(steps.indexOf(currentStep) + 1);
+    (values: Partial<CompanyContextValues>, currentStep: Step) => {
+      setValues(prev => lodash_merge(prev, values));
+
+      if (currentStep === 'company.auditor') {
+        router.push('/company/establishment/beneficial-owners');
+        setStep(0);
+      } else {
+        // setStep(steps.indexOf(currentStep) + 1);
+        setStep(prevStep => prevStep + 1);
+      }
     },
-    []
+    [router]
   );
 
   return (

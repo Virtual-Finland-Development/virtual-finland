@@ -1,8 +1,8 @@
 import { Block } from 'suomifi-ui-components';
 import { Button } from 'suomifi-ui-components';
 import {
-  CompanyContextConsumer,
   CompanyContextProvider,
+  useCompanyContext,
 } from '@/context/company-context';
 import CompanyRegistrant from '../components/company-form-1-registrant';
 import CompanyDetails from '../components/company-form-2-details';
@@ -26,54 +26,48 @@ const companyWizardSteps = [
 ];
 
 export default function CompanyInfo() {
+  const { step, setStep } = useCompanyContext();
+
+  if (step) {
+    window.scrollTo(0, 0);
+  }
+
   return (
     <CompanyPagesWrapper>
-      <CompanyContextProvider>
-        <CompanyContextConsumer>
-          {provider => {
-            if (!provider) {
-              return null;
-            }
+      <div className="block lg:hidden pb-4 px-4 md:px-0">
+        <div className="border">
+          <CompanyWizardNav
+            heading="Company information"
+            wizardType="company"
+          />
+        </div>
+      </div>
 
-            const { step, setStep } = provider;
-
-            if (step) {
-              window.scrollTo(0, 0);
-            }
-
-            return (
-              <>
-                <div className="block lg:hidden pb-4 px-4 md:px-0">
-                  <div className="border">
-                    <CompanyWizardNav />
-                  </div>
-                </div>
-
-                <Block variant="section" className="bg-white md:border">
-                  <div className="flex flex-col md:flex-row">
-                    <div className="hidden lg:block border-r py-6 flex-shrink-0">
-                      <CompanyWizardNav />
-                    </div>
-                    <div className="px-4 py-6 w-full">
-                      {step > 0 && (
-                        <Button
-                          variant="secondaryNoBorder"
-                          icon="arrowLeft"
-                          tw="p-0 min-h-0 mb-4 text-base"
-                          onClick={() => setStep(step - 1)}
-                        >
-                          BACK
-                        </Button>
-                      )}
-                      {companyWizardSteps[step]}
-                    </div>
-                  </div>
-                </Block>
-              </>
-            );
-          }}
-        </CompanyContextConsumer>
-      </CompanyContextProvider>
+      <Block variant="section" className="bg-white md:border">
+        <div className="flex flex-col md:flex-row">
+          <div className="hidden lg:block border-r py-6 flex-shrink-0">
+            <CompanyWizardNav
+              heading="Company information"
+              wizardType="company"
+            />
+          </div>
+          <div className="px-4 py-6 w-full">
+            {step > 0 && (
+              <Button
+                variant="secondaryNoBorder"
+                icon="arrowLeft"
+                tw="p-0 min-h-0 mb-4 text-base"
+                onClick={() => setStep(step - 1)}
+              >
+                BACK
+              </Button>
+            )}
+            {companyWizardSteps[step]}
+          </div>
+        </div>
+      </Block>
     </CompanyPagesWrapper>
   );
 }
+
+CompanyInfo.provider = CompanyContextProvider;

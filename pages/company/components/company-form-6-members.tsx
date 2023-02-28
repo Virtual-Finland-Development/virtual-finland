@@ -32,7 +32,10 @@ const COUNTRY_OPTIONS = [
 ];
 
 export default function CompanyBoardMembers() {
-  const { values, setValues } = useCompanyContext();
+  const {
+    values: { company },
+    setValues,
+  } = useCompanyContext();
 
   const {
     handleSubmit,
@@ -40,8 +43,8 @@ export default function CompanyBoardMembers() {
     formState: { errors },
   } = useForm<FormProps>({
     mode: 'onSubmit',
-    defaultValues: values?.boardMembers
-      ? { boardMembers: values.boardMembers }
+    defaultValues: company?.boardMembers
+      ? { boardMembers: company.boardMembers }
       : {
           boardMembers: [
             {
@@ -62,7 +65,10 @@ export default function CompanyBoardMembers() {
   });
 
   const onSubmit: SubmitHandler<FormProps> = values => {
-    setValues(values, 'boardMembers');
+    setValues(
+      { company: { boardMembers: values.boardMembers } },
+      'company.boardMembers'
+    );
   };
 
   const appendShareSeries = () => {

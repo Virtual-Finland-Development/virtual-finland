@@ -31,7 +31,10 @@ const COUNTRY_OPTIONS = [
 ];
 
 export default function CompanyManagingDirectors() {
-  const { values, setValues } = useCompanyContext();
+  const {
+    values: { company },
+    setValues,
+  } = useCompanyContext();
 
   const {
     handleSubmit,
@@ -39,8 +42,8 @@ export default function CompanyManagingDirectors() {
     formState: { errors },
   } = useForm<FormProps>({
     mode: 'onSubmit',
-    defaultValues: values?.managingDirectors
-      ? { managingDirectors: values.managingDirectors }
+    defaultValues: company?.managingDirectors
+      ? { managingDirectors: company.managingDirectors }
       : {
           managingDirectors: [
             {
@@ -61,7 +64,10 @@ export default function CompanyManagingDirectors() {
   });
 
   const onSubmit: SubmitHandler<FormProps> = values => {
-    setValues(values, 'managingDirectors');
+    setValues(
+      { company: { managingDirectors: values.managingDirectors } },
+      'company.managingDirectors'
+    );
   };
 
   const appendShareSeries = () => {

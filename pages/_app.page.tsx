@@ -1,6 +1,8 @@
+import type { NextComponentType } from 'next';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { FC, PropsWithChildren, ReactNode } from 'react';
 import tw from 'twin.macro';
 import { AuthConsumer, AuthProvider } from '@/context/auth-context';
 import { ModalProvider } from '@/context/modal-context';
@@ -10,9 +12,16 @@ import 'suomifi-ui-components/dist/main.css';
 import '@/styles/globals.css';
 import 'react-phone-number-input/style.css';
 
+type ExtendedAppProps = AppProps & {
+  Component: NextComponentType & { provider?: FC<PropsWithChildren> };
+};
+
 const Container = tw.div`container flex items-center justify-center h-screen`;
 
-export default function App({ Component, pageProps }: AppProps) {
+const NoProvider = ({ children }: { children: ReactNode }) => <>{children}</>;
+
+export default function App({ Component, pageProps }: ExtendedAppProps) {
+  const ComponentContextProvider = Component.provider || NoProvider;
   const router = useRouter();
 
   return (
@@ -48,7 +57,9 @@ export default function App({ Component, pageProps }: AppProps) {
           return (
             <ModalProvider>
               <MainLayout>
-                <Component {...pageProps} />
+                <ComponentContextProvider>
+                  <Component {...pageProps} />
+                </ComponentContextProvider>
               </MainLayout>
             </ModalProvider>
           );

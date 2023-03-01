@@ -3,10 +3,11 @@ import { useCompanyContext } from '@/context/company-context';
 
 interface Props {
   formType: 'company' | 'beneficialOwners' | 'signatoryRights';
+  saveDisabled: boolean;
 }
 
 export default function FormActionButtons(props: Props) {
-  const { formType } = props;
+  const { formType, saveDisabled } = props;
   const {
     companyStep,
     setCompanyStep,
@@ -35,7 +36,7 @@ export default function FormActionButtons(props: Props) {
           Previous
         </Button>
       ) : null}
-      <Button type="submit" iconRight="arrowRight">
+      <Button type="submit" iconRight="arrowRight" disabled={saveDisabled}>
         Next
       </Button>
     </>

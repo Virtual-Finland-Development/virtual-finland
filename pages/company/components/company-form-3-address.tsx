@@ -104,7 +104,7 @@ export default function CompanyAddress() {
           optionalText="optional"
         />
         <div className="flex flex-row gap-4 mt-6 w-full">
-          <FormActionButtons formType="company" />
+          <FormActionButtons formType="company" saveDisabled={!isValid} />
         </div>
       </div>
     </form>

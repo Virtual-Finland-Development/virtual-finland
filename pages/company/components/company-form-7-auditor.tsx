@@ -54,7 +54,7 @@ export default function CompanyAuditor() {
           hintText="The national identifier of the non-listed company issued by the trade register"
         />
         <div className="flex flex-row gap-4 mt-6 w-full">
-          <FormActionButtons formType="company" />
+          <FormActionButtons formType="company" saveDisabled={!isValid} />
         </div>
       </div>
     </form>

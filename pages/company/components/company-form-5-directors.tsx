@@ -139,6 +139,7 @@ export default function CompanyManagingDirectors() {
               <FormSingleSelect
                 name={`managingDirectors.${index}.nationality`}
                 control={control}
+                rules={{ required: 'Nationality is required.' }}
                 items={COUNTRY_OPTIONS}
                 labelText="Nationality"
                 hintText="Filter by typing or select from dropdown"
@@ -159,7 +160,7 @@ export default function CompanyManagingDirectors() {
         </Button>
 
         <div className="flex flex-row gap-4 mt-6 w-full">
-          <FormActionButtons formType="company" />
+          <FormActionButtons formType="company" saveDisabled={!isValid} />
         </div>
       </div>
     </form>

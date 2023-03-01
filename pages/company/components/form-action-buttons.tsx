@@ -1,3 +1,4 @@
+import { useFormContext } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
 import { useCompanyContext } from '@/context/company-context';
 
@@ -13,6 +14,10 @@ export default function FormActionButtons(props: Props) {
     beneficialOwnersStep,
     setBeneficialOwnersStep,
   } = useCompanyContext();
+
+  const {
+    formState: { errors },
+  } = useFormContext();
 
   const step =
     formType === 'company'
@@ -35,7 +40,11 @@ export default function FormActionButtons(props: Props) {
           Previous
         </Button>
       ) : null}
-      <Button type="submit" iconRight="arrowRight">
+      <Button
+        type="submit"
+        iconRight="arrowRight"
+        disabled={Boolean(Object.keys(errors).length)}
+      >
         Next
       </Button>
     </>

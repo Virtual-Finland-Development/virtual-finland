@@ -131,7 +131,8 @@ function CompanyContextProvider(props: CompanyProviderProps) {
       } else if (currentStep === 'beneficialOwners.shareholders') {
         router.push('/company/establishment/signatory-rights');
       } else {
-        stepFunc(prevStep => prevStep + 1);
+        // stepFunc(prevStep => prevStep + 1);
+        stepFunc(steps.indexOf(currentStep) + 1);
       }
     },
     [router]

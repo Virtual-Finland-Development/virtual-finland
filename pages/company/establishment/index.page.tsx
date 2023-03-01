@@ -26,23 +26,11 @@ export default function Establishment() {
             </Text>
 
             <Button
-              onClick={() => router.push('/company/establishment/company-info')}
-            >
-              Fill company information
-            </Button>
-            <Button
               onClick={() =>
-                router.push('/company/establishment/beneficial-owners')
+                router.push('/company/establishment/company-information')
               }
             >
-              Add beneficial owners
-            </Button>
-            <Button
-              onClick={() =>
-                router.push('/company/establishment/signatory-rights')
-              }
-            >
-              Add signatory rights
+              Start
             </Button>
           </div>
         </Block>

@@ -48,6 +48,7 @@ export default function FormInput<T extends FieldValues>(props: Props<T>) {
             <DateInput
               labelText={labelText}
               hintText={hintText}
+              optionalText={optionalText}
               datePickerEnabled
               className="!w-suomifi-input-default"
               status={error && 'error'}

@@ -35,7 +35,7 @@ export default function CompanySideNav() {
         <SideNavigationItem
           content={
             <Link
-              href="/company/establishment/company-info"
+              href="/company/establishment/company-information"
               passHref
               legacyBehavior
             >
@@ -44,7 +44,9 @@ export default function CompanySideNav() {
               </RouterLink>
             </Link>
           }
-          selected={router.pathname === '/company/establishment/company-info'}
+          selected={
+            router.pathname === '/company/establishment/company-information'
+          }
           subLevel={3}
         />
         <SideNavigationItem

@@ -1,8 +1,9 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import {
   RouterLink,
   WizardNavigation,
   WizardNavigationItem,
+  WizardNavigationItemProps,
 } from 'suomifi-ui-components';
 import { useCompanyContext } from '@/context/company-context';
 import { Step } from '@/context/company-context';
@@ -56,7 +57,20 @@ interface Props {
 export default function CompanyWizardNav(props: Props) {
   const { heading, wizardType } = props;
   const { width } = useDimensions();
-  const { isStepDone, isPrevStepDone, step, setStep } = useCompanyContext();
+  const {
+    values,
+    isStepDone,
+    isPrevStepDone,
+    companyStep,
+    setCompanyStep,
+    beneficialOwnersStep,
+    setBeneficialOwnersStep,
+    doneSteps,
+  } = useCompanyContext();
+
+  const step = wizardType === 'company' ? companyStep : beneficialOwnersStep;
+  const stepFunc =
+    wizardType === 'company' ? setCompanyStep : setBeneficialOwnersStep;
 
   const navSteps = useMemo(() => {
     if (wizardType === 'company') {
@@ -69,6 +83,35 @@ export default function CompanyWizardNav(props: Props) {
     return [];
   }, [wizardType]);
 
+  const getItemStatus = useCallback(
+    (
+      step: Step,
+      index: number,
+      currentStepNum: number
+    ): WizardNavigationItemProps['status'] => {
+      if (Object.keys(doneSteps).length) {
+        const doneStepValues = Object.values(doneSteps);
+
+        if (currentStepNum === index) {
+          return isStepDone(step) ? 'current-completed' : 'current';
+        } else if (doneStepValues.some((done, i) => i < index && !done)) {
+          return 'coming';
+        }
+      }
+
+      return currentStepNum === index
+        ? isStepDone(step)
+          ? 'current-completed'
+          : 'current'
+        : isStepDone(step)
+        ? 'completed'
+        : isPrevStepDone(step)
+        ? 'default'
+        : 'coming';
+    },
+    [doneSteps, isPrevStepDone, isStepDone]
+  );
+
   return (
     <WizardNavigation
       heading={heading}
@@ -76,24 +119,17 @@ export default function CompanyWizardNav(props: Props) {
       initiallyExpanded={false}
       variant={width > 1024 ? 'default' : 'smallScreen'}
     >
-      {navSteps.map((item, index) => (
-        <WizardNavigationItem
-          key={item.step}
-          status={
-            step === index
-              ? isStepDone(item.step)
-                ? 'current-completed'
-                : 'current'
-              : isStepDone(item.step)
-              ? 'completed'
-              : isPrevStepDone(item.step)
-              ? 'default'
-              : 'coming'
-          }
-        >
-          <RouterLink onClick={() => setStep(index)}>{item.label}</RouterLink>
-        </WizardNavigationItem>
-      ))}
+      {navSteps.map((item, index) => {
+        const status = getItemStatus(item.step, index, step);
+
+        return (
+          <WizardNavigationItem key={item.step} status={status}>
+            <RouterLink onClick={() => stepFunc(index)}>
+              {item.label}
+            </RouterLink>
+          </WizardNavigationItem>
+        );
+      })}
     </WizardNavigation>
   );
 }

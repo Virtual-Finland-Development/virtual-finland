@@ -1,4 +1,4 @@
-import { Block, Button } from 'suomifi-ui-components';
+import { Block } from 'suomifi-ui-components';
 import {
   CompanyContextProvider,
   useCompanyContext,
@@ -14,12 +14,12 @@ const beneficialOwnersSteps = [
 ];
 
 export default function BeneficialOwners() {
-  const { step, setStep } = useCompanyContext();
+  const { beneficialOwnersStep } = useCompanyContext();
 
-  if (step) {
+  if (beneficialOwnersStep) {
     window.scrollTo(0, 0);
   }
-  console.log(step);
+
   return (
     <CompanyPagesWrapper>
       <div className="block lg:hidden pb-4 px-4 md:px-0">
@@ -40,17 +40,7 @@ export default function BeneficialOwners() {
             />
           </div>
           <div className="px-4 py-6 w-full">
-            {step > 0 && (
-              <Button
-                variant="secondaryNoBorder"
-                icon="arrowLeft"
-                tw="p-0 min-h-0 mb-4 text-base"
-                onClick={() => setStep(step - 1)}
-              >
-                BACK
-              </Button>
-            )}
-            {beneficialOwnersSteps[step]}
+            {beneficialOwnersSteps[beneficialOwnersStep]}
           </div>
         </div>
       </Block>

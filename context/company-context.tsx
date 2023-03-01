@@ -47,12 +47,16 @@ const steps = [
 
 interface CompanyContextProps {
   steps: Step[];
-  step: number;
-  setStep: (stepNumber: number) => void;
+  companyStep: number;
+  setCompanyStep: (stepNum: number) => void;
+  beneficialOwnersStep: number;
+  setBeneficialOwnersStep: (stepNum: number) => void;
   values: Partial<CompanyContextValues>;
   setValues: (values: Partial<CompanyContextValues>, currentStep: Step) => void;
   isStepDone: (step: Step) => boolean;
   isPrevStepDone: (currentStep: Step) => boolean;
+  doneSteps: any;
+  setCurrentStepDone: (step: Step, done: boolean) => void;
 }
 
 interface CompanyProviderProps {
@@ -66,15 +70,24 @@ const CompanyContextConsumer = CompanyContext.Consumer;
 
 function CompanyContextProvider(props: CompanyProviderProps) {
   const { children } = props;
-  const [step, setStep] = useState(0);
+  const [companyStep, setCompanyStep] = useState(0);
+  const [beneficialOwnersStep, setBeneficialOwnersStep] = useState(0);
   const [values, setValues] = useState<Partial<CompanyContextValues>>({});
+  const [doneSteps, setStepDone] = useState({});
   const router = useRouter();
 
   const isStepDone = useCallback(
     (step: Step) => {
-      return Boolean(lodash_get(values, step));
+      return Boolean(lodash_get(doneSteps, step));
     },
-    [values]
+    [doneSteps]
+  );
+
+  const isStepDoneAndHasValues = useCallback(
+    (step: Step) => {
+      return isStepDone(step) && Boolean(lodash_get(values, step));
+    },
+    [isStepDone, values]
   );
 
   const isPrevStepDone = useCallback(
@@ -83,53 +96,65 @@ function CompanyContextProvider(props: CompanyProviderProps) {
         case 'company.registrant':
           return true;
         case 'company.companyDetails':
-          return isStepDone('company.registrant');
+          return isStepDoneAndHasValues('company.registrant');
         case 'company.companyAddress':
-          return isStepDone('company.companyDetails');
+          return isStepDoneAndHasValues('company.companyDetails');
         case 'company.shareSeries':
-          return isStepDone('company.companyAddress');
+          return isStepDoneAndHasValues('company.companyAddress');
         case 'company.managingDirectors':
-          return isStepDone('company.shareSeries');
+          return isStepDoneAndHasValues('company.shareSeries');
         case 'company.boardMembers':
-          return isStepDone('company.managingDirectors');
+          return isStepDoneAndHasValues('company.managingDirectors');
         case 'company.auditor':
-          return isStepDone('company.boardMembers');
+          return isStepDoneAndHasValues('company.boardMembers');
         case 'beneficialOwners.shareSeries':
           return true;
         case 'beneficialOwners.shareholders':
-          return isStepDone('beneficialOwners.shareSeries');
+          return isStepDoneAndHasValues('beneficialOwners.shareSeries');
         default:
           return false;
       }
     },
-    [isStepDone]
+    [isStepDoneAndHasValues]
   );
 
   const setValuesAndNextStep = useCallback(
     (values: Partial<CompanyContextValues>, currentStep: Step) => {
       setValues(prev => lodash_merge(prev, values));
 
+      const stepFunc = currentStep.includes('company.')
+        ? setCompanyStep
+        : setBeneficialOwnersStep;
+
       if (currentStep === 'company.auditor') {
         router.push('/company/establishment/beneficial-owners');
-        setStep(0);
+      } else if (currentStep === 'beneficialOwners.shareholders') {
+        router.push('/company/establishment/signatory-rights');
       } else {
-        // setStep(steps.indexOf(currentStep) + 1);
-        setStep(prevStep => prevStep + 1);
+        stepFunc(prevStep => prevStep + 1);
       }
     },
     [router]
   );
 
+  const setCurrentStepDone = useCallback((step: Step, done: boolean) => {
+    setStepDone(prev => ({ ...prev, [step]: done }));
+  }, []);
+
   return (
     <CompanyContext.Provider
       value={{
         steps,
-        step,
-        setStep: step => setStep(step),
+        companyStep,
+        setCompanyStep: stepNum => setCompanyStep(stepNum),
+        beneficialOwnersStep,
+        setBeneficialOwnersStep: stepNum => setBeneficialOwnersStep(stepNum),
         values,
         setValues: setValuesAndNextStep,
         isStepDone,
         isPrevStepDone,
+        doneSteps,
+        setCurrentStepDone,
       }}
     >
       {children}

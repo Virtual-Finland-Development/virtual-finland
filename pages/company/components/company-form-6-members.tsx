@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
 import type { BoardMembers } from '@/types';
@@ -5,6 +6,7 @@ import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
+import FormActionButtons from './form-action-buttons';
 
 interface FormProps {
   boardMembers: BoardMembers[];
@@ -35,12 +37,13 @@ export default function CompanyBoardMembers() {
   const {
     values: { company },
     setValues,
+    setCurrentStepDone,
   } = useCompanyContext();
 
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormProps>({
     mode: 'onSubmit',
     defaultValues: company?.boardMembers
@@ -58,6 +61,10 @@ export default function CompanyBoardMembers() {
           ],
         },
   });
+
+  useEffect(() => {
+    setCurrentStepDone('company.boardMembers', isValid);
+  }, [isValid, setCurrentStepDone]);
 
   const { fields, append, remove } = useFieldArray<FormProps>({
     control,
@@ -152,7 +159,9 @@ export default function CompanyBoardMembers() {
           Add new
         </Button>
 
-        <Button type="submit">Next</Button>
+        <div className="flex flex-row gap-4 mt-6 w-full">
+          <FormActionButtons formType="company" />
+        </div>
       </div>
     </form>
   );

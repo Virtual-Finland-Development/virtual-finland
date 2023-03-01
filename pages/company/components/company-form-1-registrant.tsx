@@ -1,10 +1,11 @@
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Button } from 'suomifi-ui-components';
 import type { Registrant } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormPhoneInput from '@/components/form/form-phone-input';
 import CustomHeading from '@/components/ui/custom-heading';
+import FormActionButtons from './form-action-buttons';
 
 interface FormProps {
   registrant: Registrant;
@@ -14,16 +15,21 @@ export default function CompanyRegistrant() {
   const {
     values: { company },
     setValues,
+    setCurrentStepDone,
   } = useCompanyContext();
 
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormProps>({
     mode: 'onSubmit',
     defaultValues: company?.registrant && { registrant: company.registrant },
   });
+
+  useEffect(() => {
+    setCurrentStepDone('company.registrant', isValid);
+  }, [isValid, setCurrentStepDone]);
 
   const onSubmit: SubmitHandler<FormProps> = values => {
     setValues(
@@ -63,7 +69,9 @@ export default function CompanyRegistrant() {
           hintText="Use international format (+358xxx)"
           error={errors?.registrant?.phoneNumber}
         />
-        <Button type="submit">Next</Button>
+        <div className="flex flex-row gap-4 mt-6 w-full">
+          <FormActionButtons formType="company" />
+        </div>
       </div>
     </form>
   );

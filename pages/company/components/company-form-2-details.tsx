@@ -1,10 +1,11 @@
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Button } from 'suomifi-ui-components';
 import type { CompanyDetails } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
+import FormActionButtons from './form-action-buttons';
 
 interface FormProps {
   companyDetails: CompanyDetails;
@@ -14,18 +15,23 @@ export default function CompanyDetails() {
   const {
     values: { company },
     setValues,
+    setCurrentStepDone,
   } = useCompanyContext();
 
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormProps>({
     mode: 'onSubmit',
     defaultValues: company?.companyDetails && {
       companyDetails: company.companyDetails,
     },
   });
+
+  useEffect(() => {
+    setCurrentStepDone('company.companyDetails', isValid);
+  }, [isValid, setCurrentStepDone]);
 
   const onSubmit: SubmitHandler<FormProps> = values => {
     setValues(
@@ -91,6 +97,7 @@ export default function CompanyDetails() {
           control={control}
           labelText="Country of residence"
           hintText="Filter by typing or select from dropdown"
+          optionalText="optional"
           items={[
             {
               labelText: 'Finland',
@@ -106,7 +113,9 @@ export default function CompanyDetails() {
             },
           ]}
         />
-        <Button type="submit">Next</Button>
+        <div className="flex flex-row gap-4 mt-6 w-full">
+          <FormActionButtons formType="company" />
+        </div>
       </div>
     </form>
   );

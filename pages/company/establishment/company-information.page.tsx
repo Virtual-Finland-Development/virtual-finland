@@ -1,5 +1,4 @@
 import { Block } from 'suomifi-ui-components';
-import { Button } from 'suomifi-ui-components';
 import {
   CompanyContextProvider,
   useCompanyContext,
@@ -26,9 +25,9 @@ const companyWizardSteps = [
 ];
 
 export default function CompanyInfo() {
-  const { step, setStep } = useCompanyContext();
+  const { companyStep } = useCompanyContext();
 
-  if (step) {
+  if (companyStep) {
     window.scrollTo(0, 0);
   }
 
@@ -52,17 +51,7 @@ export default function CompanyInfo() {
             />
           </div>
           <div className="px-4 py-6 w-full">
-            {step > 0 && (
-              <Button
-                variant="secondaryNoBorder"
-                icon="arrowLeft"
-                tw="p-0 min-h-0 mb-4 text-base"
-                onClick={() => setStep(step - 1)}
-              >
-                BACK
-              </Button>
-            )}
-            {companyWizardSteps[step]}
+            {companyWizardSteps[companyStep]}
           </div>
         </div>
       </Block>

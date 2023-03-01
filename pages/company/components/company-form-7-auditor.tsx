@@ -1,9 +1,10 @@
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Button } from 'suomifi-ui-components';
 import type { Auditor } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import CustomHeading from '@/components/ui/custom-heading';
+import FormActionButtons from './form-action-buttons';
 
 interface FormProps {
   auditor: Auditor;
@@ -13,18 +14,23 @@ export default function CompanyAuditor() {
   const {
     values: { company },
     setValues,
+    setCurrentStepDone,
   } = useCompanyContext();
 
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormProps>({
     mode: 'onSubmit',
     defaultValues: company?.auditor && {
       auditor: company.auditor,
     },
   });
+
+  useEffect(() => {
+    setCurrentStepDone('company.auditor', isValid);
+  }, [isValid, setCurrentStepDone]);
 
   const onSubmit: SubmitHandler<FormProps> = values => {
     setValues({ company: { auditor: values.auditor } }, 'company.auditor');
@@ -43,10 +49,13 @@ export default function CompanyAuditor() {
         <FormInput
           name={`auditor.nationalIdentifier`}
           control={control}
+          rules={{ required: 'National identifier is required.' }}
           labelText="National identifier"
           hintText="The national identifier of the non-listed company issued by the trade register"
         />
-        <Button type="submit">Next</Button>
+        <div className="flex flex-row gap-4 mt-6 w-full">
+          <FormActionButtons formType="company" />
+        </div>
       </div>
     </form>
   );

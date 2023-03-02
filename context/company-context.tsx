@@ -20,6 +20,8 @@ interface CompanyContextValues {
   signatoryRights: SignatoryRights;
 }
 
+type StepType = 'company' | 'beneficialOwners' | 'signatoryRights';
+
 type Step =
   | 'company.registrant'
   | 'company.companyDetails'
@@ -52,11 +54,11 @@ interface CompanyContextProps {
   beneficialOwnersStep: number;
   setBeneficialOwnersStep: (stepNum: number) => void;
   values: Partial<CompanyContextValues>;
-  setValues: (values: Partial<CompanyContextValues>, currentStep: Step) => void;
+  setValues: (values: Partial<CompanyContextValues>, type: StepType) => void;
   isStepDone: (step: Step) => boolean;
   isPrevStepDone: (currentStep: Step) => boolean;
   doneSteps: any;
-  setCurrentStepDone: (step: Step, done: boolean) => void;
+  setIsCurrentStepDone: (step: Step, done: boolean) => void;
 }
 
 interface CompanyProviderProps {
@@ -118,7 +120,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     [isStepDoneAndHasValues]
   );
 
-  const setValuesAndNextStep = useCallback(
+  /* const setValuesAndNextStep = useCallback(
     (values: Partial<CompanyContextValues>, currentStep: Step) => {
       setValues(prev => lodash_merge(prev, values));
 
@@ -131,14 +133,38 @@ function CompanyContextProvider(props: CompanyProviderProps) {
       } else if (currentStep === 'beneficialOwners.shareholders') {
         router.push('/company/establishment/signatory-rights');
       } else {
-        // stepFunc(prevStep => prevStep + 1);
+        stepFunc(prevStep => prevStep + 1);
         stepFunc(steps.indexOf(currentStep) + 1);
       }
     },
     [router]
+  ); */
+  const setValuesAndNextStep = useCallback(
+    (newValues: Partial<CompanyContextValues>, type: StepType) => {
+      const mergedValues = lodash_merge(values, newValues);
+      setValues(mergedValues);
+
+      const step = type === 'company' ? companyStep : beneficialOwnersStep;
+      const stepFunc =
+        type === 'company' ? setCompanyStep : setBeneficialOwnersStep;
+
+      if (type === 'company' && step === 6) {
+        router.push('/company/establishment/beneficial-owners');
+      } else if (type === 'beneficialOwners' && step === 2) {
+        router.push('/company/establishment/signatory-rights');
+      } else {
+        stepFunc(step + 1);
+      }
+
+      /**
+       * TODO: on very last step data should be saved via productizers (review section?)
+       * TODO: if editing existing data, each step should save data directly without changing the step
+       */
+    },
+    [beneficialOwnersStep, companyStep, router, values]
   );
 
-  const setCurrentStepDone = useCallback((step: Step, done: boolean) => {
+  const setIsCurrentStepDone = useCallback((step: Step, done: boolean) => {
     setStepDone(prev => ({ ...prev, [step]: done }));
   }, []);
 
@@ -155,7 +181,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
         isStepDone,
         isPrevStepDone,
         doneSteps,
-        setCurrentStepDone,
+        setIsCurrentStepDone,
       }}
     >
       {children}

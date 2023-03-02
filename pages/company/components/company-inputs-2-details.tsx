@@ -1,28 +1,49 @@
-import { useEffect } from 'react';
-import { SubmitHandler, useForm, useFormContext } from 'react-hook-form';
+import { useEffect, useMemo } from 'react';
+import { useFormContext } from 'react-hook-form';
+import lodash_get from 'lodash.get';
 import type { CompanyDetails } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
-import FormActionButtons from './form-action-buttons';
 
-interface FormProps {
+interface FieldProps {
   companyDetails: CompanyDetails;
 }
 
+const REQUIRED_FIELDS = [
+  'name',
+  'foundingDate',
+  'industrySector',
+  'shareCapital',
+];
+
 export default function CompanyDetails() {
-  const { setCurrentStepDone } = useCompanyContext();
   const {
-    control,
-    formState: { isValid, errors, isSubmitted },
-  } = useFormContext<FormProps>();
+    values: { company },
+    setIsCurrentStepDone,
+  } = useCompanyContext();
+  const { control, formState, getFieldState } = useFormContext<FieldProps>();
+  const { invalid, isDirty } = getFieldState('companyDetails', formState);
+
+  const hasContextValues = useMemo(() => {
+    return REQUIRED_FIELDS.every(field =>
+      lodash_get(company?.companyDetails, field)
+    );
+  }, [company]);
 
   useEffect(() => {
-    const fieldsValid =
-      (!isSubmitted && isValid) || (isSubmitted && !errors.companyDetails);
-    setCurrentStepDone('company.companyDetails', Boolean(fieldsValid));
-  }, [errors.companyDetails, isSubmitted, isValid, setCurrentStepDone]);
+    setIsCurrentStepDone(
+      'company.companyDetails',
+      hasContextValues ? !invalid && isDirty : formState.isValid
+    );
+  }, [
+    formState.isValid,
+    hasContextValues,
+    invalid,
+    isDirty,
+    setIsCurrentStepDone,
+  ]);
 
   return (
     <div className="flex flex-col gap-4 items-start">
@@ -57,7 +78,7 @@ export default function CompanyDetails() {
         type="number"
         name={`companyDetails.shareCapital`}
         control={control}
-        rules={{ required: 'Company name is required.' }}
+        rules={{ required: 'Share capital is required.' }}
         labelText="Share capital (€)"
       />
       <FormInput

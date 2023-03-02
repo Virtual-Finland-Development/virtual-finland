@@ -52,13 +52,13 @@ const SIGNATORY_RIGHTS_STEPS = [
 interface Props {
   heading: string;
   wizardType: 'company' | 'beneficialOwners' | 'signatoryRights';
+  onWizardNavChange: (changeFunc: () => void, index: number) => void;
 }
 
 export default function CompanyWizardNav(props: Props) {
-  const { heading, wizardType } = props;
+  const { heading, wizardType, onWizardNavChange } = props;
   const { width } = useDimensions();
   const {
-    values,
     isStepDone,
     isPrevStepDone,
     companyStep,
@@ -83,18 +83,18 @@ export default function CompanyWizardNav(props: Props) {
     return [];
   }, [wizardType]);
 
+  const doneStepValues = Object.values(doneSteps);
+
   const getItemStatus = useCallback(
     (
       step: Step,
       index: number,
       currentStepNum: number
     ): WizardNavigationItemProps['status'] => {
-      if (Object.keys(doneSteps).length) {
-        const doneStepValues = Object.values(doneSteps);
-
+      if (doneStepValues.length) {
         if (currentStepNum === index) {
           return isStepDone(step) ? 'current-completed' : 'current';
-        } else if (doneStepValues.some((done, i) => i < index && !done)) {
+        } else if (doneStepValues.some((isDone, i) => i < index && !isDone)) {
           return 'coming';
         }
       }
@@ -109,7 +109,7 @@ export default function CompanyWizardNav(props: Props) {
         ? 'default'
         : 'coming';
     },
-    [doneSteps, isPrevStepDone, isStepDone]
+    [doneStepValues, isPrevStepDone, isStepDone]
   );
 
   return (
@@ -124,7 +124,9 @@ export default function CompanyWizardNav(props: Props) {
 
         return (
           <WizardNavigationItem key={item.step} status={status}>
-            <RouterLink onClick={() => stepFunc(index)}>
+            <RouterLink
+              onClick={() => onWizardNavChange(() => stepFunc(index), index)}
+            >
               {item.label}
             </RouterLink>
           </WizardNavigationItem>

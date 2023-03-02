@@ -34,7 +34,7 @@ export type Registrant = {
 
 export type CompanyDetails = {
   name: string;
-  alternativeName: string;
+  alternativeName: string | null;
   foundingDate: string;
   industrySector: string;
   shareCapital: number;
@@ -62,7 +62,7 @@ export type ShareSeries = {
   shareValue: number;
 };
 
-export type ManagingDirectors = {
+export type ManagingDirector = {
   role: 'director' | 'deputy director';
   givenName: string;
   middleNames: string;
@@ -71,7 +71,7 @@ export type ManagingDirectors = {
   nationality: string;
 };
 
-export type BoardMembers = {
+export type BoardMember = {
   role: 'chairperson' | 'member' | 'deputy member';
   givenName: string;
   middleNames: string;
@@ -90,8 +90,8 @@ export interface NonListedCompany {
   companyDetails: CompanyDetails;
   companyAddress: CompanyAddress;
   shareSeries: ShareSeries[];
-  managingDirectors: ManagingDirectors[];
-  boardMembers: BoardMembers[];
+  managingDirectors: ManagingDirector[];
+  boardMembers: BoardMember[];
   auditor: Auditor;
 }
 

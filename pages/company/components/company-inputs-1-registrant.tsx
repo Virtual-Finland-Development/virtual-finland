@@ -1,27 +1,44 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
+import lodash_get from 'lodash.get';
 import type { Registrant } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormPhoneInput from '@/components/form/form-phone-input';
 import CustomHeading from '@/components/ui/custom-heading';
 
-interface FormProps {
+interface FieldProps {
   registrant: Registrant;
 }
 
+const REQUIRED_FIELDS = ['givenName', 'lastName', 'email', 'phoneNumber'];
+
 export default function CompanyRegistrant() {
-  const { setCurrentStepDone } = useCompanyContext();
   const {
-    control,
-    formState: { isValid, errors, isSubmitted },
-  } = useFormContext<FormProps>();
+    values: { company },
+    setIsCurrentStepDone,
+  } = useCompanyContext();
+  const { control, formState, getFieldState } = useFormContext<FieldProps>();
+  const { invalid, isDirty } = getFieldState('registrant', formState);
+
+  const hasContextValues = useMemo(() => {
+    return REQUIRED_FIELDS.every(field =>
+      lodash_get(company?.registrant, field)
+    );
+  }, [company]);
 
   useEffect(() => {
-    const fieldsValid =
-      (!isSubmitted && isValid) || (isSubmitted && !errors.registrant);
-    setCurrentStepDone('company.registrant', Boolean(fieldsValid));
-  }, [errors.registrant, isSubmitted, isValid, setCurrentStepDone]);
+    setIsCurrentStepDone(
+      'company.registrant',
+      hasContextValues ? !invalid && isDirty : formState.isValid
+    );
+  }, [
+    formState.isValid,
+    hasContextValues,
+    invalid,
+    isDirty,
+    setIsCurrentStepDone,
+  ]);
 
   return (
     <div className="flex flex-col gap-4 items-start">
@@ -51,7 +68,7 @@ export default function CompanyRegistrant() {
         rules={{ required: 'Phone nuber is required.' }}
         labelText="Phone number"
         hintText="Use international format (+358xxx)"
-        error={errors?.registrant?.phoneNumber}
+        error={formState.errors?.registrant?.phoneNumber}
       />
     </div>
   );

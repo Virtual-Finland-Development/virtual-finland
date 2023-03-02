@@ -14,7 +14,6 @@ export default function FormActionButtons(props: Props) {
     beneficialOwnersStep,
     setBeneficialOwnersStep,
   } = useCompanyContext();
-
   const {
     formState: { errors },
   } = useFormContext();

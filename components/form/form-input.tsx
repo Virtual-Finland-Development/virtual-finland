@@ -19,6 +19,7 @@ interface Props<T extends FieldValues> extends FormInputControllerProps<T> {
   hintText?: string;
   optionalText?: string;
   placeholder?: string;
+  showStatusText?: boolean;
   type?:
     | 'number'
     | 'text'
@@ -31,8 +32,16 @@ interface Props<T extends FieldValues> extends FormInputControllerProps<T> {
 }
 
 export default function FormInput<T extends FieldValues>(props: Props<T>) {
-  const { name, rules, control, type, labelText, hintText, optionalText } =
-    props;
+  const {
+    name,
+    rules,
+    control,
+    type,
+    labelText,
+    hintText,
+    optionalText,
+    showStatusText = true,
+  } = props;
 
   return (
     <Controller
@@ -52,7 +61,7 @@ export default function FormInput<T extends FieldValues>(props: Props<T>) {
               datePickerEnabled
               className="!w-suomifi-input-default"
               status={error && 'error'}
-              statusText={error && error.message}
+              statusText={showStatusText && error ? error.message : ''}
               value={value ? format(new Date(value), 'dd.MM.yyyy') : ''}
               onChange={({ date }) => {
                 if (date instanceof Date && !isNaN(date.getTime())) {
@@ -67,7 +76,7 @@ export default function FormInput<T extends FieldValues>(props: Props<T>) {
               hintText={hintText}
               optionalText={optionalText}
               status={error && 'error'}
-              statusText={error && error.message}
+              statusText={showStatusText && error ? error.message : ''}
               defaultValue={value}
               onChange={onChange}
               onBlur={onBlur}

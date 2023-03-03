@@ -54,10 +54,12 @@ export default function BeneficialOwnersShareholders() {
   const appendShareSeries = () => {
     append({
       name: '',
-      ownership: {
-        shareSeriesClass: 'A',
-        quantity: 0,
-      },
+      ownerships: [
+        {
+          shareSeriesClass: 'A',
+          quantity: 0,
+        },
+      ],
     });
   };
 
@@ -92,50 +94,23 @@ export default function BeneficialOwnersShareholders() {
       {fields.map((field, index) => (
         <div
           key={field.id}
-          className="flex flex-col items-start gap-3 border-b border-b-gray-300 pb-6 w-full"
+          className="flex flex-col items-start gap-3 border-b border-b-gray-300 pb-4 w-full"
         >
           <div className="flex flex-col gap-4">
             <FormInput
               name={`beneficialOwners.shareholders.${index}.name`}
               control={control}
               rules={{ required: 'Shareholder name is required.' }}
-              labelText="Shareholder name"
+              labelText={`${index + 1}. Shareholder name`}
             />
-            {/*  <FormSingleSelect
-                name={`shareSeries.${index}.shareSeriesClass`}
-                control={control}
-                rules={{ required: 'Share value is required.' }}
-                items={SHARE_SERIES_CLASS_OPTIONS}
-                labelText="Share series class"
-              />
-              <FormInput
-                type="number"
-                name={`shareSeries.${index}.numberOfShares`}
-                control={control}
-                rules={{ required: 'Number of shares is required.' }}
-                labelText="Number of shares"
-              />
-              <FormInput
-                type="number"
-                name={`shareSeries.${index}.shareValue`}
-                control={control}
-                rules={{ required: 'Share value is required.' }}
-                labelText="Share value (€)"
-              />
-              <FormInput
-                type="number"
-                name={`shareSeries.${index}.votesPerShare`}
-                control={control}
-                rules={{ required: 'Votes per share is required.' }}
-                labelText="Votes per share"
-              /> */}
+            <Ownerships index={index} />
           </div>
           <Button
             variant="link"
             iconRight="remove"
             onClick={() => removeShareSeries(index)}
           >
-            Remove
+            Remove shareholder
           </Button>
         </div>
       ))}
@@ -145,8 +120,72 @@ export default function BeneficialOwnersShareholders() {
         iconRight="plus"
         onClick={appendShareSeries}
       >
-        Add new
+        Add sharelholder
       </Button>
+    </div>
+  );
+}
+
+function Ownerships({ index }: { index: number }) {
+  const { control } = useFormContext<FieldProps>();
+
+  const { fields, append, remove } = useFieldArray<FieldProps>({
+    control,
+    name: `beneficialOwners.shareholders.${index}.ownerships`,
+  });
+
+  const appendOwnership = () => {
+    append({ shareSeriesClass: 'A', quantity: 0 });
+  };
+
+  const removeOwnership = (index: number) => {
+    remove(index);
+  };
+
+  return (
+    <div className="ml-2 md:ml-6 border border-gray-300 rounded-md p-4">
+      {fields.map((field, i) => (
+        <div
+          key={field.id}
+          className="grid grid-cols-1 md:grid-cols-3 gap-3 items-end justify-start border-b-gray-300 mb-6"
+        >
+          <FormSingleSelect
+            name={`beneficialOwners.shareholders.${index}.ownerships.${i}.shareSeriesClass`}
+            control={control}
+            rules={{ required: true }}
+            items={SHARE_SERIES_CLASS_OPTIONS}
+            labelText="Share series class"
+            showStatusText={false}
+          />
+          <FormInput
+            type="number"
+            name={`beneficialOwners.shareholders.${index}.ownerships.${i}.quantity`}
+            control={control}
+            rules={{ required: true }}
+            labelText="Quantity"
+            showStatusText={false}
+          />
+          <div>
+            <Button
+              variant="link"
+              iconRight="remove"
+              onClick={() => removeOwnership(i)}
+            >
+              Remove
+            </Button>
+          </div>
+        </div>
+      ))}
+      <div className="flex justify-start">
+        <Button
+          variant="secondaryNoBorder"
+          iconRight="plus"
+          tw="min-h-0 p-0"
+          onClick={appendOwnership}
+        >
+          Add ownership
+        </Button>
+      </div>
     </div>
   );
 }

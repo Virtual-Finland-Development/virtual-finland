@@ -74,6 +74,11 @@ const DEFAULT_VALUES = {
     shareholders: [
       {
         name: '',
+        ownerships: [
+          {
+            shareSeriesClass: 'A' as const,
+          },
+        ],
       },
     ],
   },
@@ -152,7 +157,7 @@ export default function CompanyWizard() {
             </div>
           </div>
 
-          <div className="flex flex-row w-full">
+          <div className="flex flex-row w-full items-start">
             <div className="hidden lg:block bg-white flex-shrink-0 mr-8 h-full border border-gray-300 py-6">
               <CompanyWizardNav onWizardNavChange={onWizardNavChange} />
             </div>

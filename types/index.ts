@@ -108,7 +108,7 @@ export type Owrnership = {
 
 export type Shareholder = {
   name: string;
-  ownership: Owrnership;
+  ownerships: Owrnership[];
 };
 
 export interface BenecifialOwners {

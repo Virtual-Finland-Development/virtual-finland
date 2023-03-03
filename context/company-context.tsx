@@ -21,8 +21,6 @@ interface CompanyContextValues {
   signatoryRights: SignatoryRights;
 }
 
-type StepType = 'company' | 'beneficialOwners' | 'signatoryRights';
-
 type Step =
   | 'company.registrant'
   | 'company.companyDetails'
@@ -35,21 +33,7 @@ type Step =
   | 'beneficialOwners.shareholders'
   | 'signatoryRights.signinRights';
 
-const steps = [
-  'company.registrant' as Step,
-  'company.companyDetails' as Step,
-  'company.companyAddress' as Step,
-  'company.shareSeries' as Step,
-  'company.managingDirectors' as Step,
-  'company.boardMembers' as Step,
-  'company.auditor' as Step,
-  'beneficialOwners.shareSeries' as Step,
-  'beneficialOwners.shareholders' as Step,
-  'signatoryRights.signinRights' as Step,
-];
-
 interface CompanyContextProps {
-  steps: Step[];
   values: Partial<CompanyContextValues>;
   setValues: (values: Partial<CompanyContextValues>) => void;
   isStepDone: (step: Step) => boolean;
@@ -77,7 +61,6 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const [step, setStep] = useState(0);
   const [values, setValues] = useState<Partial<CompanyContextValues>>({});
   const [doneSteps, setStepDone] = useState({});
-  const router = useRouter();
 
   const isStepDone = useCallback(
     (step: Step) => {
@@ -86,12 +69,12 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     [doneSteps]
   );
 
-  const isStepDoneAndHasValues = useCallback(
+  /* const isStepDoneAndHasValues = useCallback(
     (step: Step) => {
-      return isStepDone(step) /*  && Boolean(lodash_get(values, step)) */;
+      return isStepDone(step)  && Boolean(lodash_get(values, step));
     },
     [isStepDone, values]
-  );
+  ); */
 
   const isPrevStepDone = useCallback(
     (currentStep: Step) => {
@@ -99,28 +82,28 @@ function CompanyContextProvider(props: CompanyProviderProps) {
         case 'company.registrant':
           return true;
         case 'company.companyDetails':
-          return isStepDoneAndHasValues('company.registrant');
+          return isStepDone('company.registrant');
         case 'company.companyAddress':
-          return isStepDoneAndHasValues('company.companyDetails');
+          return isStepDone('company.companyDetails');
         case 'company.shareSeries':
-          return isStepDoneAndHasValues('company.companyAddress');
+          return isStepDone('company.companyAddress');
         case 'company.managingDirectors':
-          return isStepDoneAndHasValues('company.shareSeries');
+          return isStepDone('company.shareSeries');
         case 'company.boardMembers':
-          return isStepDoneAndHasValues('company.managingDirectors');
+          return isStepDone('company.managingDirectors');
         case 'company.auditor':
-          return isStepDoneAndHasValues('company.boardMembers');
+          return isStepDone('company.boardMembers');
         case 'beneficialOwners.shareSeries':
-          return isStepDoneAndHasValues('company.auditor');
+          return isStepDone('company.auditor');
         case 'beneficialOwners.shareholders':
-          return isStepDoneAndHasValues('beneficialOwners.shareSeries');
+          return isStepDone('beneficialOwners.shareSeries');
         case 'signatoryRights.signinRights':
-          return isStepDoneAndHasValues('beneficialOwners.shareholders');
+          return isStepDone('beneficialOwners.shareholders');
         default:
           return false;
       }
     },
-    [isStepDoneAndHasValues]
+    [isStepDone]
   );
 
   const setValuesAndNextStep = useCallback(
@@ -142,7 +125,6 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   return (
     <CompanyContext.Provider
       value={{
-        steps,
         values,
         setValues: setValuesAndNextStep,
         isStepDone,

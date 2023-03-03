@@ -4,6 +4,7 @@ import {
   ExpanderTitleButton,
   Heading,
 } from 'suomifi-ui-components';
+import { useCompanyContext } from '@/context/company-context';
 
 const dummyData = {
   company: {
@@ -113,11 +114,13 @@ const EXPANDER_TITLES: Record<string, any> = {
 };
 
 export default function Review() {
+  const { values } = useCompanyContext();
+
   return (
     <div className="flex flex-col gap-4">
       <Heading variant="h3">Review and submit</Heading>
       <div className="flex flex-col gap-6">
-        {Object.entries(dummyData).map(entry => {
+        {Object.entries(values).map(entry => {
           const title = EXPANDER_TITLES[entry[0]];
           const data = entry[1];
           console.log(data);

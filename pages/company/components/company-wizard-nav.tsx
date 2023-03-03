@@ -155,13 +155,13 @@ export default function CompanyWizardNav(props: Props) {
         <Heading variant="h5">4. Review</Heading>
       </div>
       <WizardNavigationItem
-        // status={allStepsDone ? (step === 10 ? 'current' : 'default') : 'coming'}
-        status="default"
+        status={allStepsDone ? (step === 10 ? 'current' : 'default') : 'coming'}
+        // status="default"
       >
         <RouterLink
-          /* onClick={() => onWizardNavChange(10)} */ onClick={() =>
+          onClick={() => onWizardNavChange(10)} /* onClick={() =>
             setStep(10)
-          }
+          } */
         >
           4.1 Review and submit
         </RouterLink>

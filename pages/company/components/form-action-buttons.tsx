@@ -3,46 +3,35 @@ import { Button } from 'suomifi-ui-components';
 import { useCompanyContext } from '@/context/company-context';
 
 interface Props {
-  formType: 'company' | 'beneficialOwners' | 'signatoryRights';
+  onFormActionClick: (next?: boolean) => void;
 }
 
 export default function FormActionButtons(props: Props) {
-  const { formType } = props;
-  const {
-    companyStep,
-    setCompanyStep,
-    beneficialOwnersStep,
-    setBeneficialOwnersStep,
-  } = useCompanyContext();
+  const { onFormActionClick } = props;
+  const { step } = useCompanyContext();
   const {
     formState: { errors },
   } = useFormContext();
 
-  const step =
-    formType === 'company'
-      ? companyStep
-      : formType === 'beneficialOwners'
-      ? beneficialOwnersStep
-      : undefined;
-
-  const stepFunc =
-    formType === 'company' ? setCompanyStep : setBeneficialOwnersStep;
+  const buttonsDisabled = Boolean(Object.keys(errors).length);
 
   return (
     <>
       {step && step > 0 ? (
         <Button
+          // type="submit"
           variant="secondary"
           icon="arrowLeft"
-          onClick={() => stepFunc(step - 1)}
+          onClick={() => onFormActionClick()}
         >
           Previous
         </Button>
       ) : null}
       <Button
-        type="submit"
+        // type="submit"
         iconRight="arrowRight"
-        disabled={Boolean(Object.keys(errors).length)}
+        onClick={() => onFormActionClick(true)}
+        disabled={buttonsDisabled}
       >
         Next
       </Button>

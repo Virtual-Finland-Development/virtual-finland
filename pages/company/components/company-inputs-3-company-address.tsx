@@ -7,7 +7,9 @@ import FormInput from '@/components/form/form-input';
 import CustomHeading from '@/components/ui/custom-heading';
 
 interface FieldProps {
-  companyAddress: CompanyAddress;
+  company: {
+    companyAddress: CompanyAddress;
+  };
 }
 
 const REQUIRED_FIELDS = ['fullAddress'];
@@ -18,86 +20,78 @@ export default function CompanyAddress() {
     setIsCurrentStepDone,
   } = useCompanyContext();
   const { control, formState, getFieldState } = useFormContext<FieldProps>();
-  const { invalid, isDirty } = getFieldState('companyAddress', formState);
+  const { invalid } = getFieldState('company.companyAddress', formState);
 
-  const hasContextValues = useMemo(() => {
-    return REQUIRED_FIELDS.every(field =>
+  const isStepDone = useMemo(() => {
+    const hasContextValues = REQUIRED_FIELDS.every(field =>
       lodash_get(company?.companyAddress, field)
     );
-  }, [company]);
+    return hasContextValues ? !invalid : formState.isValid;
+  }, [company?.companyAddress, formState.isValid, invalid]);
 
   useEffect(() => {
-    setIsCurrentStepDone(
-      'company.companyAddress',
-      hasContextValues ? !invalid && isDirty : formState.isValid
-    );
-  }, [
-    formState.isValid,
-    hasContextValues,
-    invalid,
-    isDirty,
-    setIsCurrentStepDone,
-  ]);
+    setIsCurrentStepDone('company.companyAddress', isStepDone);
+  }, [isStepDone, setIsCurrentStepDone]);
 
   return (
     <div className="flex flex-col gap-4 items-start">
       <CustomHeading variant="h3">Company address</CustomHeading>
       <FormInput
-        name={`companyAddress.fullAddress`}
+        name={`company.companyAddress.fullAddress`}
         control={control}
         rules={{ required: 'Company address is required.' }}
         labelText="Full address"
       />
       <FormInput
-        name={`companyAddress.thoroughfare`}
+        name={`company.companyAddress.thoroughfare`}
         control={control}
         labelText="Thoroughfare"
         optionalText="optional"
       />
       <FormInput
-        name={`companyAddress.locatorDesignator`}
+        name={`company.companyAddress.locatorDesignator`}
         control={control}
         labelText="Locator designator"
         optionalText="optional"
       />
       <FormInput
-        name={`companyAddress.locatorName`}
+        name={`company.companyAddress.locatorName`}
         control={control}
         labelText="Locator name"
         optionalText="optional"
       />
       <FormInput
-        name={`companyAddress.addressArea`}
+        name={`company.companyAddress.addressArea`}
         control={control}
         labelText="Address area"
         optionalText="optional"
       />
       <FormInput
-        name={`companyAddress.postCode`}
+        name={`company.companyAddress.postCode`}
         control={control}
         labelText="Post code"
         optionalText="optional"
       />
       <FormInput
-        name={`companyAddress.postName`}
+        name={`company.companyAddress.postName`}
         control={control}
         labelText="Post name"
         optionalText="optional"
       />
       <FormInput
-        name={`companyAddress.poBox`}
+        name={`company.companyAddress.poBox`}
         control={control}
         labelText="Post box"
         optionalText="optional"
       />
       <FormInput
-        name={`companyAddress.adminUnitLevel1`}
+        name={`company.companyAddress.adminUnitLevel1`}
         control={control}
         labelText="Admin unit level 1"
         optionalText="optional"
       />
       <FormInput
-        name={`companyAddress.adminUnitLevel2`}
+        name={`company.companyAddress.adminUnitLevel2`}
         control={control}
         labelText="Admin unit level 2"
         optionalText="optional"

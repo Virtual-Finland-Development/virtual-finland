@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import {
   ReactNode,
   createContext,
@@ -44,26 +45,27 @@ const steps = [
   'company.auditor' as Step,
   'beneficialOwners.shareSeries' as Step,
   'beneficialOwners.shareholders' as Step,
-  'SignatoryRights.signinRights' as Step,
+  'signatoryRights.signinRights' as Step,
 ];
 
 interface CompanyContextProps {
   steps: Step[];
-  companyStep: number;
-  setCompanyStep: (stepNum: number) => void;
-  beneficialOwnersStep: number;
-  setBeneficialOwnersStep: (stepNum: number) => void;
   values: Partial<CompanyContextValues>;
-  setValues: (values: Partial<CompanyContextValues>, type: StepType) => void;
+  setValues: (values: Partial<CompanyContextValues>) => void;
   isStepDone: (step: Step) => boolean;
   isPrevStepDone: (currentStep: Step) => boolean;
   doneSteps: any;
   setIsCurrentStepDone: (step: Step, done: boolean) => void;
+  step: number;
+  setStep: (step: number) => void;
 }
 
 interface CompanyProviderProps {
   children: ReactNode;
 }
+
+const LAST_STEP_COMPANY = 7;
+const LAST_STEP_BENEFICIAL_OWNERS = 3;
 
 const CompanyContext = createContext<CompanyContextProps | undefined>(
   undefined
@@ -72,8 +74,7 @@ const CompanyContextConsumer = CompanyContext.Consumer;
 
 function CompanyContextProvider(props: CompanyProviderProps) {
   const { children } = props;
-  const [companyStep, setCompanyStep] = useState(0);
-  const [beneficialOwnersStep, setBeneficialOwnersStep] = useState(0);
+  const [step, setStep] = useState(0);
   const [values, setValues] = useState<Partial<CompanyContextValues>>({});
   const [doneSteps, setStepDone] = useState({});
   const router = useRouter();
@@ -87,7 +88,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
 
   const isStepDoneAndHasValues = useCallback(
     (step: Step) => {
-      return isStepDone(step) && Boolean(lodash_get(values, step));
+      return isStepDone(step) /*  && Boolean(lodash_get(values, step)) */;
     },
     [isStepDone, values]
   );
@@ -110,9 +111,11 @@ function CompanyContextProvider(props: CompanyProviderProps) {
         case 'company.auditor':
           return isStepDoneAndHasValues('company.boardMembers');
         case 'beneficialOwners.shareSeries':
-          return true;
+          return isStepDoneAndHasValues('company.auditor');
         case 'beneficialOwners.shareholders':
           return isStepDoneAndHasValues('beneficialOwners.shareSeries');
+        case 'signatoryRights.signinRights':
+          return isStepDoneAndHasValues('beneficialOwners.shareholders');
         default:
           return false;
       }
@@ -120,48 +123,16 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     [isStepDoneAndHasValues]
   );
 
-  /* const setValuesAndNextStep = useCallback(
-    (values: Partial<CompanyContextValues>, currentStep: Step) => {
-      setValues(prev => lodash_merge(prev, values));
-
-      const stepFunc = currentStep.includes('company.')
-        ? setCompanyStep
-        : setBeneficialOwnersStep;
-
-      if (currentStep === 'company.auditor') {
-        router.push('/company/establishment/beneficial-owners');
-      } else if (currentStep === 'beneficialOwners.shareholders') {
-        router.push('/company/establishment/signatory-rights');
-      } else {
-        stepFunc(prevStep => prevStep + 1);
-        stepFunc(steps.indexOf(currentStep) + 1);
-      }
-    },
-    [router]
-  ); */
   const setValuesAndNextStep = useCallback(
-    (newValues: Partial<CompanyContextValues>, type: StepType) => {
+    async (newValues: Partial<CompanyContextValues>) => {
       const mergedValues = lodash_merge(values, newValues);
       setValues(mergedValues);
-
-      const step = type === 'company' ? companyStep : beneficialOwnersStep;
-      const stepFunc =
-        type === 'company' ? setCompanyStep : setBeneficialOwnersStep;
-
-      if (type === 'company' && step === 6) {
-        router.push('/company/establishment/beneficial-owners');
-      } else if (type === 'beneficialOwners' && step === 2) {
-        router.push('/company/establishment/signatory-rights');
-      } else {
-        stepFunc(step + 1);
-      }
-
       /**
        * TODO: on very last step data should be saved via productizers (review section?)
        * TODO: if editing existing data, each step should save data directly without changing the step
        */
     },
-    [beneficialOwnersStep, companyStep, router, values]
+    [values]
   );
 
   const setIsCurrentStepDone = useCallback((step: Step, done: boolean) => {
@@ -172,16 +143,14 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     <CompanyContext.Provider
       value={{
         steps,
-        companyStep,
-        setCompanyStep: stepNum => setCompanyStep(stepNum),
-        beneficialOwnersStep,
-        setBeneficialOwnersStep: stepNum => setBeneficialOwnersStep(stepNum),
         values,
         setValues: setValuesAndNextStep,
         isStepDone,
         isPrevStepDone,
         doneSteps,
         setIsCurrentStepDone,
+        step,
+        setStep,
       }}
     >
       {children}

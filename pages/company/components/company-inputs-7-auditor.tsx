@@ -7,7 +7,9 @@ import FormInput from '@/components/form/form-input';
 import CustomHeading from '@/components/ui/custom-heading';
 
 interface FieldProps {
-  auditor: Auditor;
+  company: {
+    auditor: Auditor;
+  };
 }
 
 const REQUIRED_FIELDS = ['companyName', 'nationalIdentifier'];
@@ -18,36 +20,30 @@ export default function CompanyAuditor() {
     setIsCurrentStepDone,
   } = useCompanyContext();
   const { control, formState, getFieldState } = useFormContext<FieldProps>();
-  const { invalid, isDirty } = getFieldState('auditor', formState);
+  const { invalid } = getFieldState('company.auditor', formState);
 
-  const hasContextValues = useMemo(() => {
-    return REQUIRED_FIELDS.every(field => lodash_get(company?.auditor, field));
-  }, [company]);
+  const isStepDone = useMemo(() => {
+    const hasContextValues = REQUIRED_FIELDS.every(field =>
+      lodash_get(company?.auditor, field)
+    );
+    return hasContextValues ? !invalid : formState.isValid;
+  }, [company?.auditor, formState.isValid, invalid]);
 
   useEffect(() => {
-    setIsCurrentStepDone(
-      'company.auditor',
-      hasContextValues ? !invalid && isDirty : formState.isValid
-    );
-  }, [
-    formState.isValid,
-    hasContextValues,
-    invalid,
-    isDirty,
-    setIsCurrentStepDone,
-  ]);
+    setIsCurrentStepDone('company.auditor', isStepDone);
+  }, [isStepDone, setIsCurrentStepDone]);
 
   return (
     <div className="flex flex-col gap-4 items-start">
       <CustomHeading variant="h3">Company auditor</CustomHeading>
       <FormInput
-        name={`auditor.companyName`}
+        name={`company.auditor.companyName`}
         control={control}
         rules={{ required: 'Auditor company name is required.' }}
         labelText="Auditor company name"
       />
       <FormInput
-        name={`auditor.nationalIdentifier`}
+        name={`company.auditor.nationalIdentifier`}
         control={control}
         rules={{ required: 'National identifier is required.' }}
         labelText="National identifier"

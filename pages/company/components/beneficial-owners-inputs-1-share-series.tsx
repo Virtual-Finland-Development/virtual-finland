@@ -2,19 +2,24 @@ import { useEffect, useMemo } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import lodash_get from 'lodash.get';
 import { Button } from 'suomifi-ui-components';
-import type { ShareSeries } from '@/types';
+import type { ShareSeries2 } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
 
 interface FieldProps {
-  company: {
-    shareSeries: ShareSeries[];
+  beneficialOwners: {
+    shareSeries: ShareSeries2[];
   };
 }
 
-const REQUIRED_FIELDS = ['shareSeriesClass', 'numberOfShares', 'shareValue'];
+const REQUIRED_FIELDS = [
+  'shareSeriesClass',
+  'numberOfShares',
+  'shareValue',
+  'votesPerShare',
+];
 
 const SHARE_SERIES_CLASS_OPTIONS = [
   {
@@ -39,20 +44,25 @@ const SHARE_SERIES_CLASS_OPTIONS = [
   },
 ];
 
-export default function CompanyShareSeries() {
+export default function BeneficialOwnersShareSeries() {
   const {
-    values: { company },
+    values: { beneficialOwners },
     setIsCurrentStepDone,
   } = useCompanyContext();
   const { control, formState, getFieldState } = useFormContext<FieldProps>();
-  const { invalid } = getFieldState('company.shareSeries', formState);
+  const { invalid } = getFieldState('beneficialOwners.shareSeries', formState);
   const { fields, append, remove } = useFieldArray<FieldProps>({
     control,
-    name: 'company.shareSeries',
+    name: 'beneficialOwners.shareSeries',
   });
 
   const appendShareSeries = () => {
-    append({ shareSeriesClass: 'A', numberOfShares: 0, shareValue: 0 });
+    append({
+      shareSeriesClass: 'A',
+      numberOfShares: 0,
+      shareValue: 0,
+      votesPerShare: 0,
+    });
   };
 
   const removeShareSeries = (index: number) => {
@@ -61,11 +71,11 @@ export default function CompanyShareSeries() {
 
   const isStepDone = useMemo(() => {
     const hasContextValues = (() => {
-      const shareSeriesArr = lodash_get(company, 'shareSeries');
+      const shareSeriesArr = lodash_get(beneficialOwners, 'shareSeries');
 
       if (Array.isArray(shareSeriesArr)) {
         return shareSeriesArr.every(i => {
-          REQUIRED_FIELDS.every(field => i[field as keyof ShareSeries]);
+          REQUIRED_FIELDS.every(field => i[field as keyof ShareSeries2]);
         });
       }
 
@@ -73,10 +83,10 @@ export default function CompanyShareSeries() {
     })();
 
     return hasContextValues ? !invalid : formState.isValid;
-  }, [company, formState.isValid, invalid]);
+  }, [beneficialOwners, formState.isValid, invalid]);
 
   useEffect(() => {
-    setIsCurrentStepDone('company.shareSeries', isStepDone);
+    setIsCurrentStepDone('beneficialOwners.shareSeries', isStepDone);
   }, [isStepDone, setIsCurrentStepDone]);
 
   return (
@@ -90,7 +100,7 @@ export default function CompanyShareSeries() {
         >
           <div className="flex flex-col gap-4">
             <FormSingleSelect
-              name={`company.shareSeries.${index}.shareSeriesClass`}
+              name={`beneficialOwners.shareSeries.${index}.shareSeriesClass`}
               control={control}
               rules={{ required: 'Share value is required.' }}
               items={SHARE_SERIES_CLASS_OPTIONS}
@@ -98,17 +108,24 @@ export default function CompanyShareSeries() {
             />
             <FormInput
               type="number"
-              name={`company.shareSeries.${index}.numberOfShares`}
+              name={`beneficialOwners.shareSeries.${index}.numberOfShares`}
               control={control}
               rules={{ required: 'Number of shares is required.' }}
               labelText="Number of shares"
             />
             <FormInput
               type="number"
-              name={`company.shareSeries.${index}.shareValue`}
+              name={`beneficialOwners.shareSeries.${index}.shareValue`}
               control={control}
               rules={{ required: 'Share value is required.' }}
               labelText="Share value (€)"
+            />
+            <FormInput
+              type="number"
+              name={`beneficialOwners.shareSeries.${index}.votesPerShare`}
+              control={control}
+              rules={{ required: 'Votes per share is required.' }}
+              labelText="Votes per share"
             />
           </div>
           {index > 0 && (

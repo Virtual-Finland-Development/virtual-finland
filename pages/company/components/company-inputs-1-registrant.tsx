@@ -8,7 +8,9 @@ import FormPhoneInput from '@/components/form/form-phone-input';
 import CustomHeading from '@/components/ui/custom-heading';
 
 interface FieldProps {
-  registrant: Registrant;
+  company: {
+    registrant: Registrant;
+  };
 }
 
 const REQUIRED_FIELDS = ['givenName', 'lastName', 'email', 'phoneNumber'];
@@ -19,56 +21,48 @@ export default function CompanyRegistrant() {
     setIsCurrentStepDone,
   } = useCompanyContext();
   const { control, formState, getFieldState } = useFormContext<FieldProps>();
-  const { invalid, isDirty } = getFieldState('registrant', formState);
+  const { invalid } = getFieldState('company.registrant', formState);
 
-  const hasContextValues = useMemo(() => {
-    return REQUIRED_FIELDS.every(field =>
+  const isStepDone = useMemo(() => {
+    const hasContextValues = REQUIRED_FIELDS.every(field =>
       lodash_get(company?.registrant, field)
     );
-  }, [company]);
+    return hasContextValues ? !invalid : formState.isValid;
+  }, [company?.registrant, formState.isValid, invalid]);
 
   useEffect(() => {
-    setIsCurrentStepDone(
-      'company.registrant',
-      hasContextValues ? !invalid && isDirty : formState.isValid
-    );
-  }, [
-    formState.isValid,
-    hasContextValues,
-    invalid,
-    isDirty,
-    setIsCurrentStepDone,
-  ]);
+    setIsCurrentStepDone('company.registrant', isStepDone);
+  }, [isStepDone, setIsCurrentStepDone]);
 
   return (
     <div className="flex flex-col gap-4 items-start">
       <CustomHeading variant="h3">Registrant</CustomHeading>
       <FormInput
-        name={`registrant.givenName`}
+        name={`company.registrant.givenName`}
         labelText="Given name"
         control={control}
         rules={{ required: 'Given name is required.' }}
       />
       <FormInput
-        name={`registrant.lastName`}
+        name={`company.registrant.lastName`}
         labelText="Last name"
         control={control}
         rules={{ required: 'Last name is required.' }}
       />
       <FormInput
         type="email"
-        name={`registrant.email`}
+        name={`company.registrant.email`}
         labelText="Email"
         control={control}
         rules={{ required: 'Email is required.' }}
       />
       <FormPhoneInput
-        name={`registrant.phoneNumber`}
+        name={`company.registrant.phoneNumber`}
         control={control}
         rules={{ required: 'Phone nuber is required.' }}
         labelText="Phone number"
         hintText="Use international format (+358xxx)"
-        error={formState.errors?.registrant?.phoneNumber}
+        error={formState.errors?.company?.registrant?.phoneNumber}
       />
     </div>
   );

@@ -8,7 +8,9 @@ import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
 
 interface FieldProps {
-  companyDetails: CompanyDetails;
+  company: {
+    companyDetails: CompanyDetails;
+  };
 }
 
 const REQUIRED_FIELDS = [
@@ -24,80 +26,72 @@ export default function CompanyDetails() {
     setIsCurrentStepDone,
   } = useCompanyContext();
   const { control, formState, getFieldState } = useFormContext<FieldProps>();
-  const { invalid, isDirty } = getFieldState('companyDetails', formState);
+  const { invalid } = getFieldState('company.companyDetails', formState);
 
-  const hasContextValues = useMemo(() => {
-    return REQUIRED_FIELDS.every(field =>
+  const isStepDone = useMemo(() => {
+    const hasContextValues = REQUIRED_FIELDS.every(field =>
       lodash_get(company?.companyDetails, field)
     );
-  }, [company]);
+    return hasContextValues ? !invalid : formState.isValid;
+  }, [company?.companyDetails, formState.isValid, invalid]);
 
   useEffect(() => {
-    setIsCurrentStepDone(
-      'company.companyDetails',
-      hasContextValues ? !invalid && isDirty : formState.isValid
-    );
-  }, [
-    formState.isValid,
-    hasContextValues,
-    invalid,
-    isDirty,
-    setIsCurrentStepDone,
-  ]);
+    setIsCurrentStepDone('company.companyDetails', isStepDone);
+  }, [isStepDone, setIsCurrentStepDone]);
 
   return (
     <div className="flex flex-col gap-4 items-start">
       <CustomHeading variant="h3">Company details</CustomHeading>
       <FormInput
-        name={`companyDetails.name`}
+        name={`company.companyDetails.name`}
         control={control}
         rules={{ required: 'Company name is required.' }}
         labelText="Company name"
       />
       <FormInput
-        name={`companyDetails.alternativeName`}
+        name={`company.companyDetails.alternativeName`}
         control={control}
         labelText="Alternative name"
         optionalText="optional"
       />
       <FormInput
         type="date"
-        name={`companyDetails.foundingDate`}
+        name={`company.companyDetails.foundingDate`}
         control={control}
         rules={{ required: 'Founding date is required.' }}
         labelText="Founding date"
         hintText="Select from date picker"
       />
       <FormInput
-        name={`companyDetails.industrySector`}
+        name={`company.companyDetails.industrySector`}
         control={control}
         rules={{ required: 'Industry sector is required.' }}
         labelText="Industry sector"
       />
       <FormInput
         type="number"
-        name={`companyDetails.shareCapital`}
+        name={`company.companyDetails.shareCapital`}
         control={control}
         rules={{ required: 'Share capital is required.' }}
         labelText="Share capital (€)"
       />
       <FormInput
         type="number"
-        name={`companyDetails.settlementDeposit`}
+        name={`company.companyDetails.settlementDeposit`}
         control={control}
         labelText="Settlement deposit (€)"
         optionalText="optional"
       />
       <FormInput
         type="date"
-        name={`companyDetails.settlementDate`}
+        name={`company.companyDetails.settlementDate`}
         control={control}
         labelText="Settlement date"
         hintText="Select from date picker"
         optionalText="optional"
       />
       <FormSingleSelect
-        name={`companyDetails.countryOfResidence`}
+        name={`company.companyDetails.countryOfResidence`}
         control={control}
         labelText="Country of residence"
         hintText="Filter by typing or select from dropdown"

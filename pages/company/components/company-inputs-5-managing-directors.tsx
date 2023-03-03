@@ -9,7 +9,9 @@ import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
 
 interface FieldProps {
-  managingDirectors: ManagingDirector[];
+  company: {
+    managingDirectors: ManagingDirector[];
+  };
 }
 
 const REQUIRED_FIELDS = [
@@ -47,10 +49,10 @@ export default function CompanyManagingDirectors() {
     setIsCurrentStepDone,
   } = useCompanyContext();
   const { control, formState, getFieldState } = useFormContext<FieldProps>();
-  const { invalid, isDirty } = getFieldState('managingDirectors', formState);
+  const { invalid } = getFieldState('company.managingDirectors', formState);
   const { fields, append, remove } = useFieldArray<FieldProps>({
     control,
-    name: 'managingDirectors',
+    name: 'company.managingDirectors',
   });
 
   const appendShareSeries = () => {
@@ -68,30 +70,25 @@ export default function CompanyManagingDirectors() {
     remove(index);
   };
 
-  const hasContextValues = useMemo(() => {
-    const directorsArr = lodash_get(company, 'managingDirectors');
+  const isStepDone = useMemo(() => {
+    const hasContextValues = (() => {
+      const shareSeriesArr = lodash_get(company, 'managingDirectors');
 
-    if (Array.isArray(directorsArr)) {
-      return directorsArr.every(i => {
-        REQUIRED_FIELDS.every(field => i[field as keyof ManagingDirector]);
-      });
-    }
+      if (Array.isArray(shareSeriesArr)) {
+        return shareSeriesArr.every(i => {
+          REQUIRED_FIELDS.every(field => i[field as keyof ManagingDirector]);
+        });
+      }
 
-    return false;
-  }, [company]);
+      return false;
+    })();
+
+    return hasContextValues ? !invalid : formState.isValid;
+  }, [company, formState.isValid, invalid]);
 
   useEffect(() => {
-    setIsCurrentStepDone(
-      'company.managingDirectors',
-      hasContextValues ? !invalid && isDirty : formState.isValid
-    );
-  }, [
-    formState.isValid,
-    hasContextValues,
-    invalid,
-    isDirty,
-    setIsCurrentStepDone,
-  ]);
+    setIsCurrentStepDone('company.managingDirectors', isStepDone);
+  }, [isStepDone, setIsCurrentStepDone]);
 
   return (
     <div className="flex flex-col gap-4 items-start">
@@ -104,40 +101,40 @@ export default function CompanyManagingDirectors() {
         >
           <div className="flex flex-col gap-4">
             <FormSingleSelect
-              name={`managingDirectors.${index}.role`}
+              name={`company.managingDirectors.${index}.role`}
               control={control}
               rules={{ required: 'Role is required.' }}
               items={ROLE_OPTIONS}
               labelText="Role"
             />
             <FormInput
-              name={`managingDirectors.${index}.givenName`}
+              name={`company.managingDirectors.${index}.givenName`}
               control={control}
               rules={{ required: 'Given name is required.' }}
               labelText="Given name"
             />
             <FormInput
-              name={`managingDirectors.${index}.lastName`}
+              name={`company.managingDirectors.${index}.lastName`}
               control={control}
               rules={{ required: 'Last name is required.' }}
               labelText="Last name"
             />
             <FormInput
-              name={`managingDirectors.${index}.middleNames`}
+              name={`company.managingDirectors.${index}.middleNames`}
               control={control}
               rules={{ required: 'Given name is required.' }}
               labelText="Middle names"
             />
             <FormInput
               type="date"
-              name={`managingDirectors.${index}.dateOfBirth`}
+              name={`company.managingDirectors.${index}.dateOfBirth`}
               control={control}
               rules={{ required: 'Date of birth is required.' }}
               labelText="Date of birth"
               hintText="Select from date picker"
             />
             <FormSingleSelect
-              name={`managingDirectors.${index}.nationality`}
+              name={`company.managingDirectors.${index}.nationality`}
               control={control}
               rules={{ required: 'Nationality is required.' }}
               items={COUNTRY_OPTIONS}
@@ -157,7 +154,11 @@ export default function CompanyManagingDirectors() {
         </div>
       ))}
 
-      <Button variant="secondary" onClick={appendShareSeries}>
+      <Button
+        variant="secondaryNoBorder"
+        iconRight="plus"
+        onClick={appendShareSeries}
+      >
         Add new
       </Button>
     </div>

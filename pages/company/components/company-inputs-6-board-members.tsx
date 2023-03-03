@@ -9,7 +9,9 @@ import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
 
 interface FieldProps {
-  boardMembers: BoardMember[];
+  company: {
+    boardMembers: BoardMember[];
+  };
 }
 
 const REQUIRED_FIELDS = [
@@ -48,10 +50,10 @@ export default function CompanyBoardMembers() {
     setIsCurrentStepDone,
   } = useCompanyContext();
   const { control, formState, getFieldState } = useFormContext<FieldProps>();
-  const { invalid, isDirty } = getFieldState('boardMembers', formState);
+  const { invalid } = getFieldState('company.boardMembers', formState);
   const { fields, append, remove } = useFieldArray<FieldProps>({
     control,
-    name: 'boardMembers',
+    name: 'company.boardMembers',
   });
 
   const appendShareSeries = () => {
@@ -69,30 +71,25 @@ export default function CompanyBoardMembers() {
     remove(index);
   };
 
-  const hasContextValues = useMemo(() => {
-    const membersArr = lodash_get(company, 'boardMembers');
+  const isStepDone = useMemo(() => {
+    const hasContextValues = (() => {
+      const shareSeriesArr = lodash_get(company, 'boardMembers');
 
-    if (Array.isArray(membersArr)) {
-      return membersArr.every(i => {
-        REQUIRED_FIELDS.every(field => i[field as keyof BoardMember]);
-      });
-    }
+      if (Array.isArray(shareSeriesArr)) {
+        return shareSeriesArr.every(i => {
+          REQUIRED_FIELDS.every(field => i[field as keyof BoardMember]);
+        });
+      }
 
-    return false;
-  }, [company]);
+      return false;
+    })();
+
+    return hasContextValues ? !invalid : formState.isValid;
+  }, [company, formState.isValid, invalid]);
 
   useEffect(() => {
-    setIsCurrentStepDone(
-      'company.boardMembers',
-      hasContextValues ? !invalid && isDirty : formState.isValid
-    );
-  }, [
-    formState.isValid,
-    hasContextValues,
-    invalid,
-    isDirty,
-    setIsCurrentStepDone,
-  ]);
+    setIsCurrentStepDone('company.boardMembers', isStepDone);
+  }, [isStepDone, setIsCurrentStepDone]);
 
   return (
     <div className="flex flex-col gap-4 items-start">
@@ -105,40 +102,40 @@ export default function CompanyBoardMembers() {
         >
           <div className="flex flex-col gap-4">
             <FormSingleSelect
-              name={`boardMembers.${index}.role`}
+              name={`company.boardMembers.${index}.role`}
               control={control}
               rules={{ required: 'Role is required.' }}
               items={ROLE_OPTIONS}
               labelText="Role"
             />
             <FormInput
-              name={`boardMembers.${index}.givenName`}
+              name={`company.boardMembers.${index}.givenName`}
               control={control}
               rules={{ required: 'Given name is required.' }}
               labelText="Given name"
             />
             <FormInput
-              name={`boardMembers.${index}.lastName`}
+              name={`company.boardMembers.${index}.lastName`}
               control={control}
               rules={{ required: 'Last name is required.' }}
               labelText="Last name"
             />
             <FormInput
-              name={`boardMembers.${index}.middleNames`}
+              name={`company.boardMembers.${index}.middleNames`}
               control={control}
               rules={{ required: 'Given name is required.' }}
               labelText="Middle names"
             />
             <FormInput
               type="date"
-              name={`boardMembers.${index}.dateOfBirth`}
+              name={`company.boardMembers.${index}.dateOfBirth`}
               control={control}
               rules={{ required: 'Date of birth is required.' }}
               labelText="Date of birth"
               hintText="Select from date picker"
             />
             <FormSingleSelect
-              name={`boardMembers.${index}.nationality`}
+              name={`company.boardMembers.${index}.nationality`}
               control={control}
               items={COUNTRY_OPTIONS}
               labelText="Nationality"
@@ -157,7 +154,11 @@ export default function CompanyBoardMembers() {
         </div>
       ))}
 
-      <Button variant="secondary" onClick={appendShareSeries}>
+      <Button
+        variant="secondaryNoBorder"
+        iconRight="plus"
+        onClick={appendShareSeries}
+      >
         Add new
       </Button>
     </div>

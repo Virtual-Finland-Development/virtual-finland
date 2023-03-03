@@ -1,4 +1,6 @@
+import { useEffect, useMemo } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import lodash_get from 'lodash.get';
 import { Button } from 'suomifi-ui-components';
 import type { SigningRight } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
@@ -31,9 +33,17 @@ const DEFAULT_RIGHT = {
   adminUnitLevel2: '',
 };
 
+const REQUIRED_FIELDS = [
+  'givenName',
+  'middleNames',
+  'lastName',
+  'dateOfBirth',
+  'nationality',
+];
+
 export default function SignatoryRightsSigninRights() {
   const {
-    values: { company },
+    values: { signatoryRights },
     setIsCurrentStepDone,
   } = useCompanyContext();
   const { control, formState, getFieldState } = useFormContext<FieldProps>();
@@ -51,6 +61,26 @@ export default function SignatoryRightsSigninRights() {
     remove(index);
   };
 
+  const isStepDone = useMemo(() => {
+    const hasContextValues = (() => {
+      const signatoryRightsArr = lodash_get(signatoryRights, 'signinRights');
+
+      if (Array.isArray(signatoryRightsArr)) {
+        return signatoryRightsArr.every(i => {
+          REQUIRED_FIELDS.every(field => i[field as keyof SigningRight]);
+        });
+      }
+
+      return false;
+    })();
+
+    return hasContextValues ? !invalid : formState.isValid;
+  }, [signatoryRights, formState.isValid, invalid]);
+
+  useEffect(() => {
+    setIsCurrentStepDone('signatoryRights.signinRights', isStepDone);
+  }, [isStepDone, setIsCurrentStepDone]);
+
   return (
     <div className="flex flex-col gap-4 items-start">
       <CustomHeading variant="h3">Signin rights</CustomHeading>
@@ -61,7 +91,6 @@ export default function SignatoryRightsSigninRights() {
           className="flex flex-col items-start gap-3 border-b border-b-gray-300 pb-6 w-full"
         >
           <div className="grid sm:grid-cols-2 gap-6">
-            {/* flex flex-col gap-4 */}
             <FormInput
               name={`signatoryRights.signinRights.${index}.personalID`}
               control={control}
@@ -97,6 +126,7 @@ export default function SignatoryRightsSigninRights() {
             <FormSingleSelect
               name={`signatoryRights.signinRights.${index}.nationality`}
               control={control}
+              rules={{ required: 'Nationality is required.' }}
               labelText="Nationality"
               hintText="Filter by typing or select from dropdown"
               items={[
@@ -117,7 +147,6 @@ export default function SignatoryRightsSigninRights() {
             <FormInput
               name={`signatoryRights.signinRights.${index}.fullAddress`}
               control={control}
-              rules={{ required: 'Address is required.' }}
               labelText="Full address"
             />
             <FormInput

@@ -17,9 +17,8 @@ export default function FormActionButtons(props: Props) {
 
   return (
     <>
-      {step && step > 0 ? (
+      {step && step > 0 && step < 10 ? (
         <Button
-          // type="submit"
           variant="secondary"
           icon="arrowLeft"
           onClick={() => onFormActionClick()}
@@ -28,12 +27,11 @@ export default function FormActionButtons(props: Props) {
         </Button>
       ) : null}
       <Button
-        // type="submit"
-        iconRight="arrowRight"
+        {...(step < 10 && { iconRight: 'arrowRight' })}
         onClick={() => onFormActionClick(true)}
         disabled={buttonsDisabled}
       >
-        Next
+        {step < 10 ? 'Next' : 'Submit'}
       </Button>
     </>
   );

@@ -63,8 +63,12 @@ interface Props {
 export default function CompanyWizardNav(props: Props) {
   const { onWizardNavChange } = props;
   const { width } = useDimensions();
-  const { isStepDone, isPrevStepDone, doneSteps, step } = useCompanyContext();
+  const { isStepDone, isPrevStepDone, doneSteps, step, setStep } =
+    useCompanyContext();
+
   const doneStepValues = Object.values(doneSteps);
+  const allStepsDone =
+    doneStepValues.length === 10 && doneStepValues.every(isDone => isDone);
 
   const getItemStatus = useCallback(
     (
@@ -146,6 +150,22 @@ export default function CompanyWizardNav(props: Props) {
           </WizardNavigationItem>
         );
       })}
+
+      <div className="ml-5 mb-2 mt-4">
+        <Heading variant="h5">4. Review</Heading>
+      </div>
+      <WizardNavigationItem
+        // status={allStepsDone ? (step === 10 ? 'current' : 'default') : 'coming'}
+        status="default"
+      >
+        <RouterLink
+          /* onClick={() => onWizardNavChange(10)} */ onClick={() =>
+            setStep(10)
+          }
+        >
+          4.1 Review and submit
+        </RouterLink>
+      </WizardNavigationItem>
     </WizardNavigation>
   );
 }

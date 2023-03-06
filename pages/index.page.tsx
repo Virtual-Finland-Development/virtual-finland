@@ -9,7 +9,7 @@ export default function Home() {
   const router = useRouter();
 
   return (
-    <Page title="Home">
+    <Page title="Home" showHeading={false}>
       <Block variant="section" className="bg-suomifi-blue-bg-light px-4 py-6">
         <CustomHeading variant="h2" suomiFiBlue="dark">
           The only service you need for moving into Finland

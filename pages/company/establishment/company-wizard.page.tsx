@@ -13,7 +13,6 @@ import {
 } from '@/context/company-context';
 import AuthSentry from '@/components/auth-sentry';
 import Page from '@/components/layout/page';
-import CustomHeading from '@/components/ui/custom-heading';
 import BeneficialOwnersShareSeries from '../components/beneficial-owners-inputs-1-share-series';
 import BeneficialOwnersShareholders from '../components/beneficial-owners-inputs-2-share-holders';
 import CompanyRegistrant from '../components/company-inputs-1-registrant';
@@ -158,14 +157,9 @@ export default function CompanyWizard() {
   return (
     <AuthSentry redirectPath="/company">
       <Page title="Compant wizard" withBorder={false}>
-        <div className="px-4 mt-4 md:mb-4 md:px-0 md:mt-0">
-          <CustomHeading variant="h1">
-            <span className="text-3xl lg:text-[40px]">Company wizard</span>
-          </CustomHeading>
-        </div>
         <FormProvider {...formMethods}>
           <div className="block lg:hidden pb-4 px-4 md:px-0">
-            <div className="border">
+            <div className="border border-suomifi-light">
               <CompanyWizardNav onWizardNavChange={onWizardNavChange} />
             </div>
           </div>

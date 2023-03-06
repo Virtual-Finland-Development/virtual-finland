@@ -148,6 +148,7 @@ export default function SignatoryRightsSigninRights() {
               name={`signatoryRights.signinRights.${index}.fullAddress`}
               control={control}
               labelText="Full address"
+              optionalText="optional"
             />
             <FormInput
               name={`signatoryRights.signinRights.${index}.thoroughfare`}

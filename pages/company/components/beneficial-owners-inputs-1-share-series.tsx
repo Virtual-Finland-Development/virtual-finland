@@ -110,14 +110,20 @@ export default function BeneficialOwnersShareSeries() {
               type="number"
               name={`beneficialOwners.shareSeries.${index}.numberOfShares`}
               control={control}
-              rules={{ required: 'Number of shares is required.' }}
+              rules={{
+                required: 'Number of shares is required.',
+                validate: value => value > -1,
+              }}
               labelText="Number of shares"
             />
             <FormInput
               type="number"
               name={`beneficialOwners.shareSeries.${index}.shareValue`}
               control={control}
-              rules={{ required: 'Share value is required.' }}
+              rules={{
+                required: 'Share value is required.',
+                validate: value => value > -1,
+              }}
               labelText="Share value (€)"
             />
             <FormInput

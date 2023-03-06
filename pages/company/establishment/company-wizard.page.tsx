@@ -82,6 +82,13 @@ const DEFAULT_VALUES = {
       },
     ],
   },
+  signatoryRights: {
+    signinRights: [
+      {
+        givenName: '',
+      },
+    ],
+  },
 };
 
 export default function CompanyWizard() {

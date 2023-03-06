@@ -105,13 +105,15 @@ export default function BeneficialOwnersShareholders() {
             />
             <Ownerships index={index} />
           </div>
-          <Button
-            variant="link"
-            iconRight="remove"
-            onClick={() => removeShareSeries(index)}
-          >
-            Remove shareholder
-          </Button>
+          {index > 0 && (
+            <Button
+              variant="link"
+              iconRight="remove"
+              onClick={() => removeShareSeries(index)}
+            >
+              Remove shareholder
+            </Button>
+          )}
         </div>
       ))}
 
@@ -161,7 +163,7 @@ function Ownerships({ index }: { index: number }) {
             type="number"
             name={`beneficialOwners.shareholders.${index}.ownerships.${i}.quantity`}
             control={control}
-            rules={{ required: true }}
+            rules={{ required: true, validate: value => value > -1 }}
             labelText="Quantity"
             showStatusText={false}
           />

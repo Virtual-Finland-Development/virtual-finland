@@ -80,6 +80,7 @@ export default function FormInput<T extends FieldValues>(props: Props<T>) {
               defaultValue={value}
               onChange={onChange}
               onBlur={onBlur}
+              min="1"
             />
           )}
         </>

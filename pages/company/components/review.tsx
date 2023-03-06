@@ -108,9 +108,9 @@ const dummyData = {
 };
 
 const EXPANDER_TITLES: Record<string, any> = {
-  company: 'Company',
-  beneficialOwners: 'Beneficial owners',
-  signatoryRights: 'Signatory rights',
+  company: '1. Company details',
+  beneficialOwners: '2. Beneficial owners',
+  signatoryRights: '3. Signatory rights',
 };
 
 export default function Review() {

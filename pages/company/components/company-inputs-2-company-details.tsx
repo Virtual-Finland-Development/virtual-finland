@@ -72,13 +72,17 @@ export default function CompanyDetails() {
         type="number"
         name={`company.companyDetails.shareCapital`}
         control={control}
-        rules={{ required: 'Share capital is required.' }}
+        rules={{
+          required: 'Share capital is required.',
+          validate: value => value > -1,
+        }}
         labelText="Share capital (€)"
       />
       <FormInput
         type="number"
         name={`company.companyDetails.settlementDeposit`}
         control={control}
+        rules={{ validate: value => value > -1 }}
         labelText="Settlement deposit (€)"
         optionalText="optional"
       />

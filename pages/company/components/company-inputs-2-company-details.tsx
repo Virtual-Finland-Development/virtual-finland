@@ -41,80 +41,85 @@ export default function CompanyDetails() {
 
   return (
     <div className="flex flex-col gap-4 items-start">
-      <CustomHeading variant="h3">Company details</CustomHeading>
-      <FormInput
-        name={`company.companyDetails.name`}
-        control={control}
-        rules={{ required: 'Company name is required.' }}
-        labelText="Company name"
-      />
-      <FormInput
-        name={`company.companyDetails.alternativeName`}
-        control={control}
-        labelText="Alternative name"
-        optionalText="optional"
-      />
-      <FormInput
-        type="date"
-        name={`company.companyDetails.foundingDate`}
-        control={control}
-        rules={{ required: 'Founding date is required.' }}
-        labelText="Founding date"
-        hintText="Select from date picker"
-      />
-      <FormInput
-        name={`company.companyDetails.industrySector`}
-        control={control}
-        rules={{ required: 'Industry sector is required.' }}
-        labelText="Industry sector"
-      />
-      <FormInput
-        type="number"
-        name={`company.companyDetails.shareCapital`}
-        control={control}
-        rules={{
-          required: 'Share capital is required.',
-          validate: value => value > -1,
-        }}
-        labelText="Share capital (€)"
-      />
-      <FormInput
-        type="number"
-        name={`company.companyDetails.settlementDeposit`}
-        control={control}
-        rules={{ validate: value => value > -1 }}
-        labelText="Settlement deposit (€)"
-        optionalText="optional"
-      />
-      <FormInput
-        type="date"
-        name={`company.companyDetails.settlementDate`}
-        control={control}
-        labelText="Settlement date"
-        hintText="Select from date picker"
-        optionalText="optional"
-      />
-      <FormSingleSelect
-        name={`company.companyDetails.countryOfResidence`}
-        control={control}
-        labelText="Country of residence"
-        hintText="Filter by typing or select from dropdown"
-        optionalText="optional"
-        items={[
-          {
-            labelText: 'Finland',
-            uniqueItemId: 'jh2435626',
-          },
-          {
-            labelText: 'Sweden',
-            uniqueItemId: 'h9823523',
-          },
-          {
-            labelText: 'Norway',
-            uniqueItemId: 'sh908293482',
-          },
-        ]}
-      />
+      <div>
+        <CustomHeading variant="h4">Stage 1.2</CustomHeading>
+        <CustomHeading variant="h2">Company details</CustomHeading>
+      </div>
+      <div className="grid sm:grid-cols-2 gap-6">
+        <FormInput
+          name={`company.companyDetails.name`}
+          control={control}
+          rules={{ required: 'Company name is required.' }}
+          labelText="Company name"
+        />
+        <FormInput
+          name={`company.companyDetails.alternativeName`}
+          control={control}
+          labelText="Alternative name"
+          optionalText="optional"
+        />
+        <FormInput
+          type="date"
+          name={`company.companyDetails.foundingDate`}
+          control={control}
+          rules={{ required: 'Founding date is required.' }}
+          labelText="Founding date"
+          hintText="Select from date picker"
+        />
+        <FormInput
+          name={`company.companyDetails.industrySector`}
+          control={control}
+          rules={{ required: 'Industry sector is required.' }}
+          labelText="Industry sector"
+        />
+        <FormInput
+          type="number"
+          name={`company.companyDetails.shareCapital`}
+          control={control}
+          rules={{
+            required: 'Share capital is required.',
+            validate: value => value > -1,
+          }}
+          labelText="Share capital (€)"
+        />
+        <FormInput
+          type="number"
+          name={`company.companyDetails.settlementDeposit`}
+          control={control}
+          rules={{ validate: value => value > -1 }}
+          labelText="Settlement deposit (€)"
+          optionalText="optional"
+        />
+        <FormInput
+          type="date"
+          name={`company.companyDetails.settlementDate`}
+          control={control}
+          labelText="Settlement date"
+          hintText="Select from date picker"
+          optionalText="optional"
+        />
+        <FormSingleSelect
+          name={`company.companyDetails.countryOfResidence`}
+          control={control}
+          labelText="Country of residence"
+          hintText="Filter by typing or select from dropdown"
+          optionalText="optional"
+          items={[
+            {
+              labelText: 'Finland',
+              uniqueItemId: 'jh2435626',
+            },
+            {
+              labelText: 'Sweden',
+              uniqueItemId: 'h9823523',
+            },
+            {
+              labelText: 'Norway',
+              uniqueItemId: 'sh908293482',
+            },
+          ]}
+        />
+      </div>
     </div>
   );
 }

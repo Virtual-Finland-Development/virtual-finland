@@ -36,7 +36,10 @@ export default function CompanyRegistrant() {
 
   return (
     <div className="flex flex-col gap-4 items-start">
-      <CustomHeading variant="h3">Registrant</CustomHeading>
+      <div>
+        <CustomHeading variant="h4">Stage 1.1</CustomHeading>
+        <CustomHeading variant="h2">Registrant</CustomHeading>
+      </div>
       <FormInput
         name={`company.registrant.givenName`}
         labelText="Given name"

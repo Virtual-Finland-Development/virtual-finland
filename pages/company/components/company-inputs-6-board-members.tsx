@@ -93,14 +93,17 @@ export default function CompanyBoardMembers() {
 
   return (
     <div className="flex flex-col gap-4 items-start">
-      <CustomHeading variant="h3">Board members</CustomHeading>
+      <div>
+        <CustomHeading variant="h4">Stage 1.6</CustomHeading>
+        <CustomHeading variant="h2">Board members</CustomHeading>
+      </div>
 
       {fields.map((field, index) => (
         <div
           key={field.id}
           className="flex flex-col items-start gap-3 border-b border-b-gray-300 pb-6 w-full"
         >
-          <div className="flex flex-col gap-4">
+          <div className="grid sm:grid-cols-2 gap-6">
             <FormSingleSelect
               name={`company.boardMembers.${index}.role`}
               control={control}

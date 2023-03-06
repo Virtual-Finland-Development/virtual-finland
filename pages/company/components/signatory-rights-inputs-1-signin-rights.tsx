@@ -83,7 +83,12 @@ export default function SignatoryRightsSigninRights() {
 
   return (
     <div className="flex flex-col gap-4 items-start">
-      <CustomHeading variant="h3">Signin rights</CustomHeading>
+      <div>
+        <CustomHeading variant="h4">Stage 3.1</CustomHeading>
+        <CustomHeading variant="h2">
+          Signatory rights - Signin rights
+        </CustomHeading>
+      </div>
 
       {fields.map((field, index) => (
         <div

@@ -2,9 +2,9 @@ import {
   Expander,
   ExpanderContent,
   ExpanderTitleButton,
-  Heading,
 } from 'suomifi-ui-components';
 import { useCompanyContext } from '@/context/company-context';
+import CustomHeading from '@/components/ui/custom-heading';
 
 const dummyData = {
   company: {
@@ -108,7 +108,7 @@ const dummyData = {
 };
 
 const EXPANDER_TITLES: Record<string, any> = {
-  company: '1. Company details',
+  company: '1. Details',
   beneficialOwners: '2. Beneficial owners',
   signatoryRights: '3. Signatory rights',
 };
@@ -118,7 +118,10 @@ export default function Preview() {
 
   return (
     <div className="flex flex-col gap-4">
-      <Heading variant="h3">Review and submit</Heading>
+      <div>
+        <CustomHeading variant="h4">Stage 4.1</CustomHeading>
+        <CustomHeading variant="h2">Preview and submit</CustomHeading>
+      </div>
       <div className="flex flex-col gap-6">
         {Object.entries(values).map(entry => {
           const title = EXPANDER_TITLES[entry[0]];

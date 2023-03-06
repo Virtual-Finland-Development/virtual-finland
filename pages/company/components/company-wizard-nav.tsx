@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import {
   Heading,
   RouterLink,
@@ -84,15 +84,15 @@ export default function CompanyWizardNav(props: Props) {
         }
       }
 
-      return currentStepNum === index
-        ? isStepDone(step)
-          ? 'current-completed'
-          : 'current'
-        : isStepDone(step)
-        ? 'completed'
-        : isPrevStepDone(step)
-        ? 'default'
-        : 'coming';
+      if (currentStepNum === index) {
+        return isStepDone(step) ? 'current-completed' : 'current';
+      } else {
+        if (isStepDone(step)) {
+          return 'completed';
+        } else {
+          return isPrevStepDone(step) ? 'default' : 'coming';
+        }
+      }
     },
     [doneStepValues, isPrevStepDone, isStepDone]
   );
@@ -103,9 +103,10 @@ export default function CompanyWizardNav(props: Props) {
       aria-label="Company establishment wizard steps"
       initiallyExpanded={false}
       variant={width > 1024 ? 'default' : 'smallScreen'}
+      tw="!min-w-full"
     >
       <div className="ml-5 mb-2">
-        <Heading variant="h5">1. Company details</Heading>
+        <Heading variant="h5">1. Details</Heading>
       </div>
       {COMPANY_STEPS.map((item, index) => {
         const status = getItemStatus(item.step, index, step);

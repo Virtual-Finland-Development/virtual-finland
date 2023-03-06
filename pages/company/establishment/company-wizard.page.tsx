@@ -156,7 +156,7 @@ export default function CompanyWizard() {
 
   return (
     <AuthSentry redirectPath="/company">
-      <Page title="Compant wizard" withBorder={false}>
+      <Page title="Company wizard" withBorder={false}>
         <FormProvider {...formMethods}>
           <div className="block lg:hidden pb-4 px-4 md:px-0">
             <div className="border border-suomifi-light">

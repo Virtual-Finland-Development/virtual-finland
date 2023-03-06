@@ -152,7 +152,7 @@ export default function CompanyWizardNav(props: Props) {
       })}
 
       <div className="ml-5 mb-2 mt-4">
-        <Heading variant="h5">4. Review</Heading>
+        <Heading variant="h5">4. Preview</Heading>
       </div>
       <WizardNavigationItem
         status={allStepsDone ? (step === 10 ? 'current' : 'default') : 'coming'}
@@ -163,7 +163,7 @@ export default function CompanyWizardNav(props: Props) {
             setStep(10)
           } */
         >
-          4.1 Review and submit
+          4.1 Preview and submit
         </RouterLink>
       </WizardNavigationItem>
     </WizardNavigation>

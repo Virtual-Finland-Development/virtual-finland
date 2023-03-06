@@ -24,7 +24,7 @@ import CompanyMembers from '../components/company-inputs-6-board-members';
 import CompanyAuditor from '../components/company-inputs-7-auditor';
 import CompanyWizardNav from '../components/company-wizard-nav';
 import FormActionButtons from '../components/form-action-buttons';
-import Review from '../components/review';
+import Preview from '../components/preview';
 import SignatoryRightsSigninRights from '../components/signatory-rights-inputs-1-signin-rights';
 
 interface FormProps {
@@ -44,7 +44,7 @@ const companyWizardSteps = [
   <BeneficialOwnersShareSeries key="8" />,
   <BeneficialOwnersShareholders key="9" />,
   <SignatoryRightsSigninRights key="10" />,
-  <Review key="11" />,
+  <Preview key="11" />,
 ];
 
 const DEFAULT_VALUES = {

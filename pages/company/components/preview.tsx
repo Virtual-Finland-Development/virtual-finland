@@ -113,7 +113,7 @@ const EXPANDER_TITLES: Record<string, any> = {
   signatoryRights: '3. Signatory rights',
 };
 
-export default function Review() {
+export default function Preview() {
   const { values } = useCompanyContext();
 
   return (

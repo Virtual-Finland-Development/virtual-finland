@@ -38,7 +38,9 @@ export type CompanyDetails = {
   foundingDate: string;
   industrySector: string;
   shareCapital: number;
+  capitalCurrency: string;
   settlementDeposit: number;
+  depositCurrency: string;
   settlementDate: number;
   countryOfResidence: string;
 };
@@ -83,6 +85,8 @@ export type BoardMember = {
 export type Auditor = {
   companyName: string;
   nationalIdentifier: string;
+  givenName: string;
+  lastName: string;
 };
 
 export interface NonListedCompany {
@@ -99,7 +103,9 @@ export interface NonListedCompany {
  * NonListedCompany/BeneficialOwners
  */
 
-export type ShareSeries2 = ShareSeries & { votesPerShare: number };
+export type ShareSeries2 = Omit<ShareSeries, 'shareValue'> & {
+  votesPerShare: number;
+};
 
 export type Owrnership = {
   shareSeriesClass: 'A' | 'B' | 'C' | 'D' | 'E';

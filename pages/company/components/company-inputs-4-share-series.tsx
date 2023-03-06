@@ -117,7 +117,7 @@ export default function CompanyShareSeries() {
                 required: 'Share value is required.',
                 validate: value => value > -1,
               }}
-              labelText="Share value (€)"
+              labelText="Share value"
             />
           </div>
           {index > 0 && (

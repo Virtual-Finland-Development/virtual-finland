@@ -12,7 +12,7 @@ interface FieldProps {
   };
 }
 
-const REQUIRED_FIELDS = ['companyName', 'nationalIdentifier'];
+// const REQUIRED_FIELDS = ['companyName', 'nationalIdentifier'];
 
 export default function CompanyAuditor() {
   const {
@@ -23,11 +23,12 @@ export default function CompanyAuditor() {
   const { invalid } = getFieldState('company.auditor', formState);
 
   const isStepDone = useMemo(() => {
-    const hasContextValues = REQUIRED_FIELDS.every(field =>
+    /*  const hasContextValues = REQUIRED_FIELDS.every(field =>
       lodash_get(company?.auditor, field)
-    );
+    ); */
+    const hasContextValues = lodash_get(company, 'auditor');
     return hasContextValues ? !invalid : formState.isValid;
-  }, [company?.auditor, formState.isValid, invalid]);
+  }, [company, formState.isValid, invalid]);
 
   useEffect(() => {
     setIsCurrentStepDone('company.auditor', isStepDone);
@@ -42,15 +43,31 @@ export default function CompanyAuditor() {
       <FormInput
         name={`company.auditor.companyName`}
         control={control}
-        rules={{ required: 'Auditor company name is required.' }}
+        // rules={{ required: 'Auditor company name is required.' }}
         labelText="Auditor company name"
+        optionalText="Optional"
       />
       <FormInput
         name={`company.auditor.nationalIdentifier`}
         control={control}
-        rules={{ required: 'National identifier is required.' }}
+        // rules={{ required: 'National identifier is required.' }}
         labelText="National identifier"
         hintText="The national identifier of the non-listed company issued by the trade register"
+        optionalText="Optional"
+      />
+      <FormInput
+        name={`company.auditor.givenName`}
+        control={control}
+        // rules={{ required: 'National identifier is required.' }}
+        labelText="Auditor given name"
+        optionalText="Optional"
+      />
+      <FormInput
+        name={`company.auditor.lastName`}
+        control={control}
+        // rules={{ required: 'National identifier is required.' }}
+        labelText="Auditor last name"
+        optionalText="Optional"
       />
     </div>
   );

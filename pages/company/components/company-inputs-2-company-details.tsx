@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import lodash_get from 'lodash.get';
+import { RouterLink } from 'suomifi-ui-components';
 import type { CompanyDetails } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
@@ -66,12 +67,24 @@ export default function CompanyDetails() {
           labelText="Founding date"
           hintText="Select from date picker"
         />
-        <FormInput
-          name={`company.companyDetails.industrySector`}
-          control={control}
-          rules={{ required: 'Industry sector is required.' }}
-          labelText="Industry sector"
-        />
+        <div className="relative">
+          <FormInput
+            name={`company.companyDetails.industrySector`}
+            control={control}
+            rules={{ required: 'Industry sector is required.' }}
+            labelText="Industry sector"
+            hintText="Nace industry code"
+          />
+          <div className="absolute right-8 top-8">
+            <RouterLink
+              className="!text-base"
+              href="https://koodistot.suomi.fi/codescheme;registryCode=dataecon;schemeCode=nace"
+              target="_blank"
+            >
+              (list of nace codes)
+            </RouterLink>
+          </div>
+        </div>
         <FormInput
           type="number"
           name={`company.companyDetails.shareCapital`}
@@ -80,15 +93,51 @@ export default function CompanyDetails() {
             required: 'Share capital is required.',
             validate: value => value > -1,
           }}
-          labelText="Share capital (€)"
+          labelText="Share capital"
+          hintText="Value of the issued shares of the company"
+        />
+        <FormSingleSelect
+          name={`company.companyDetails.capitalCurrency`}
+          control={control}
+          rules={{ required: 'Capital currency is required.' }}
+          labelText="Capital currency"
+          hintText="Filter by typing or select from dropdown"
+          items={[
+            {
+              labelText: 'EUR',
+              uniqueItemId: 'EUR',
+            },
+            {
+              labelText: 'USD',
+              uniqueItemId: 'USD',
+            },
+          ]}
         />
         <FormInput
           type="number"
           name={`company.companyDetails.settlementDeposit`}
           control={control}
           rules={{ validate: value => value > -1 }}
-          labelText="Settlement deposit (€)"
+          labelText="Settlement deposit"
           optionalText="optional"
+          hintText="Deposit paid during the establishment"
+        />
+        <FormSingleSelect
+          name={`company.companyDetails.depositCurrency`}
+          control={control}
+          labelText="Deposit currency"
+          hintText="Filter by typing or select from dropdown"
+          optionalText="optional"
+          items={[
+            {
+              labelText: 'EUR',
+              uniqueItemId: 'EUR',
+            },
+            {
+              labelText: 'USD',
+              uniqueItemId: 'USD',
+            },
+          ]}
         />
         <FormInput
           type="date"

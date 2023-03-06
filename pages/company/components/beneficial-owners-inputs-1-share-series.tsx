@@ -60,7 +60,6 @@ export default function BeneficialOwnersShareSeries() {
     append({
       shareSeriesClass: 'A',
       numberOfShares: 0,
-      shareValue: 0,
       votesPerShare: 0,
     });
   };
@@ -120,16 +119,6 @@ export default function BeneficialOwnersShareSeries() {
                 validate: value => value > -1,
               }}
               labelText="Number of shares"
-            />
-            <FormInput
-              type="number"
-              name={`beneficialOwners.shareSeries.${index}.shareValue`}
-              control={control}
-              rules={{
-                required: 'Share value is required.',
-                validate: value => value > -1,
-              }}
-              labelText="Share value (€)"
             />
             <FormInput
               type="number"

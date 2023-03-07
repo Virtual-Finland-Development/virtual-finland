@@ -13,6 +13,7 @@ import {
 } from '@/context/company-context';
 import AuthSentry from '@/components/auth-sentry';
 import Page from '@/components/layout/page';
+import Loading from '@/components/ui/loading';
 import BeneficialOwnersShareSeries from '../components/beneficial-owners-inputs-1-share-series';
 import BeneficialOwnersShareholders from '../components/beneficial-owners-inputs-2-share-holders';
 import CompanyRegistrant from '../components/company-inputs-1-registrant';
@@ -92,7 +93,7 @@ const DEFAULT_VALUES = {
 };
 
 export default function CompanyWizard() {
-  const { values, setValues, step, setStep } = useCompanyContext();
+  const { values, setValues, step, setStep, isLoading } = useCompanyContext();
 
   /**
    * Form methods, passed to form provider (react-hook-form).
@@ -123,11 +124,11 @@ export default function CompanyWizard() {
    * Submit form on next step, set current step.
    */
   const onFormActionClick = useCallback(
-    (next?: boolean) => {
+    (next?: boolean, last?: boolean) => {
       if (next) {
         formMethods.handleSubmit(values => {
           onSubmit(values);
-          setStep(step + 1);
+          !last && setStep(step + 1);
         })();
       } else {
         setStep(step - 1);
@@ -170,21 +171,27 @@ export default function CompanyWizard() {
                 <CompanyWizardNav onWizardNavChange={onWizardNavChange} />
               </div>
             </div>
-            <Block
-              variant="section"
-              className="bg-white md:border border-gray-300 flex flex-col w-full px-4 py-6"
-            >
-              <form>
-                {companyWizardSteps[step]}
+            {isLoading ? (
+              <div className="flex w-full align-center justify-center mb-4">
+                <Loading text="Saving.." />
+              </div>
+            ) : (
+              <Block
+                variant="section"
+                className="bg-white md:border border-gray-300 flex flex-col w-full px-4 py-6"
+              >
+                <form>
+                  {companyWizardSteps[step]}
 
-                <div className="flex flex-row gap-4 mt-14 w-full">
-                  <FormActionButtons
-                    key={step}
-                    onFormActionClick={onFormActionClick}
-                  />
-                </div>
-              </form>
-            </Block>
+                  <div className="flex flex-row gap-4 mt-14 w-full">
+                    <FormActionButtons
+                      key={step}
+                      onFormActionClick={onFormActionClick}
+                    />
+                  </div>
+                </form>
+              </Block>
+            )}
           </div>
         </FormProvider>
       </Page>

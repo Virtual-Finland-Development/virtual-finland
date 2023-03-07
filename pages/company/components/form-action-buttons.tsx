@@ -1,9 +1,9 @@
 import { useFormContext } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
-import { useCompanyContext } from '@/context/company-context';
+import { LAST_STEP, useCompanyContext } from '@/context/company-context';
 
 interface Props {
-  onFormActionClick: (next?: boolean) => void;
+  onFormActionClick: (next?: boolean, last?: boolean) => void;
 }
 
 export default function FormActionButtons(props: Props) {
@@ -28,7 +28,7 @@ export default function FormActionButtons(props: Props) {
       ) : null}
       <Button
         {...(step < 10 && { iconRight: 'arrowRight' })}
-        onClick={() => onFormActionClick(true)}
+        onClick={() => onFormActionClick(true, step + 1 === LAST_STEP)}
         disabled={buttonsDisabled}
       >
         {step < 10 ? 'Next' : 'Submit'}

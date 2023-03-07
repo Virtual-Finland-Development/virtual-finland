@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import {
   ReactNode,
   createContext,
@@ -42,14 +40,14 @@ interface CompanyContextProps {
   setIsCurrentStepDone: (step: Step, done: boolean) => void;
   step: number;
   setStep: (step: number) => void;
+  isLoading: boolean;
 }
 
 interface CompanyProviderProps {
   children: ReactNode;
 }
 
-const LAST_STEP_COMPANY = 7;
-const LAST_STEP_BENEFICIAL_OWNERS = 3;
+const LAST_STEP = 11;
 
 const CompanyContext = createContext<CompanyContextProps | undefined>(
   undefined
@@ -61,6 +59,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const [step, setStep] = useState(0);
   const [values, setValues] = useState<Partial<CompanyContextValues>>({});
   const [doneSteps, setStepDone] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const isStepDone = useCallback(
     (step: Step) => {
@@ -106,7 +105,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     [isStepDone]
   );
 
-  const setValuesAndNextStep = useCallback(
+  const setContextValues = useCallback(
     async (newValues: Partial<CompanyContextValues>) => {
       const mergedValues = lodash_merge(values, newValues);
       setValues(mergedValues);
@@ -114,8 +113,18 @@ function CompanyContextProvider(props: CompanyProviderProps) {
        * TODO: on very last step data should be saved via productizers (review section?)
        * TODO: if editing existing data, each step should save data directly without changing the step
        */
+      if (step + 1 === LAST_STEP) {
+        const { company, beneficialOwners, signatoryRights } = mergedValues;
+        console.log(company);
+        console.log(beneficialOwners);
+        console.log(signatoryRights);
+        setIsLoading(true);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 3000);
+      }
     },
-    [values]
+    [step, values]
   );
 
   const setIsCurrentStepDone = useCallback((step: Step, done: boolean) => {
@@ -126,13 +135,14 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     <CompanyContext.Provider
       value={{
         values,
-        setValues: setValuesAndNextStep,
+        setValues: setContextValues,
         isStepDone,
         isPrevStepDone,
         doneSteps,
         setIsCurrentStepDone,
         step,
         setStep,
+        isLoading,
       }}
     >
       {children}
@@ -151,4 +161,9 @@ function useCompanyContext() {
 }
 
 export type { Step };
-export { CompanyContextProvider, CompanyContextConsumer, useCompanyContext };
+export {
+  CompanyContextProvider,
+  CompanyContextConsumer,
+  useCompanyContext,
+  LAST_STEP,
+};

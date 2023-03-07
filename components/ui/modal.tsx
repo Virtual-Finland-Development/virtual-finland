@@ -5,7 +5,7 @@ import {
   ModalTitle,
   Modal as SuomiFiModal,
 } from 'suomifi-ui-components';
-import useDimensions from '@/hooks/use-dimensions';
+import useDimensions from '@/lib/hooks/use-dimensions';
 
 interface Props {
   title: string;

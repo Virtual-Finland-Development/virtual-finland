@@ -62,7 +62,7 @@ export default function CompanyRegistrant() {
       <FormPhoneInput
         name={`company.registrant.phoneNumber`}
         control={control}
-        rules={{ required: 'Phone nuber is required.' }}
+        rules={{ required: 'Phone number is required.' }}
         labelText="Phone number"
         hintText="Use international format (+358xxx)"
         error={formState.errors?.company?.registrant?.phoneNumber}

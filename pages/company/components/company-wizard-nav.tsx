@@ -6,9 +6,9 @@ import {
   WizardNavigationItem,
   WizardNavigationItemProps,
 } from 'suomifi-ui-components';
+import useDimensions from '@/lib/hooks/use-dimensions';
 import { useCompanyContext } from '@/context/company-context';
 import { Step } from '@/context/company-context';
-import useDimensions from '@/hooks/use-dimensions';
 
 const COMPANY_STEPS = [
   {
@@ -63,7 +63,7 @@ interface Props {
 export default function CompanyWizardNav(props: Props) {
   const { onWizardNavChange } = props;
   const { width } = useDimensions();
-  const { isStepDone, isPrevStepDone, doneSteps, step, setStep } =
+  const { isStepDone, isPrevStepDone, doneSteps, step, isLoading } =
     useCompanyContext();
 
   const doneStepValues = Object.values(doneSteps);
@@ -103,7 +103,7 @@ export default function CompanyWizardNav(props: Props) {
       aria-label="Company establishment wizard steps"
       initiallyExpanded={false}
       variant={width > 1024 ? 'default' : 'smallScreen'}
-      tw="!min-w-full"
+      className={isLoading ? 'pointer-events-none' : ''}
     >
       <div className="ml-5 mb-2">
         <Heading variant="h5">1. Details</Heading>

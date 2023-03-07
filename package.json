@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:static": "serve ./out",
     "build": "next build",
+    "export": "next build && next export && next-image-export-optimizer",
     "start": "next start",
     "lint": "next lint"
   },
@@ -26,6 +28,7 @@
     "lodash.get": "^4.4.2",
     "lodash.merge": "^4.6.2",
     "next": "13.1.6",
+    "next-image-export-optimizer": "^1.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.2",
@@ -46,6 +49,7 @@
     "babel-plugin-macros": "^3.1.0",
     "babel-plugin-styled-components": "^2.0.7",
     "postcss": "^8.4.21",
+    "serve": "^14.2.0",
     "tailwindcss": "^3.2.6",
     "twin.macro": "^3.1.0"
   },

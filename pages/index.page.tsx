@@ -1,9 +1,11 @@
-import Image from 'next/image';
+import ExportedImage from 'next-image-export-optimizer';
+// import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Block, Button, StaticIcon, Text } from 'suomifi-ui-components';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 import CustomLink from '@/components/ui/custom-link';
+import womanLaptopImage from '../public/images/woman-laptop.jpg';
 
 export default function Home() {
   const router = useRouter();
@@ -57,14 +59,25 @@ export default function Home() {
       </Block>
 
       <Block variant="section" className="bg-white px-4 py-6">
-        <Image
+        {/* <Image
           src="/images/woman-laptop.jpg"
           alt="Woman with laptop"
           width={330}
           height={165}
           className="w-full md:w-auto mb-6"
           priority
-        />
+        /> */}
+        <div className="w-full md:w-auto mb-6">
+          <ExportedImage
+            src={womanLaptopImage}
+            alt="Woman with laptop"
+            width={330}
+            height={165}
+            className="w-full md:w-auto mb-6"
+            priority
+          />
+        </div>
+
         <CustomHeading variant="h2" suomiFiBlue="dark">
           What can I do here?
         </CustomHeading>

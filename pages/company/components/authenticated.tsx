@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Block, Button, Text } from 'suomifi-ui-components';
 import CustomHeading from '@/components/ui/custom-heading';
@@ -37,9 +38,12 @@ export default function Authenticated() {
             mollit anim id est laborum.
           </Text>
 
-          <Button onClick={() => router.push('/company/establishment')}>
+          {/* <Button onClick={() => router.push('/company/establishment')}>
             Modify company information
-          </Button>
+          </Button> */}
+          <Link href="/company/edit/123">Edit company 1</Link>
+          <Link href="/company/edit/456">Edit company 2</Link>
+          <Link href="/company/edit/789">Edit company 3</Link>
         </div>
       </Block>
     </>

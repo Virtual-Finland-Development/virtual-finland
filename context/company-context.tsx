@@ -3,6 +3,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 import lodash_get from 'lodash.get';
@@ -12,6 +13,15 @@ import type {
   NonListedCompany,
   SignatoryRights,
 } from '@/types';
+import api from '@/lib/api';
+import {
+  useBeneficialOwners,
+  useCompany,
+  useSaveBeneficialOwners,
+  useSaveCompany,
+  useSignatoryRights,
+} from '@/lib/hooks/companies';
+import Loading from '@/components/ui/loading';
 
 interface CompanyContextValues {
   company: Partial<NonListedCompany>;
@@ -41,9 +51,11 @@ interface CompanyContextProps {
   step: number;
   setStep: (step: number) => void;
   isLoading: boolean;
+  businessId?: string;
 }
 
 interface CompanyProviderProps {
+  businessId?: string;
   children: ReactNode;
 }
 
@@ -55,17 +67,54 @@ const CompanyContext = createContext<CompanyContextProps | undefined>(
 const CompanyContextConsumer = CompanyContext.Consumer;
 
 function CompanyContextProvider(props: CompanyProviderProps) {
-  const { children } = props;
+  const { businessId, children } = props;
   const [step, setStep] = useState(0);
   const [values, setValues] = useState<Partial<CompanyContextValues>>({});
   const [doneSteps, setStepDone] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
+  /**
+   * [hooks] Fetch company related data, if businessId was provided.
+   */
+  const { data: companyData, isFetching: companyLoading } = useCompany(
+    businessId || undefined
+  );
+  const { data: beneficialOwnersData, isFetching: beneficialOwnersLoading } =
+    useBeneficialOwners(businessId || undefined);
+  const { data: signatoryRightsData, isFetching: signatoryRightsLoading } =
+    useSignatoryRights(businessId || undefined);
+
+  /**
+   * [hooks] Save company related data.
+   */
+
+  const companyDataLoading =
+    companyLoading || beneficialOwnersLoading || signatoryRightsLoading;
+
+  /**
+   * Set fetched company related to state, if businessId was provided and if data exists.
+   */
+  useEffect(() => {
+    if (businessId && !companyDataLoading) {
+      setValues({
+        ...(companyData && { company: companyData }),
+        ...(beneficialOwnersData && { beneficialOwners: beneficialOwnersData }),
+        ...(signatoryRightsData && { signatoryRights: signatoryRightsData }),
+      });
+    }
+  }, [
+    beneficialOwnersData,
+    businessId,
+    companyData,
+    companyDataLoading,
+    signatoryRightsData,
+  ]);
+
   const isStepDone = useCallback(
     (step: Step) => {
-      return Boolean(lodash_get(doneSteps, step));
+      return Boolean(lodash_get(doneSteps, step) || businessId);
     },
-    [doneSteps]
+    [businessId, doneSteps]
   );
 
   /* const isStepDoneAndHasValues = useCallback(
@@ -115,21 +164,48 @@ function CompanyContextProvider(props: CompanyProviderProps) {
        */
       if (step + 1 === LAST_STEP) {
         const { company, beneficialOwners, signatoryRights } = mergedValues;
-        console.log(company);
-        console.log(beneficialOwners);
-        console.log(signatoryRights);
         setIsLoading(true);
-        setTimeout(() => {
+
+        let payloadBusinessId: string = '';
+
+        try {
+          if (!businessId) {
+            await api.company.saveCompany(company as Partial<NonListedCompany>);
+            const companiesResponse = await api.company.getCompanies();
+            payloadBusinessId = companiesResponse[0].businessId;
+          } else {
+            payloadBusinessId = businessId;
+            await api.company.saveCompanyDirectlyToPRH(
+              businessId,
+              company as Partial<NonListedCompany>
+            );
+          }
+
+          await api.company.saveBeneficialOwners(
+            payloadBusinessId,
+            beneficialOwners as Partial<BenecifialOwners>
+          );
+          await api.company.saveSignatoryRights(
+            payloadBusinessId,
+            signatoryRights as Partial<SignatoryRights>
+          );
+        } catch (error) {
+          console.log(error);
+        } finally {
           setIsLoading(false);
-        }, 3000);
+        }
       }
     },
-    [step, values]
+    [businessId, step, values]
   );
 
   const setIsCurrentStepDone = useCallback((step: Step, done: boolean) => {
     setStepDone(prev => ({ ...prev, [step]: done }));
   }, []);
+
+  if (companyDataLoading) {
+    return <Loading />;
+  }
 
   return (
     <CompanyContext.Provider
@@ -142,7 +218,8 @@ function CompanyContextProvider(props: CompanyProviderProps) {
         setIsCurrentStepDone,
         step,
         setStep,
-        isLoading,
+        isLoading: isLoading,
+        businessId,
       }}
     >
       {children}

@@ -1,11 +1,10 @@
 import { useRouter } from 'next/router';
 import { Block, Button, Text } from 'suomifi-ui-components';
-import { CompanyContextProvider } from '@/context/company-context';
 import AuthSentry from '@/components/auth-sentry';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 
-export default function Establishment() {
+export default function CompanyEstablishment() {
   const router = useRouter();
 
   return (
@@ -41,5 +40,3 @@ export default function Establishment() {
     </AuthSentry>
   );
 }
-
-Establishment.provider = CompanyContextProvider;

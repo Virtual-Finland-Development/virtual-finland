@@ -67,13 +67,12 @@ export default function Home() {
           className="w-full md:w-auto mb-6"
           priority
         /> */}
-        <div className="w-full md:w-auto mb-6">
+        <div className="max-w-sm mb-6">
           <ExportedImage
             src={womanLaptopImage}
             alt="Woman with laptop"
             width={330}
             height={165}
-            className="w-full md:w-auto mb-6"
             priority
           />
         </div>

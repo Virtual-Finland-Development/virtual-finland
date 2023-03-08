@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FC, PropsWithChildren, ReactNode } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import tw from 'twin.macro';
 import { AuthConsumer, AuthProvider } from '@/context/auth-context';
 import { ModalProvider } from '@/context/modal-context';
@@ -16,6 +17,8 @@ type ExtendedAppProps = AppProps & {
   Component: NextComponentType & { provider?: FC<PropsWithChildren> };
 };
 
+const queryClient = new QueryClient();
+
 const Container = tw.div`container flex items-center justify-center h-screen`;
 
 const NoProvider = ({ children }: { children: ReactNode }) => <>{children}</>;
@@ -25,46 +28,48 @@ export default function App({ Component, pageProps }: ExtendedAppProps) {
   const router = useRouter();
 
   return (
-    <AuthProvider>
-      <Head>
-        <title>Living in Finland</title>
-        <meta name="description" content="Living in Finland demo app" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <AuthConsumer>
-        {provider => {
-          if (!provider) {
-            return null;
-          }
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Head>
+          <title>Living in Finland</title>
+          <meta name="description" content="Living in Finland demo app" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <AuthConsumer>
+          {provider => {
+            if (!provider) {
+              return null;
+            }
 
-          if (provider.isLoading) {
-            return (
-              <Container>
-                <Loading />
-              </Container>
-            );
-          }
+            if (provider.isLoading) {
+              return (
+                <Container>
+                  <Loading />
+                </Container>
+              );
+            }
 
-          if (router.pathname === '/auth') {
-            return (
-              <Container>
-                <Component {...pageProps} />
-              </Container>
-            );
-          }
-
-          return (
-            <ModalProvider>
-              <MainLayout>
-                <ComponentContextProvider>
+            if (router.pathname === '/auth') {
+              return (
+                <Container>
                   <Component {...pageProps} />
-                </ComponentContextProvider>
-              </MainLayout>
-            </ModalProvider>
-          );
-        }}
-      </AuthConsumer>
-    </AuthProvider>
+                </Container>
+              );
+            }
+
+            return (
+              <ModalProvider>
+                <MainLayout>
+                  <ComponentContextProvider>
+                    <Component {...pageProps} />
+                  </ComponentContextProvider>
+                </MainLayout>
+              </ModalProvider>
+            );
+          }}
+        </AuthConsumer>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }

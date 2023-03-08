@@ -73,11 +73,8 @@ export default function Breadcrumbs() {
       <Breadcrumb aria-label="Breadcrumb">
         {breadcrumbs.map(item => (
           <Link key={item.href} href={item.href} passHref legacyBehavior>
-            <BreadcrumbCustomLink
-              href=""
-              current={router.pathname === item.href}
-            >
-              {convertLabel(item.label)}
+            <BreadcrumbCustomLink href="" current={router.asPath === item.href}>
+              {router.query.businessId ? item.label : convertLabel(item.label)}
             </BreadcrumbCustomLink>
           </Link>
         ))}

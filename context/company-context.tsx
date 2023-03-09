@@ -10,15 +10,16 @@ import lodash_get from 'lodash.get';
 import lodash_merge from 'lodash.merge';
 import type {
   BenecifialOwners,
+  CountryOption,
+  CurrencyOption,
   NonListedCompany,
   SignatoryRights,
 } from '@/types';
 import api from '@/lib/api';
+import { useCountries, useCurrencies } from '@/lib/hooks/codesets';
 import {
   useBeneficialOwners,
   useCompany,
-  useSaveBeneficialOwners,
-  useSaveCompany,
   useSignatoryRights,
 } from '@/lib/hooks/companies';
 import Loading from '@/components/ui/loading';
@@ -52,6 +53,10 @@ interface CompanyContextProps {
   setStep: (step: number) => void;
   isLoading: boolean;
   businessId?: string;
+  codesets: {
+    countries: CountryOption[] | undefined;
+    currencies: CurrencyOption[] | undefined;
+  };
 }
 
 interface CompanyProviderProps {
@@ -74,6 +79,12 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   /**
+   * [hooks] Fetch codesets.
+   */
+  const { data: currencies, isLoading: currenciesLoading } = useCurrencies();
+  const { data: countries, isLoading: countriesLoading } = useCountries();
+
+  /**
    * [hooks] Fetch company related data, if businessId was provided.
    */
   const { data: companyData, isFetching: companyLoading } = useCompany(
@@ -86,6 +97,8 @@ function CompanyContextProvider(props: CompanyProviderProps) {
 
   const companyDataLoading =
     companyLoading || beneficialOwnersLoading || signatoryRightsLoading;
+  const codeSetsLoading = currenciesLoading || countriesLoading;
+  const contextLoading = companyDataLoading || codeSetsLoading;
 
   /**
    * Set fetched company related to state, if businessId was provided and if data exists.
@@ -208,7 +221,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     setStepDone(prev => ({ ...prev, [step]: done }));
   }, []);
 
-  if (companyDataLoading) {
+  if (contextLoading) {
     return <Loading />;
   }
 
@@ -225,6 +238,21 @@ function CompanyContextProvider(props: CompanyProviderProps) {
         setStep,
         isLoading: isLoading,
         businessId,
+        codesets: {
+          countries,
+          currencies: currencies
+            ? currencies
+                .filter(c =>
+                  ['EUR', 'SEK', 'NOK', 'ISK', 'DKK'].includes(c.code)
+                )
+                .reduce((acc: CurrencyOption[], item) => {
+                  if (!acc.some(i => i.code === item.code)) {
+                    acc.push(item);
+                  }
+                  return acc;
+                }, [])
+            : undefined,
+        },
       }}
     >
       {children}

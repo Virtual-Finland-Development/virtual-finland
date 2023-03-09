@@ -15,6 +15,7 @@ interface FieldProps {
 }
 
 const DEFAULT_RIGHT = {
+  role: 'director' as const,
   personalID: '',
   givenName: '',
   middleNames: '',
@@ -41,10 +42,19 @@ const REQUIRED_FIELDS = [
   'nationality',
 ];
 
+const ROLE_OPTIONS = [
+  { labelText: 'Director', uniqueItemId: 'director' },
+  { labelText: 'Debuty director', uniqueItemId: 'debuty director' },
+  { labelText: 'Board member', uniqueItemId: 'board member' },
+  { labelText: 'Debuty board member', uniqueItemId: 'deputy board member' },
+  { labelText: 'Other', uniqueItemId: 'other' },
+];
+
 export default function SignatoryRightsSigninRights() {
   const {
     values: { signatoryRights },
     setIsCurrentStepDone,
+    codesets: { countries },
   } = useCompanyContext();
   const { control, formState, getFieldState } = useFormContext<FieldProps>();
   const { invalid } = getFieldState('signatoryRights.signinRights', formState);
@@ -96,6 +106,14 @@ export default function SignatoryRightsSigninRights() {
           className="flex flex-col items-start gap-3 border-b border-b-gray-300 pb-6 w-full"
         >
           <div className="grid sm:grid-cols-2 gap-6">
+            <FormSingleSelect
+              name={`signatoryRights.signinRights.${index}.role`}
+              control={control}
+              rules={{ required: 'Role is required.' }}
+              labelText="Nationality"
+              hintText="Filter by typing or select from dropdown"
+              items={ROLE_OPTIONS}
+            />
             <FormInput
               name={`signatoryRights.signinRights.${index}.personalID`}
               control={control}
@@ -134,20 +152,14 @@ export default function SignatoryRightsSigninRights() {
               rules={{ required: 'Nationality is required.' }}
               labelText="Nationality"
               hintText="Filter by typing or select from dropdown"
-              items={[
-                {
-                  labelText: 'Finland',
-                  uniqueItemId: 'jh2435626',
-                },
-                {
-                  labelText: 'Sweden',
-                  uniqueItemId: 'h9823523',
-                },
-                {
-                  labelText: 'Norway',
-                  uniqueItemId: 'sh908293482',
-                },
-              ]}
+              items={
+                countries
+                  ? countries.map(c => ({
+                      labelText: c.englishName,
+                      uniqueItemId: c.threeLetterISORegionName,
+                    }))
+                  : []
+              }
             />
             <FormInput
               name={`signatoryRights.signinRights.${index}.fullAddress`}

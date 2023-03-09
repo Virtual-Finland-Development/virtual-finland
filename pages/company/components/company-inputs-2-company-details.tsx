@@ -25,6 +25,7 @@ export default function CompanyDetails() {
   const {
     values: { company },
     setIsCurrentStepDone,
+    codesets: { countries, currencies },
   } = useCompanyContext();
   const { control, formState, getFieldState } = useFormContext<FieldProps>();
   const { invalid } = getFieldState('company.companyDetails', formState);
@@ -102,16 +103,14 @@ export default function CompanyDetails() {
           rules={{ required: 'Capital currency is required.' }}
           labelText="Capital currency"
           hintText="Filter by typing or select from dropdown"
-          items={[
-            {
-              labelText: 'EUR',
-              uniqueItemId: 'EUR',
-            },
-            {
-              labelText: 'USD',
-              uniqueItemId: 'USD',
-            },
-          ]}
+          items={
+            currencies
+              ? currencies.map(c => ({
+                  labelText: `${c.code} (${c.name})`,
+                  uniqueItemId: c.id,
+                }))
+              : []
+          }
         />
         <FormInput
           type="number"
@@ -128,16 +127,14 @@ export default function CompanyDetails() {
           labelText="Deposit currency"
           hintText="Filter by typing or select from dropdown"
           optionalText="optional"
-          items={[
-            {
-              labelText: 'EUR',
-              uniqueItemId: 'EUR',
-            },
-            {
-              labelText: 'USD',
-              uniqueItemId: 'USD',
-            },
-          ]}
+          items={
+            currencies
+              ? currencies.map(c => ({
+                  labelText: `${c.code} (${c.name})`,
+                  uniqueItemId: c.id,
+                }))
+              : []
+          }
         />
         <FormInput
           type="date"
@@ -153,20 +150,14 @@ export default function CompanyDetails() {
           labelText="Country of residence"
           hintText="Filter by typing or select from dropdown"
           optionalText="optional"
-          items={[
-            {
-              labelText: 'Finland',
-              uniqueItemId: 'jh2435626',
-            },
-            {
-              labelText: 'Sweden',
-              uniqueItemId: 'h9823523',
-            },
-            {
-              labelText: 'Norway',
-              uniqueItemId: 'sh908293482',
-            },
-          ]}
+          items={
+            countries
+              ? countries.map(c => ({
+                  labelText: c.englishName,
+                  uniqueItemId: c.threeLetterISORegionName,
+                }))
+              : []
+          }
         />
       </div>
     </div>

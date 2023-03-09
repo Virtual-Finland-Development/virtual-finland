@@ -43,6 +43,7 @@ export default function CompanyShareSeries() {
   const {
     values: { company },
     setIsCurrentStepDone,
+    codesets: { currencies },
   } = useCompanyContext();
   const { control, formState, getFieldState } = useFormContext<FieldProps>();
   const { invalid } = getFieldState('company.shareSeries', formState);
@@ -52,7 +53,12 @@ export default function CompanyShareSeries() {
   });
 
   const appendShareSeries = () => {
-    append({ shareSeriesClass: 'A', numberOfShares: 0, shareValue: 0 });
+    append({
+      shareSeriesClass: 'A',
+      numberOfShares: 0,
+      shareValue: 0,
+      shareValueCurrency: 'EUR',
+    });
   };
 
   const removeShareSeries = (index: number) => {
@@ -118,6 +124,20 @@ export default function CompanyShareSeries() {
                 validate: value => value > -1,
               }}
               labelText="Share value"
+            />
+            <FormSingleSelect
+              name={`company.shareSeries.${index}.shareValueCurrency`}
+              control={control}
+              labelText="Share value currency"
+              optionalText="optional"
+              items={
+                currencies
+                  ? currencies.map(c => ({
+                      labelText: `${c.code} (${c.name})`,
+                      uniqueItemId: c.id,
+                    }))
+                  : []
+              }
             />
           </div>
           {index > 0 && (

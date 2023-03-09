@@ -29,25 +29,11 @@ const ROLE_OPTIONS = [
   { labelText: 'Debuty member', uniqueItemId: 'debuty member' },
 ];
 
-const COUNTRY_OPTIONS = [
-  {
-    labelText: 'Finland',
-    uniqueItemId: 'jh2435626',
-  },
-  {
-    labelText: 'Sweden',
-    uniqueItemId: 'h9823523',
-  },
-  {
-    labelText: 'Norway',
-    uniqueItemId: 'sh908293482',
-  },
-];
-
 export default function CompanyBoardMembers() {
   const {
     values: { company },
     setIsCurrentStepDone,
+    codesets: { countries },
   } = useCompanyContext();
   const { control, formState, getFieldState } = useFormContext<FieldProps>();
   const { invalid } = getFieldState('company.boardMembers', formState);
@@ -140,7 +126,14 @@ export default function CompanyBoardMembers() {
             <FormSingleSelect
               name={`company.boardMembers.${index}.nationality`}
               control={control}
-              items={COUNTRY_OPTIONS}
+              items={
+                countries
+                  ? countries.map(c => ({
+                      labelText: c.englishName,
+                      uniqueItemId: c.threeLetterISORegionName,
+                    }))
+                  : []
+              }
               labelText="Nationality"
               hintText="Filter by typing or select from dropdown"
             />

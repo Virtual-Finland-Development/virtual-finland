@@ -175,7 +175,7 @@ export default function CompanyWizard() {
 
         {isLoading ? (
           <div className="flex w-full align-center justify-center mb-4">
-            <Loading text="Saving.." />
+            <Loading />
           </div>
         ) : (
           <Block

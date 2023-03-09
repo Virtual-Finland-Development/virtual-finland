@@ -62,6 +62,7 @@ export type ShareSeries = {
   shareSeriesClass: 'A' | 'B' | 'C' | 'D' | 'E';
   numberOfShares: number;
   shareValue: number;
+  shareValueCurrency: string;
 };
 
 export type ManagingDirector = {
@@ -127,6 +128,13 @@ export interface BenecifialOwners {
  * NonListedCompany/SignatoryRights
  */
 export interface SigningRight {
+  role:
+    | 'director'
+    | 'deputy director'
+    | 'chairperson'
+    | 'board member'
+    | 'deputy board member'
+    | 'other';
   personalID: string;
   givenName: string;
   middleNames: string;
@@ -147,4 +155,23 @@ export interface SigningRight {
 
 export interface SignatoryRights {
   signinRights: SigningRight[];
+}
+
+/**
+ * Codesets
+ */
+export interface CountryOption {
+  displayName: string;
+  englishName: string;
+  id: string;
+  nativeName: string;
+  threeLetterISORegionName: string;
+  twoLetterISORegionName: string;
+}
+
+export interface CurrencyOption {
+  id: string;
+  name: string;
+  code: string;
+  country: string;
 }

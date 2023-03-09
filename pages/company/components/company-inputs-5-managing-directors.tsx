@@ -28,25 +28,11 @@ const ROLE_OPTIONS = [
   { labelText: 'Debuty director', uniqueItemId: 'debuty director' },
 ];
 
-const COUNTRY_OPTIONS = [
-  {
-    labelText: 'Finland',
-    uniqueItemId: 'jh2435626',
-  },
-  {
-    labelText: 'Sweden',
-    uniqueItemId: 'h9823523',
-  },
-  {
-    labelText: 'Norway',
-    uniqueItemId: 'sh908293482',
-  },
-];
-
 export default function CompanyManagingDirectors() {
   const {
     values: { company },
     setIsCurrentStepDone,
+    codesets: { countries },
   } = useCompanyContext();
   const { control, formState, getFieldState } = useFormContext<FieldProps>();
   const { invalid } = getFieldState('company.managingDirectors', formState);
@@ -140,7 +126,14 @@ export default function CompanyManagingDirectors() {
               name={`company.managingDirectors.${index}.nationality`}
               control={control}
               rules={{ required: 'Nationality is required.' }}
-              items={COUNTRY_OPTIONS}
+              items={
+                countries
+                  ? countries.map(c => ({
+                      labelText: c.englishName,
+                      uniqueItemId: c.threeLetterISORegionName,
+                    }))
+                  : []
+              }
               labelText="Nationality"
               hintText="Filter by typing or select from dropdown"
             />

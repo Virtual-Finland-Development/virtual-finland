@@ -88,7 +88,8 @@ const DEFAULT_VALUES = {
 };
 
 export default function CompanyWizard() {
-  const { values, setValues, step, setStep, isLoading } = useCompanyContext();
+  const { values, setValues, step, setStep, isLoading, businessId } =
+    useCompanyContext();
 
   /**
    * Form methods, passed to form provider (react-hook-form).
@@ -103,12 +104,11 @@ export default function CompanyWizard() {
    * Reset values to react-hook-form state, if was provided from company context.
    */
   useEffect(() => {
-    if (values) {
-      console.log('jesjes!!');
+    if (businessId && values) {
       console.log(values);
       formMethods.reset({ ...values });
     }
-  }, [formMethods, values]);
+  }, [businessId, formMethods, values]);
 
   /**
    * Handle form submission, save values to context.

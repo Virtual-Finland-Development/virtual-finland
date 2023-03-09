@@ -7,11 +7,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import tw from 'twin.macro';
 import { AuthConsumer, AuthProvider } from '@/context/auth-context';
 import { ModalProvider } from '@/context/modal-context';
+import { ToastProvider } from '@/context/toast-context';
 import MainLayout from '@/components/layout/main-layout';
 import Loading from '@/components/ui/loading';
 import 'suomifi-ui-components/dist/main.css';
 import '@/styles/globals.css';
 import 'react-phone-number-input/style.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 type ExtendedAppProps = AppProps & {
   Component: NextComponentType & { provider?: FC<PropsWithChildren> };
@@ -60,11 +62,13 @@ export default function App({ Component, pageProps }: ExtendedAppProps) {
 
             return (
               <ModalProvider>
-                <MainLayout>
-                  <ComponentContextProvider>
-                    <Component {...pageProps} />
-                  </ComponentContextProvider>
-                </MainLayout>
+                <ToastProvider>
+                  <MainLayout>
+                    <ComponentContextProvider>
+                      <Component {...pageProps} />
+                    </ComponentContextProvider>
+                  </MainLayout>
+                </ToastProvider>
               </ModalProvider>
             );
           }}

@@ -22,6 +22,7 @@ import {
   useCompany,
   useSignatoryRights,
 } from '@/lib/hooks/companies';
+import { useToast } from '@/context/toast-context';
 import Loading from '@/components/ui/loading';
 
 interface CompanyContextValues {
@@ -77,6 +78,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const [values, setValues] = useState<Partial<CompanyContextValues>>({});
   const [doneSteps, setStepDone] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
 
   /**
    * [hooks] Fetch codesets.
@@ -195,13 +197,17 @@ function CompanyContextProvider(props: CompanyProviderProps) {
           payloadBusinessId,
           signatoryRights as Partial<SignatoryRights>
         );
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        toast({
+          status: 'error',
+          title: 'Error',
+          content: error?.message || 'Something went wrong.',
+        });
       } finally {
         setIsLoading(false);
       }
     },
-    [businessId]
+    [businessId, toast]
   );
 
   const setContextValues = useCallback(

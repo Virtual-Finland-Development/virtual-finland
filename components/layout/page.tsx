@@ -17,7 +17,7 @@ export default function Page(props: Props) {
   return (
     <>
       <Head>
-        <title>{title} - Living in Finland</title>
+        <title>{title} - Virtual Finland</title>
       </Head>
 
       <Breadcrumbs />

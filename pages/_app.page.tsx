@@ -33,8 +33,8 @@ export default function App({ Component, pageProps }: ExtendedAppProps) {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <Head>
-          <title>Living in Finland</title>
-          <meta name="description" content="Living in Finland demo app" />
+          <title>Virtual Finland</title>
+          <meta name="description" content="Virtual Finland demo app" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>

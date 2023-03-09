@@ -72,12 +72,12 @@ function Social() {
         <div className="flex flex-col gap-3 text-white border-b py-6">
           <div className="flex flex-row items-center gap-2">
             <GrTwitter />
-            <CustomText>@livinginfinland</CustomText>
+            <CustomText>@virtualfinland</CustomText>
           </div>
 
           <div className="flex flex-row items-center gap-2">
             <GrFacebook />
-            <CustomText>@livinginfinland</CustomText>
+            <CustomText>@virtualfinland</CustomText>
           </div>
         </div>
         {/* <Image

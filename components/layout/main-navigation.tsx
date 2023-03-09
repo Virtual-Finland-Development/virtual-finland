@@ -184,7 +184,7 @@ export default function MainNavigation() {
                 {/* Main heading */}
                 <Link href="/">
                   <CustomHeading variant="h4" suomiFiBlue="light">
-                    LIVING IN FINLAND
+                    VIRTUAL FINLAND
                   </CustomHeading>
                 </Link>
 

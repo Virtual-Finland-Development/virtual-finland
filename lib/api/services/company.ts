@@ -8,12 +8,12 @@ import type {
 import apiClient from '../api-client';
 import { PRH_MOCK_BASE_URL } from '../endpoints';
 
-interface CompaniesResponse {
+interface CompanyResponse {
   businessId: string;
   data: NonListedCompany;
 }
 
-export async function getCompanies(): Promise<CompaniesResponse[]> {
+export async function getCompanies(): Promise<CompanyResponse[]> {
   const token = Cookies.get('idToken');
 
   if (!token) {
@@ -24,6 +24,24 @@ export async function getCompanies(): Promise<CompaniesResponse[]> {
     const { sub }: { sub: string | undefined } = jwt_decode(token);
     const { data } = await apiClient.get(
       `${PRH_MOCK_BASE_URL}/users/${sub}/companies`
+    );
+    return data;
+  } catch (error) {
+    throw new Error('Invalid token.');
+  }
+}
+
+export async function getLatestModifiedCompany(): Promise<CompanyResponse> {
+  const token = Cookies.get('idToken');
+
+  if (!token) {
+    throw new Error('No token.');
+  }
+
+  try {
+    const { sub }: { sub: string | undefined } = jwt_decode(token);
+    const { data } = await apiClient.get(
+      `${PRH_MOCK_BASE_URL}/users/${sub}/companies:last-modified`
     );
     return data;
   } catch (error) {

@@ -84,10 +84,6 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const { data: signatoryRightsData, isFetching: signatoryRightsLoading } =
     useSignatoryRights(businessId || undefined);
 
-  /**
-   * [hooks] Save company related data.
-   */
-
   const companyDataLoading =
     companyLoading || beneficialOwnersLoading || signatoryRightsLoading;
 
@@ -154,49 +150,58 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     [isStepDone]
   );
 
+  const saveCompanyData = useCallback(
+    async (values: Partial<CompanyContextValues>) => {
+      setIsLoading(true);
+      const { company, beneficialOwners, signatoryRights } = values;
+      let payloadBusinessId: string = '';
+
+      // hack: when updating existing company, we need to use direct call to PRH mock bypassing testbed,
+      // because Establish/Write does not have the ability to update existing company
+      try {
+        if (!businessId) {
+          // productizer call, create
+          await api.company.saveCompany(company as Partial<NonListedCompany>);
+          // get created company from PRH mock, so we can get the created businessId (productizer response does not include this)
+          const createdCompany = await api.company.getLatestModifiedCompany();
+          payloadBusinessId = createdCompany.businessId;
+        } else {
+          // PRH mock call, company update
+          payloadBusinessId = businessId;
+          await api.company.saveCompanyDirectlyToPRH(
+            businessId,
+            company as Partial<NonListedCompany>
+          );
+        }
+        // continue to create / update beneficial owners / signatory rights with businessId, productizer calls
+        await api.company.saveBeneficialOwners(
+          payloadBusinessId,
+          beneficialOwners as Partial<BenecifialOwners>
+        );
+        await api.company.saveSignatoryRights(
+          payloadBusinessId,
+          signatoryRights as Partial<SignatoryRights>
+        );
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [businessId]
+  );
+
   const setContextValues = useCallback(
     async (newValues: Partial<CompanyContextValues>) => {
       const mergedValues = lodash_merge(values, newValues);
       setValues(mergedValues);
-      /**
-       * TODO: on very last step data should be saved via productizers (review section?)
-       * TODO: if editing existing data, each step should save data directly without changing the step
-       */
+
+      // last step, create or edit company / beneficial owners / signatory rights
       if (step + 1 === LAST_STEP) {
-        const { company, beneficialOwners, signatoryRights } = mergedValues;
-        setIsLoading(true);
-
-        let payloadBusinessId: string = '';
-
-        try {
-          if (!businessId) {
-            await api.company.saveCompany(company as Partial<NonListedCompany>);
-            const companiesResponse = await api.company.getCompanies();
-            payloadBusinessId = companiesResponse[0].businessId;
-          } else {
-            payloadBusinessId = businessId;
-            await api.company.saveCompanyDirectlyToPRH(
-              businessId,
-              company as Partial<NonListedCompany>
-            );
-          }
-
-          await api.company.saveBeneficialOwners(
-            payloadBusinessId,
-            beneficialOwners as Partial<BenecifialOwners>
-          );
-          await api.company.saveSignatoryRights(
-            payloadBusinessId,
-            signatoryRights as Partial<SignatoryRights>
-          );
-        } catch (error) {
-          console.log(error);
-        } finally {
-          setIsLoading(false);
-        }
+        saveCompanyData(mergedValues);
       }
     },
-    [businessId, step, values]
+    [saveCompanyData, step, values]
   );
 
   const setIsCurrentStepDone = useCallback((step: Step, done: boolean) => {

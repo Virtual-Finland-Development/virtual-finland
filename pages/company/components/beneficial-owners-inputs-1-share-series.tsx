@@ -59,8 +59,9 @@ export default function BeneficialOwnersShareSeries() {
   const appendShareSeries = () => {
     append({
       shareSeriesClass: 'A',
-      numberOfShares: 0,
-      votesPerShare: 0,
+      numberOfShares: Math.floor(Math.random() * 100) + 1,
+      votesPerShare: Math.floor(Math.random() * 100) + 1,
+      shareValueCurrency: 'EUR',
     });
   };
 

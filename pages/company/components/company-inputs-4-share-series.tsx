@@ -55,8 +55,8 @@ export default function CompanyShareSeries() {
   const appendShareSeries = () => {
     append({
       shareSeriesClass: 'A',
-      numberOfShares: 0,
-      shareValue: 0,
+      numberOfShares: Math.floor(Math.random() * 100) + 1,
+      shareValue: Math.floor(Math.random() * 100) + 1,
       shareValueCurrency: 'EUR',
     });
   };

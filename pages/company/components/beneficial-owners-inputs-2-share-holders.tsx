@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import lodash_get from 'lodash.get';
 import { Button } from 'suomifi-ui-components';
 import type { Shareholder } from '@/types';
+import { pickRandomName } from '@/lib/utils';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
@@ -53,11 +54,11 @@ export default function BeneficialOwnersShareholders() {
 
   const appendShareSeries = () => {
     append({
-      name: '',
+      name: `${pickRandomName('lastName')}-${pickRandomName('firstName')} Ltd`,
       ownerships: [
         {
           shareSeriesClass: 'A',
-          quantity: 0,
+          quantity: Math.floor(Math.random() * 100) + 1,
         },
       ],
     });

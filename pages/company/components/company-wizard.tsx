@@ -6,7 +6,11 @@ import type {
   NonListedCompany,
   SignatoryRights,
 } from '@/types';
-import { nullifyUndefinedValues } from '@/lib/utils';
+import {
+  nullifyUndefinedValues,
+  pickRandomDateString,
+  pickRandomName,
+} from '@/lib/utils';
 import { useCompanyContext } from '@/context/company-context';
 import Loading from '@/components/ui/loading';
 import BeneficialOwnersShareSeries from './beneficial-owners-inputs-1-share-series';
@@ -45,19 +49,50 @@ const companyWizardSteps = [
 
 const DEFAULT_VALUES = {
   company: {
+    registrant: {
+      givenName: pickRandomName('firstName'),
+      lastName: pickRandomName('lastName'),
+      email: pickRandomName('lastName'),
+      phoneNumber: '+1 231 231 2312',
+    },
+    companyDetails: {
+      name: `${pickRandomName('firstName')}-${pickRandomName('lastName')} Ltd.`,
+      industrySector: '42.1',
+      shareCapital: 200,
+      capitalCurrency: 'EUR',
+      settlementDeposit: 5000,
+      depositCurrency: 'EUR',
+      foundingDate: pickRandomDateString(),
+    },
+    companyAddress: {
+      fullAddress: `Company address ${Math.floor(Math.random() * 100)}`,
+    },
     shareSeries: [
       {
         shareSeriesClass: 'A' as const,
+        numberOfShares: 5,
+        shareValue: 10,
+        shareValueCurrency: 'EUR',
       },
     ],
     managingDirectors: [
       {
         role: 'director' as const,
+        givenName: pickRandomName('firstName'),
+        lastName: pickRandomName('lastName'),
+        middleNames: pickRandomName('firstName'),
+        dateOfBirth: pickRandomDateString(),
+        nationality: 'FIN',
       },
     ],
     boardMembers: [
       {
         role: 'chairperson' as const,
+        givenName: pickRandomName('firstName'),
+        lastName: pickRandomName('lastName'),
+        middleNames: pickRandomName('firstName'),
+        dateOfBirth: pickRandomDateString(),
+        nationality: 'FIN',
       },
     ],
   },
@@ -65,14 +100,20 @@ const DEFAULT_VALUES = {
     shareSeries: [
       {
         shareSeriesClass: 'A' as const,
+        numberOfShares: Math.floor(Math.random() * 100) + 1,
+        votesPerShare: Math.floor(Math.random() * 100) + 1,
+        shareValueCurrency: 'EUR',
       },
     ],
     shareholders: [
       {
-        name: '',
+        name: `${pickRandomName('lastName')}-${pickRandomName(
+          'firstName'
+        )} Ltd`,
         ownerships: [
           {
             shareSeriesClass: 'A' as const,
+            quantity: Math.floor(Math.random() * 100) + 1,
           },
         ],
       },
@@ -81,7 +122,12 @@ const DEFAULT_VALUES = {
   signatoryRights: {
     signinRights: [
       {
-        givenName: '',
+        role: 'director' as const,
+        givenName: pickRandomName('firstName'),
+        middleNames: pickRandomName('firstName'),
+        lastName: pickRandomName('lastName'),
+        dateOfBirth: pickRandomDateString(),
+        nationality: 'FIN',
       },
     ],
   },
@@ -97,7 +143,7 @@ export default function CompanyWizard() {
    */
   const formMethods = useForm<FormProps>({
     mode: 'onSubmit',
-    defaultValues: DEFAULT_VALUES,
+    defaultValues: { ...DEFAULT_VALUES },
   });
 
   /**

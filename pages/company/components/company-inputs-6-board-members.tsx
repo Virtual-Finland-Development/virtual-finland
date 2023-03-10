@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import lodash_get from 'lodash.get';
 import { Button } from 'suomifi-ui-components';
 import type { BoardMember } from '@/types';
+import { pickRandomDateString, pickRandomName } from '@/lib/utils';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
@@ -44,12 +45,12 @@ export default function CompanyBoardMembers() {
 
   const appendShareSeries = () => {
     append({
-      role: 'chairperson',
-      givenName: '',
-      middleNames: '',
-      lastName: '',
-      dateOfBirth: '',
-      nationality: '',
+      role: 'chairperson' as const,
+      givenName: pickRandomName('firstName'),
+      lastName: pickRandomName('lastName'),
+      middleNames: pickRandomName('firstName'),
+      dateOfBirth: pickRandomDateString(),
+      nationality: 'FIN',
     });
   };
 

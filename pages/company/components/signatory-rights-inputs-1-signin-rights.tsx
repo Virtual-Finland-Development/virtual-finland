@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import lodash_get from 'lodash.get';
 import { Button } from 'suomifi-ui-components';
 import type { SigningRight } from '@/types';
+import { pickRandomDateString, pickRandomName } from '@/lib/utils';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
@@ -17,11 +18,11 @@ interface FieldProps {
 const DEFAULT_RIGHT = {
   role: 'director' as const,
   personalID: '',
-  givenName: '',
-  middleNames: '',
-  lastName: '',
-  dateOfBirth: '',
-  nationality: '',
+  givenName: pickRandomName('firstName'),
+  middleNames: pickRandomName('firstName'),
+  lastName: pickRandomName('lastName'),
+  dateOfBirth: pickRandomDateString(),
+  nationality: 'FIN',
   fullAddress: '',
   thoroughfare: '',
   locatorDesignator: '',

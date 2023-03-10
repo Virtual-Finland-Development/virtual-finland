@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import lodash_get from 'lodash.get';
 import { Button } from 'suomifi-ui-components';
 import type { ManagingDirector } from '@/types';
+import { pickRandomDateString, pickRandomName } from '@/lib/utils';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
@@ -43,12 +44,12 @@ export default function CompanyManagingDirectors() {
 
   const appendShareSeries = () => {
     append({
-      role: 'director',
-      givenName: '',
-      middleNames: '',
-      lastName: '',
-      dateOfBirth: '',
-      nationality: '',
+      role: 'director' as const,
+      givenName: pickRandomName('firstName'),
+      lastName: pickRandomName('lastName'),
+      middleNames: pickRandomName('firstName'),
+      dateOfBirth: pickRandomDateString(),
+      nationality: 'FIN',
     });
   };
 

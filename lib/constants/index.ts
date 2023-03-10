@@ -1,22 +1,55 @@
 import { AppContextObj } from '@/types';
 
-export const APP_BASE_URL = (() => {
-  if (typeof window === 'undefined') {
-    return '';
-  }
-
-  const {
-    location: { protocol, hostname, port },
-  } = window;
-
-  if (process.env.NODE_ENV === 'development') {
-    return `${protocol}//${hostname}:${port}`;
-  } else {
-    return `${protocol}//${hostname}`;
-  }
-})();
-
 export const baseAppContextObj: AppContextObj = {
   appName: 'living-in-finland',
-  redirectUrl: `${APP_BASE_URL}/auth`,
+  redirectUrl: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/auth`,
+};
+
+export const COMPANY_DATA_LABELS: Record<string, any> = {
+  registrant: 'Registrant',
+  givenName: 'Given name',
+  lastName: 'Last name',
+  email: 'Email',
+  phoneNumber: 'Phone number',
+  companyDetails: 'Company details',
+  name: 'Name',
+  alternativeName: 'Alternative name',
+  foundingDate: 'Founding date',
+  industrySector: 'Industry sector',
+  shareCapital: 'Share capital',
+  capitalCurrency: 'Capital currency',
+  settlementDeposit: 'Settlement deposit',
+  depositCurrency: 'Deposit currency',
+  settlementDate: 'Settlement date',
+  countryOfResidence: 'Country of residence',
+  shareSeries: 'Share series',
+  shareSeriesClass: 'Share series class',
+  numberOfShares: 'Number of shares',
+  shareValue: 'Share value',
+  companyAddress: 'Company address',
+  fullAddress: 'Full address',
+  thoroughfare: 'Thoroughfare',
+  locatorDesignator: 'Locator designator',
+  locatorName: 'Locator name',
+  addressArea: 'Address area',
+  postCode: 'Post code',
+  postName: 'Post name',
+  poBox: 'Post box',
+  adminUnitLevel1: 'Admin unit level 1',
+  adminUnitLevel2: 'Admin unit level 2',
+  managingDirectors: 'Managing directors',
+  role: 'Role',
+  middleNames: 'Middle names',
+  dateOfBirth: 'Date of birth',
+  nationality: 'Nationality',
+  boardMembers: 'Board members',
+  auditorDetails: 'Auditor details',
+  companyName: 'Company name',
+  nationalIdentifier: 'National identifier',
+  votesPerShare: 'Votes per share',
+  shareholders: 'Shareholders',
+  ownerships: 'Ownerships',
+  quantity: 'Quantity',
+  signinRights: 'Signin rights',
+  personalID: 'Personal ID',
 };

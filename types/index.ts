@@ -23,7 +23,7 @@ export type LoggedInState = {
 };
 
 /**
- * NonListedCompany/Establishment
+ * NonListedCompany
  */
 export type Registrant = {
   givenName: string;
@@ -34,11 +34,13 @@ export type Registrant = {
 
 export type CompanyDetails = {
   name: string;
-  alternativeName: string;
+  alternativeName: string | null;
   foundingDate: string;
   industrySector: string;
   shareCapital: number;
+  capitalCurrency: string;
   settlementDeposit: number;
+  depositCurrency: string;
   settlementDate: number;
   countryOfResidence: string;
 };
@@ -60,9 +62,10 @@ export type ShareSeries = {
   shareSeriesClass: 'A' | 'B' | 'C' | 'D' | 'E';
   numberOfShares: number;
   shareValue: number;
+  shareValueCurrency: string;
 };
 
-export type ManagingDirectors = {
+export type ManagingDirector = {
   role: 'director' | 'deputy director';
   givenName: string;
   middleNames: string;
@@ -71,7 +74,7 @@ export type ManagingDirectors = {
   nationality: string;
 };
 
-export type BoardMembers = {
+export type BoardMember = {
   role: 'chairperson' | 'member' | 'deputy member';
   givenName: string;
   middleNames: string;
@@ -83,6 +86,8 @@ export type BoardMembers = {
 export type Auditor = {
   companyName: string;
   nationalIdentifier: string;
+  givenName: string;
+  lastName: string;
 };
 
 export interface NonListedCompany {
@@ -90,7 +95,83 @@ export interface NonListedCompany {
   companyDetails: CompanyDetails;
   companyAddress: CompanyAddress;
   shareSeries: ShareSeries[];
-  managingDirectors: ManagingDirectors[];
-  boardMembers: BoardMembers[];
+  managingDirectors: ManagingDirector[];
+  boardMembers: BoardMember[];
   auditor: Auditor;
+}
+
+/**
+ * NonListedCompany/BeneficialOwners
+ */
+
+export type ShareSeries2 = Omit<ShareSeries, 'shareValue'> & {
+  votesPerShare: number;
+};
+
+export type Owrnership = {
+  shareSeriesClass: 'A' | 'B' | 'C' | 'D' | 'E';
+  quantity: number;
+};
+
+export type Shareholder = {
+  name: string;
+  ownerships: Owrnership[];
+};
+
+export interface BenecifialOwners {
+  shareSeries: ShareSeries2[];
+  shareholders: Shareholder[];
+  ownerships: Owrnership[];
+}
+
+/**
+ * NonListedCompany/SignatoryRights
+ */
+export interface SigningRight {
+  role:
+    | 'director'
+    | 'deputy director'
+    | 'chairperson'
+    | 'board member'
+    | 'deputy board member'
+    | 'other';
+  personalID: string;
+  givenName: string;
+  middleNames: string;
+  lastName: string;
+  dateOfBirth: string;
+  nationality: string;
+  fullAddress: string;
+  thoroughfare: string;
+  locatorDesignator: string;
+  locatorName: string;
+  addressArea: string;
+  postCode: string;
+  postName: string;
+  poBox: string;
+  adminUnitLevel1: string;
+  adminUnitLevel2: string;
+}
+
+export interface SignatoryRights {
+  signinRights: SigningRight[];
+}
+
+/**
+ * Codesets
+ */
+export interface CountryOption {
+  displayName: string;
+  englishName: string;
+  id: string;
+  nativeName: string;
+  threeLetterISORegionName: string;
+  twoLetterISORegionName: string;
+}
+
+export interface CurrencyOption {
+  id: string;
+  name: string;
+  code: string;
+  country: string;
 }

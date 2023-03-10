@@ -17,14 +17,23 @@ interface Props<T extends FieldValues> extends SelectInputControllerProps<T> {
   labelText: string;
   hintText?: string;
   optionalText?: string;
+  showStatusText?: boolean;
   items: { labelText: string; uniqueItemId: string; disabled?: boolean }[];
 }
 
 export default function FormSingleSelect<T extends FieldValues>(
   props: Props<T>
 ) {
-  const { name, rules, control, labelText, hintText, optionalText, items } =
-    props;
+  const {
+    name,
+    rules,
+    control,
+    labelText,
+    hintText,
+    optionalText,
+    showStatusText = true,
+    items,
+  } = props;
 
   return (
     <Controller
@@ -42,7 +51,7 @@ export default function FormSingleSelect<T extends FieldValues>(
           clearButtonLabel="clear"
           itemAdditionHelpText=""
           status={error && 'error'}
-          statusText={error && error.message}
+          statusText={showStatusText && error ? error.message : ''}
           items={items}
           defaultSelectedItem={
             value && items.find(item => item.uniqueItemId === value)

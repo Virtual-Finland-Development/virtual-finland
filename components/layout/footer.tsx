@@ -1,6 +1,8 @@
-import Image from 'next/image';
+import ExportedImage from 'next-image-export-optimizer';
+// import Image from 'next/image';
 import { GrFacebook, GrTwitter } from 'react-icons/gr';
 import { Block, Icon } from 'suomifi-ui-components';
+import europeImage from '../../public/images/your_europe_logo.svg';
 import CustomHeading from '../ui/custom-heading';
 import CustomLink from '../ui/custom-link';
 import CustomText from '../ui/custom-text';
@@ -70,17 +72,24 @@ function Social() {
         <div className="flex flex-col gap-3 text-white border-b py-6">
           <div className="flex flex-row items-center gap-2">
             <GrTwitter />
-            <CustomText>@livinginfinland</CustomText>
+            <CustomText>@virtualfinland</CustomText>
           </div>
 
           <div className="flex flex-row items-center gap-2">
             <GrFacebook />
-            <CustomText>@livinginfinland</CustomText>
+            <CustomText>@virtualfinland</CustomText>
           </div>
         </div>
-        <Image
+        {/* <Image
           src="/images/your_europe_logo.svg"
           alt="Your Europe"
+          width={250}
+          height={75}
+          priority
+        /> */}
+        <ExportedImage
+          src={europeImage}
+          alt="Your Europe image"
           width={250}
           height={75}
           priority

@@ -21,6 +21,7 @@ interface Props<T extends FieldValues> extends PhoneInputControllerProps<T> {
   hintText?: string;
   optionalText?: string;
   error?: FieldError | undefined;
+  showStatusText?: boolean;
 }
 
 const PhoneInputComponent = forwardRef<
@@ -36,7 +37,15 @@ const PhoneInputComponent = forwardRef<
 PhoneInputComponent.displayName = 'PhoneInputComponent';
 
 export default function FormPhoneInput<T extends FieldValues>(props: Props<T>) {
-  const { name, control, rules, labelText, hintText, error } = props;
+  const {
+    name,
+    control,
+    rules,
+    labelText,
+    hintText,
+    error,
+    showStatusText = true,
+  } = props;
 
   const phoneFieldValidation = (value: any) => {
     if (!value) return true;
@@ -53,7 +62,7 @@ export default function FormPhoneInput<T extends FieldValues>(props: Props<T>) {
       labelText={labelText}
       hintText={hintText}
       status={error && 'error'}
-      statusText={error && error.message}
+      statusText={showStatusText && error ? error.message : ''}
     />
   );
 }

@@ -108,20 +108,19 @@ export type ShareSeries2 = Omit<ShareSeries, 'shareValue'> & {
   votesPerShare: number;
 };
 
-export type Owrnership = {
+export type ShareOwrnership = {
   shareSeriesClass: 'A' | 'B' | 'C' | 'D' | 'E';
   quantity: number;
 };
 
 export type Shareholder = {
   name: string;
-  ownerships: Owrnership[];
+  shareOwnership: ShareOwrnership[];
 };
 
 export interface BenecifialOwners {
   shareSeries: ShareSeries2[];
   shareholders: Shareholder[];
-  ownerships: Owrnership[];
 }
 
 /**

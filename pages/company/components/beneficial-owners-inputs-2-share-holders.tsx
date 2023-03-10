@@ -55,7 +55,7 @@ export default function BeneficialOwnersShareholders() {
   const appendShareSeries = () => {
     append({
       name: `${pickRandomName('lastName')}-${pickRandomName('firstName')} Ltd`,
-      ownerships: [
+      shareOwnership: [
         {
           shareSeriesClass: 'A',
           quantity: Math.floor(Math.random() * 100) + 1,
@@ -139,11 +139,14 @@ function Ownerships({ index }: { index: number }) {
 
   const { fields, append, remove } = useFieldArray<FieldProps>({
     control,
-    name: `beneficialOwners.shareholders.${index}.ownerships`,
+    name: `beneficialOwners.shareholders.${index}.shareOwnership`,
   });
 
   const appendOwnership = () => {
-    append({ shareSeriesClass: 'A', quantity: 0 });
+    append({
+      shareSeriesClass: 'A',
+      quantity: Math.floor(Math.random() * 100) + 1,
+    });
   };
 
   const removeOwnership = (index: number) => {
@@ -158,7 +161,7 @@ function Ownerships({ index }: { index: number }) {
           className="grid grid-cols-1 md:grid-cols-3 gap-3 items-end justify-start border-b-gray-300 mb-6"
         >
           <FormSingleSelect
-            name={`beneficialOwners.shareholders.${index}.ownerships.${i}.shareSeriesClass`}
+            name={`beneficialOwners.shareholders.${index}.shareOwnership.${i}.shareSeriesClass`}
             control={control}
             rules={{ required: true }}
             items={SHARE_SERIES_CLASS_OPTIONS}
@@ -167,7 +170,7 @@ function Ownerships({ index }: { index: number }) {
           />
           <FormInput
             type="number"
-            name={`beneficialOwners.shareholders.${index}.ownerships.${i}.quantity`}
+            name={`beneficialOwners.shareholders.${index}.shareOwnership.${i}.quantity`}
             control={control}
             rules={{ required: true, validate: value => value > -1 }}
             labelText="Quantity"

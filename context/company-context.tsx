@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import {
   ReactNode,
   createContext,
@@ -78,7 +79,17 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const [values, setValues] = useState<Partial<CompanyContextValues>>({});
   const [doneSteps, setStepDone] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const toast = useToast();
+
+  /**
+   * Reset step on every route change.
+   */
+  useEffect(() => {
+    const resetStep = () => setStep(0);
+    router.events.on('routeChangeComplete', resetStep);
+    return () => router.events.off('routeChangeComplete', resetStep);
+  }, [router.events]);
 
   /**
    * [hooks] Fetch codesets.

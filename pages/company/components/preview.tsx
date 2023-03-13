@@ -5,12 +5,17 @@ import PreviewExpander from './preview-expander/preview-expander';
 
 interface Props {
   previewType: 'all' | 'company' | 'beneficialOwners' | 'signatoryRights';
+  isCompanyEdit?: boolean;
 }
 
 export default function Preview(props: Props) {
-  const { previewType } = props;
-  const router = useRouter();
+  const { previewType, isCompanyEdit } = props;
   const { clearValues } = useCompanyContext();
+  const router = useRouter();
+  const { businessId } = router.query;
+  const editUrlBase = !isCompanyEdit
+    ? '/company/establishment'
+    : `/company/edit/${businessId}`;
 
   return (
     <div className="flex flex-col gap-4 w-full">
@@ -23,7 +28,7 @@ export default function Preview(props: Props) {
           type="company"
           title={previewType === 'all' ? '1. Details' : 'Details'}
           showEditButtons={previewType === 'all'}
-          onEditClick={() => router.push('/company/establishment/details')}
+          onEditClick={() => router.push(`${editUrlBase}/details`)}
           onClearClick={() => clearValues('company')}
         />
       )}
@@ -35,9 +40,7 @@ export default function Preview(props: Props) {
             previewType === 'all' ? '2. Beneficial owners' : 'Beneficial owners'
           }
           showEditButtons={previewType === 'all'}
-          onEditClick={() =>
-            router.push('/company/establishment/beneficial-owners')
-          }
+          onEditClick={() => router.push(`${editUrlBase}/beneficial-owners`)}
           onClearClick={() => clearValues('beneficialOwners')}
         />
       )}
@@ -49,9 +52,7 @@ export default function Preview(props: Props) {
             previewType === 'all' ? '3. Signatory rights' : 'Signatory rights'
           }
           showEditButtons={previewType === 'all'}
-          onEditClick={() =>
-            router.push('/company/establishment/signatory-rights')
-          }
+          onEditClick={() => router.push(`${editUrlBase}/signatory-rights`)}
           onClearClick={() => clearValues('signatoryRights')}
         />
       )}

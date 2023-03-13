@@ -15,12 +15,16 @@ export default function CompanyWizardActionButtons(props: Props) {
     formState: { errors },
   } = useFormContext();
   const router = useRouter();
+  const { businessId } = router.query;
+  const companyRouteUrl = !businessId
+    ? '/company/establishment'
+    : `/company/edit/${businessId}`;
 
   const buttonsDisabled = Boolean(Object.keys(errors).length);
 
   const onNextClick = () => {
     if (isLastStep) {
-      router.push('/company/establishment');
+      router.push(companyRouteUrl);
     } else {
       onFormActionClick(true);
     }

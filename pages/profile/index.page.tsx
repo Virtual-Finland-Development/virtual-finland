@@ -4,7 +4,7 @@ import api from '@/lib/api';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 
-export default function Profile() {
+export default function ProfilePage() {
   const [isLoading, setLoading] = useState(false);
 
   const loginHandler = () => {

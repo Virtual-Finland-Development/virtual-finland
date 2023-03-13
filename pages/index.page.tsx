@@ -7,7 +7,7 @@ import CustomHeading from '@/components/ui/custom-heading';
 import CustomLink from '@/components/ui/custom-link';
 import womanLaptopImage from '../public/images/woman-laptop.jpg';
 
-export default function Home() {
+export default function HomePage() {
   const router = useRouter();
 
   return (

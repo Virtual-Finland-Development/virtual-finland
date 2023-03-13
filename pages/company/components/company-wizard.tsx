@@ -163,7 +163,7 @@ export default function CompanyWizard(props: Props) {
       },
     },
   });
-
+  console.log(values);
   /**
    * Reset values to react-hook-form state, if was provided from company context.
    */

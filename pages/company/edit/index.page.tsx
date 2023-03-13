@@ -1,17 +1,13 @@
-import { useRouter } from 'next/router';
 import { Block, Text } from 'suomifi-ui-components';
 import { useCompanies } from '@/lib/hooks/companies';
-import { CompanyContextProvider } from '@/context/company-context';
 import AuthSentry from '@/components/auth-sentry';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 import CustomLink from '@/components/ui/custom-link';
 import Loading from '@/components/ui/loading';
 
-export default function CompanyEdit() {
-  const { data: companies, isLoading } = useCompanies();
-  console.log(companies);
-  const router = useRouter();
+export default function CompanyEditIndexPage() {
+  const { data: companies, isLoading, isFetching } = useCompanies();
 
   return (
     <AuthSentry redirectPath="/company">
@@ -32,7 +28,7 @@ export default function CompanyEdit() {
                 sunt in culpa qui officia deserunt mollit anim id est laborum.
               </Text>
 
-              {isLoading ? (
+              {isLoading || isFetching ? (
                 <Loading />
               ) : (
                 <>
@@ -59,5 +55,3 @@ export default function CompanyEdit() {
     </AuthSentry>
   );
 }
-
-CompanyEdit.provider = CompanyContextProvider;

@@ -6,17 +6,20 @@ import {
 import AuthSentry from '@/components/auth-sentry';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
+import CustomLink from '@/components/ui/custom-link';
+import Loading from '@/components/ui/loading';
 import Preview from '../components/preview';
 
-export default function CompanyEstablishment() {
-  const { doneSteps } = useCompanyContext();
+export default function CompanyEstablishmentPage() {
+  const { doneSteps, saveCompany, isSaving, saveIsSuccess } =
+    useCompanyContext();
 
   const doneStepValues = Object.values(doneSteps);
   const allStepsDone = doneStepValues.every(isDone => isDone);
 
   return (
     <AuthSentry redirectPath="/company">
-      <Page title="Company establishment  ">
+      <Page title="Company establishment">
         <div className="md:border">
           <Block variant="section" className="px-4 lg:px-20 py-6 bg-white">
             <CustomHeading variant="h3">
@@ -34,21 +37,50 @@ export default function CompanyEstablishment() {
                 sunt in culpa qui officia deserunt mollit anim id est laborum.
               </Text>
 
-              <Preview previewType="all" />
+              {!isSaving && !saveIsSuccess && (
+                <Preview previewType="all" isCompanyEdit={false} />
+              )}
+
+              {isSaving && (
+                <div className="w-full flex items-center justify-center h-[212px]">
+                  <Loading text="Saving..." />
+                </div>
+              )}
 
               <div className="flex flex-col w-full">
-                <div className="border-b pb-6">
-                  <InlineAlert status="warning">
-                    <Text className="!font-bold">
-                      Before you submit, be sure to preview all the information
-                      you provide to make sure it´s correct and up-to-date.
-                    </Text>
-                  </InlineAlert>
+                <div>
+                  {!saveIsSuccess ? (
+                    <InlineAlert status="warning">
+                      <Text className="!font-bold">
+                        Before you submit, be sure to preview all the
+                        information you provide to make sure it´s correct and
+                        up-to-date.
+                      </Text>
+                    </InlineAlert>
+                  ) : (
+                    <InlineAlert status="neutral">
+                      <div className="flex flex-col gap-2">
+                        <Text className="!font-bold">
+                          Company was created successfully!
+                        </Text>
+                        <CustomLink href="/company/edit">
+                          View created companies
+                        </CustomLink>
+                      </div>
+                    </InlineAlert>
+                  )}
                 </div>
 
-                <div className="mt-5">
-                  <Button disabled={!allStepsDone}>Submit</Button>
-                </div>
+                {!saveIsSuccess && (
+                  <div className="mt-5 border-t pt-5">
+                    <Button
+                      disabled={!allStepsDone || isSaving}
+                      onClick={saveCompany}
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </Block>
@@ -58,4 +90,4 @@ export default function CompanyEstablishment() {
   );
 }
 
-CompanyEstablishment.provider = CompanyContextProvider;
+CompanyEstablishmentPage.provider = CompanyContextProvider;

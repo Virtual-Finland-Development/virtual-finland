@@ -69,16 +69,18 @@ interface CompanyContextProps {
   setIsCurrentStepDone: (step: Step, done: boolean) => void;
   step: number;
   setStep: (step: number) => void;
-  isLoading: boolean;
+  isSaving: boolean;
   businessId?: string;
   codesets: {
     countries: CountryOption[] | undefined;
     currencies: CurrencyOption[] | undefined;
   };
+  saveCompany: () => void;
+  saveIsSuccess: boolean;
+  contextIsLoading: boolean;
 }
 
 interface CompanyProviderProps {
-  businessId?: string;
   children: ReactNode;
 }
 
@@ -88,12 +90,16 @@ const CompanyContext = createContext<CompanyContextProps | undefined>(
 const CompanyContextConsumer = CompanyContext.Consumer;
 
 function CompanyContextProvider(props: CompanyProviderProps) {
-  const { businessId, children } = props;
+  const { children } = props;
   const [step, setStep] = useState(0);
   const [values, setValues] = useState<Partial<CompanyContextValues>>({});
   const [doneSteps, setDoneSteps] = useState(doneStepsInitial);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveIsSuccess, setSaveIsSuccess] = useState(false);
   const router = useRouter();
+  const businessId = router.query.businessId
+    ? (router.query.businessId as string)
+    : undefined;
   const toast = useToast();
 
   /**
@@ -125,17 +131,32 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const companyDataLoading =
     companyLoading || beneficialOwnersLoading || signatoryRightsLoading;
   const codeSetsLoading = currenciesLoading || countriesLoading;
-  const contextLoading = companyDataLoading || codeSetsLoading;
+  const contextIsLoading = companyDataLoading || codeSetsLoading;
 
   /**
-   * Set fetched company related to state, if businessId was provided and if data exists.
+   * Set fetched company related data to state, if businessId was provided and if data exists.
+   * Set all steps to done.
    */
   useEffect(() => {
-    if (businessId && !companyDataLoading) {
+    if (
+      businessId &&
+      !companyDataLoading &&
+      companyData &&
+      beneficialOwnersData &&
+      signatoryRightsData
+    ) {
       setValues({
         ...(companyData && { company: companyData }),
         ...(beneficialOwnersData && { beneficialOwners: beneficialOwnersData }),
         ...(signatoryRightsData && { signatoryRights: signatoryRightsData }),
+      });
+      setDoneSteps(prev => {
+        return Object.keys(prev).reduce((acc, key) => {
+          return {
+            ...acc,
+            [key]: true,
+          };
+        }, prev);
       });
     }
   }, [
@@ -192,7 +213,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
 
   const saveCompanyData = useCallback(
     async (/* values: Partial<CompanyContextValues> */) => {
-      setIsLoading(true);
+      setIsSaving(true);
       const { company, beneficialOwners, signatoryRights } = values;
       let payloadBusinessId: string = '';
 
@@ -222,6 +243,13 @@ function CompanyContextProvider(props: CompanyProviderProps) {
           payloadBusinessId,
           signatoryRights as Partial<SignatoryRights>
         );
+
+        setSaveIsSuccess(true);
+        toast({
+          status: 'neutral',
+          title: 'Success',
+          content: 'Company information saved successfully!',
+        });
       } catch (error: any) {
         toast({
           status: 'error',
@@ -229,7 +257,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
           content: error?.message || 'Something went wrong.',
         });
       } finally {
-        setIsLoading(false);
+        setIsSaving(false);
       }
     },
     [businessId, toast, values]
@@ -266,41 +294,38 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     setDoneSteps(prev => ({ ...prev, [step]: done }));
   }, []);
 
-  if (contextLoading) {
-    return <Loading />;
-  }
+  const contextValue = {
+    values,
+    setValues: setContextValues,
+    clearValues: clearContextValues,
+    isStepDone,
+    isPrevStepDone,
+    doneSteps,
+    setIsCurrentStepDone,
+    step,
+    setStep,
+    isSaving: isSaving,
+    businessId: businessId ? (businessId as string) : undefined,
+    saveCompany: saveCompanyData,
+    saveIsSuccess,
+    contextIsLoading,
+    codesets: {
+      countries,
+      currencies: currencies
+        ? currencies
+            .filter(c => ['EUR', 'SEK', 'NOK', 'ISK', 'DKK'].includes(c.code))
+            .reduce((acc: CurrencyOption[], item) => {
+              if (!acc.some(i => i.code === item.code)) {
+                acc.push(item);
+              }
+              return acc;
+            }, [])
+        : undefined,
+    },
+  };
 
   return (
-    <CompanyContext.Provider
-      value={{
-        values,
-        setValues: setContextValues,
-        clearValues: clearContextValues,
-        isStepDone,
-        isPrevStepDone,
-        doneSteps,
-        setIsCurrentStepDone,
-        step,
-        setStep,
-        isLoading: isLoading,
-        businessId,
-        codesets: {
-          countries,
-          currencies: currencies
-            ? currencies
-                .filter(c =>
-                  ['EUR', 'SEK', 'NOK', 'ISK', 'DKK'].includes(c.code)
-                )
-                .reduce((acc: CurrencyOption[], item) => {
-                  if (!acc.some(i => i.code === item.code)) {
-                    acc.push(item);
-                  }
-                  return acc;
-                }, [])
-            : undefined,
-        },
-      }}
-    >
+    <CompanyContext.Provider value={contextValue}>
       {children}
     </CompanyContext.Provider>
   );

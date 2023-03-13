@@ -80,24 +80,25 @@ export default function PreviewExpander(props: PreviewExpanderProps) {
                       ))
                     ) : (
                       <div>
-                        {Object.keys(value!).map((key, i) => {
-                          const nestedValue = value![key];
-                          const isArray = Array.isArray(nestedValue);
+                        {value &&
+                          Object.keys(value!).map((key, i) => {
+                            const nestedValue = value![key];
+                            const isArray = Array.isArray(nestedValue);
 
-                          return !isArray ? (
-                            <SingleValue
-                              key={i}
-                              label={COMPANY_DATA_LABELS[key] || ''}
-                              value={nestedValue}
-                            />
-                          ) : (
-                            <MultiValue
-                              key={i}
-                              index={i}
-                              valueObj={nestedValue}
-                            />
-                          );
-                        })}
+                            return !isArray ? (
+                              <SingleValue
+                                key={i}
+                                label={COMPANY_DATA_LABELS[key] || ''}
+                                value={nestedValue}
+                              />
+                            ) : (
+                              <MultiValue
+                                key={i}
+                                index={i}
+                                valueObj={nestedValue}
+                              />
+                            );
+                          })}
                       </div>
                     )}
                   </div>

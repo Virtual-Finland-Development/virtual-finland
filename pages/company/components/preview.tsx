@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { useCompanyContext } from '@/context/company-context';
 import CustomHeading from '@/components/ui/custom-heading';
 import PreviewExpander from './preview-expander/preview-expander';
 
@@ -9,6 +10,7 @@ interface Props {
 export default function Preview(props: Props) {
   const { previewType } = props;
   const router = useRouter();
+  const { clearValues } = useCompanyContext();
 
   return (
     <div className="flex flex-col gap-4 w-full">
@@ -22,7 +24,7 @@ export default function Preview(props: Props) {
           title={previewType === 'all' ? '1. Details' : 'Details'}
           showEditButtons={previewType === 'all'}
           onEditClick={() => router.push('/company/establishment/details')}
-          onClearClick={() => {}}
+          onClearClick={() => clearValues('company')}
         />
       )}
 
@@ -36,7 +38,7 @@ export default function Preview(props: Props) {
           onEditClick={() =>
             router.push('/company/establishment/beneficial-owners')
           }
-          onClearClick={() => {}}
+          onClearClick={() => clearValues('beneficialOwners')}
         />
       )}
 
@@ -50,7 +52,7 @@ export default function Preview(props: Props) {
           onEditClick={() =>
             router.push('/company/establishment/signatory-rights')
           }
-          onClearClick={() => {}}
+          onClearClick={() => clearValues('signatoryRights')}
         />
       )}
     </div>

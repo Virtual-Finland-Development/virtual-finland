@@ -60,6 +60,9 @@ const doneStepsInitial: Record<Step, boolean> = {
 interface CompanyContextProps {
   values: Partial<CompanyContextValues>;
   setValues: (values: Partial<CompanyContextValues>) => void;
+  clearValues: (
+    type: 'company' | 'beneficialOwners' | 'signatoryRights'
+  ) => void;
   isStepDone: (step: Step) => boolean;
   isPrevStepDone: (currentStep: Step) => boolean;
   doneSteps: any;
@@ -90,7 +93,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const { businessId, children } = props;
   const [step, setStep] = useState(0);
   const [values, setValues] = useState<Partial<CompanyContextValues>>({});
-  const [doneSteps, setStepDone] = useState(doneStepsInitial);
+  const [doneSteps, setDoneSteps] = useState(doneStepsInitial);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const toast = useToast();
@@ -235,20 +238,34 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   );
 
   const setContextValues = useCallback(
-    async (newValues: Partial<CompanyContextValues>) => {
+    (newValues: Partial<CompanyContextValues>) => {
       const mergedValues = lodash_merge(values, newValues);
       setValues(mergedValues);
-
-      // last step, create or edit company / beneficial owners / signatory rights
-      if (step + 1 === LAST_STEP) {
-        saveCompanyData(mergedValues);
-      }
     },
-    [saveCompanyData, step, values]
+    [values]
+  );
+
+  const clearContextValues = useCallback(
+    (type: 'company' | 'beneficialOwners' | 'signatoryRights') => {
+      const clearedValues = { ...values, [type]: {} };
+      setValues(clearedValues);
+      setDoneSteps(prev => {
+        return Object.keys(prev).reduce((acc, key) => {
+          const isDone = key.startsWith(type)
+            ? false
+            : prev[key as keyof Record<Step, boolean>];
+          return {
+            ...acc,
+            [key]: isDone,
+          };
+        }, prev);
+      });
+    },
+    [values]
   );
 
   const setIsCurrentStepDone = useCallback((step: Step, done: boolean) => {
-    setStepDone(prev => ({ ...prev, [step]: done }));
+    setDoneSteps(prev => ({ ...prev, [step]: done }));
   }, []);
 
   if (contextLoading) {
@@ -260,6 +277,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
       value={{
         values,
         setValues: setContextValues,
+        clearValues: clearContextValues,
         isStepDone,
         isPrevStepDone,
         doneSteps,

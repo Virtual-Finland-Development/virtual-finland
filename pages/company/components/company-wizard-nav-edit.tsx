@@ -36,7 +36,7 @@ const COMPANY_STEPS = [
   },
   {
     label: '7. Auditor',
-    step: 'company.auditor' as Step,
+    step: 'company.auditorDetails' as Step,
   },
 ];
 

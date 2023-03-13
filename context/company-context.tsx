@@ -39,10 +39,23 @@ type Step =
   | 'company.shareSeries'
   | 'company.managingDirectors'
   | 'company.boardMembers'
-  | 'company.auditor'
+  | 'company.auditorDetails'
   | 'beneficialOwners.shareSeries'
   | 'beneficialOwners.shareholders'
   | 'signatoryRights.signinRights';
+
+const doneStepsInitial: Record<Step, boolean> = {
+  'company.registrant': false,
+  'company.companyDetails': false,
+  'company.companyAddress': false,
+  'company.shareSeries': false,
+  'company.managingDirectors': false,
+  'company.boardMembers': false,
+  'company.auditorDetails': false,
+  'beneficialOwners.shareSeries': false,
+  'beneficialOwners.shareholders': false,
+  'signatoryRights.signinRights': false,
+};
 
 interface CompanyContextProps {
   values: Partial<CompanyContextValues>;
@@ -77,7 +90,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const { businessId, children } = props;
   const [step, setStep] = useState(0);
   const [values, setValues] = useState<Partial<CompanyContextValues>>({});
-  const [doneSteps, setStepDone] = useState({});
+  const [doneSteps, setStepDone] = useState(doneStepsInitial);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const toast = useToast();
@@ -161,10 +174,10 @@ function CompanyContextProvider(props: CompanyProviderProps) {
           return isStepDone('company.shareSeries');
         case 'company.boardMembers':
           return isStepDone('company.managingDirectors');
-        case 'company.auditor':
+        case 'company.auditorDetails':
           return isStepDone('company.boardMembers');
         case 'beneficialOwners.shareSeries':
-          return isStepDone('company.auditor');
+          return isStepDone('company.auditorDetails');
         case 'beneficialOwners.shareholders':
           return isStepDone('beneficialOwners.shareSeries');
         case 'signatoryRights.signinRights':

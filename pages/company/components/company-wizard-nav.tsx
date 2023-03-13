@@ -51,7 +51,7 @@ const BENEFICIAL_OWNER_STEPS = [
 const SIGNATORY_RIGHTS_STEPS = [
   {
     label: '1. Signin rights',
-    step: 'signatoryRights.signinRights' as Step,
+    step: 'signatoryRights.signingRights' as Step,
   },
 ];
 
@@ -63,8 +63,7 @@ interface Props {
 export default function CompanyWizardNav(props: Props) {
   const { wizardType, onWizardNavChange } = props;
   const { width } = useDimensions();
-  const { isStepDone, isPrevStepDone, doneSteps, step, isLoading } =
-    useCompanyContext();
+  const { isStepDone, isPrevStepDone, doneSteps, step } = useCompanyContext();
 
   const navHeading =
     wizardType === 'company'
@@ -122,7 +121,6 @@ export default function CompanyWizardNav(props: Props) {
       aria-label="Company establishment wizard steps"
       initiallyExpanded={false}
       variant={width > 1024 ? 'default' : 'smallScreen'}
-      className={isLoading ? 'pointer-events-none' : ''}
     >
       {navSteps.map((item, index) => {
         const status = getItemStatus(item.step, index, step);

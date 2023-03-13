@@ -128,7 +128,7 @@ const DEFAULT_VALUES = {
     ],
   },
   signatoryRights: {
-    signinRights: [
+    signingRights: [
       {
         role: 'director' as const,
         givenName: pickRandomName('firstName'),
@@ -147,8 +147,7 @@ interface Props {
 
 export default function CompanyWizard(props: Props) {
   const { wizardType } = props;
-  const { values, setValues, step, setStep, isLoading, businessId } =
-    useCompanyContext();
+  const { values, setValues, step, setStep, businessId } = useCompanyContext();
 
   /**
    * Form methods, passed to form provider (react-hook-form).
@@ -163,16 +162,6 @@ export default function CompanyWizard(props: Props) {
       },
     },
   });
-  console.log(values);
-  /**
-   * Reset values to react-hook-form state, if was provided from company context.
-   */
-  /* useEffect(() => {
-    if (businessId && values) {
-      console.log(values);
-      formMethods.reset({ ...values });
-    }
-  }, [businessId, formMethods, values]); */
 
   /**
    * Handle form submission, save values to context.
@@ -243,28 +232,22 @@ export default function CompanyWizard(props: Props) {
           </div>
         </div>
 
-        {isLoading ? (
-          <div className="flex w-full align-center justify-center mb-4">
-            <Loading />
-          </div>
-        ) : (
-          <Block
-            variant="section"
-            className="bg-white md:border border-gray-300 flex flex-col w-full px-4 py-6"
-          >
-            <form>
-              {WIZARD_STEPS[wizardType][step]}
+        <Block
+          variant="section"
+          className="bg-white md:border border-gray-300 flex flex-col w-full px-4 py-6"
+        >
+          <form>
+            {WIZARD_STEPS[wizardType][step]}
 
-              <div className="flex flex-row gap-4 mt-14 w-full">
-                <CompanyWizardActionButtons
-                  key={step}
-                  onFormActionClick={onFormActionClick}
-                  isLastStep={step === WIZARD_STEPS[wizardType].length - 1}
-                />
-              </div>
-            </form>
-          </Block>
-        )}
+            <div className="flex flex-row gap-4 mt-14 w-full">
+              <CompanyWizardActionButtons
+                key={step}
+                onFormActionClick={onFormActionClick}
+                isLastStep={step === WIZARD_STEPS[wizardType].length - 1}
+              />
+            </div>
+          </form>
+        </Block>
       </div>
     </FormProvider>
   );

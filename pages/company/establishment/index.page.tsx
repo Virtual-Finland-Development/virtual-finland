@@ -37,9 +37,7 @@ export default function CompanyEstablishmentPage() {
                 sunt in culpa qui officia deserunt mollit anim id est laborum.
               </Text>
 
-              {!isSaving && !saveIsSuccess && (
-                <Preview previewType="all" isCompanyEdit={false} />
-              )}
+              {!isSaving && !saveIsSuccess && <Preview previewType="all" />}
 
               {isSaving && (
                 <div className="w-full flex items-center justify-center h-[212px]">

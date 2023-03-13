@@ -24,7 +24,6 @@ import {
   useSignatoryRights,
 } from '@/lib/hooks/companies';
 import { useToast } from '@/context/toast-context';
-import Loading from '@/components/ui/loading';
 
 interface CompanyContextValues {
   company: Partial<NonListedCompany>;
@@ -42,7 +41,7 @@ type Step =
   | 'company.auditorDetails'
   | 'beneficialOwners.shareSeries'
   | 'beneficialOwners.shareholders'
-  | 'signatoryRights.signinRights';
+  | 'signatoryRights.signingRights';
 
 const doneStepsInitial: Record<Step, boolean> = {
   'company.registrant': false,
@@ -54,7 +53,7 @@ const doneStepsInitial: Record<Step, boolean> = {
   'company.auditorDetails': false,
   'beneficialOwners.shareSeries': false,
   'beneficialOwners.shareholders': false,
-  'signatoryRights.signinRights': false,
+  'signatoryRights.signingRights': false,
 };
 
 interface CompanyContextProps {
@@ -174,13 +173,6 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     [businessId, doneSteps]
   );
 
-  /* const isStepDoneAndHasValues = useCallback(
-    (step: Step) => {
-      return isStepDone(step)  && Boolean(lodash_get(values, step));
-    },
-    [isStepDone, values]
-  ); */
-
   const isPrevStepDone = useCallback(
     (currentStep: Step) => {
       switch (currentStep) {
@@ -202,7 +194,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
           return isStepDone('company.auditorDetails');
         case 'beneficialOwners.shareholders':
           return isStepDone('beneficialOwners.shareSeries');
-        case 'signatoryRights.signinRights':
+        case 'signatoryRights.signingRights':
           return isStepDone('beneficialOwners.shareholders');
         default:
           return false;
@@ -211,57 +203,54 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     [isStepDone]
   );
 
-  const saveCompanyData = useCallback(
-    async (/* values: Partial<CompanyContextValues> */) => {
-      setIsSaving(true);
-      const { company, beneficialOwners, signatoryRights } = values;
-      let payloadBusinessId: string = '';
+  const saveCompanyData = useCallback(async () => {
+    setIsSaving(true);
+    const { company, beneficialOwners, signatoryRights } = values;
+    let payloadBusinessId: string = '';
 
-      // hack: when updating existing company, we need to use direct call to PRH mock bypassing testbed,
-      // because Establish/Write does not have the ability to update existing company
-      try {
-        if (!businessId) {
-          // productizer call, create
-          await api.company.saveCompany(company as Partial<NonListedCompany>);
-          // get created company from PRH mock, so we can get the created businessId (productizer response does not include this)
-          const createdCompany = await api.company.getLatestModifiedCompany();
-          payloadBusinessId = createdCompany.businessId;
-        } else {
-          // PRH mock call, company update
-          payloadBusinessId = businessId;
-          await api.company.saveCompanyDirectlyToPRH(
-            businessId,
-            company as Partial<NonListedCompany>
-          );
-        }
-        // continue to create / update beneficial owners / signatory rights with businessId, productizer calls
-        await api.company.saveBeneficialOwners(
+    // hack: when updating existing company, we need to use direct call to PRH mock bypassing testbed,
+    // because Establish/Write does not have the ability to update existing company
+    try {
+      if (!businessId) {
+        // productizer call, create
+        await api.company.saveCompany(company as Partial<NonListedCompany>);
+        // get created company from PRH mock, so we can get the created businessId (productizer response does not include this)
+        const createdCompany = await api.company.getLatestModifiedCompany();
+        payloadBusinessId = createdCompany.businessId;
+      } else {
+        // PRH mock call, company update
+        payloadBusinessId = businessId;
+        await api.company.saveCompanyDirectlyToPRH(
           payloadBusinessId,
-          beneficialOwners as Partial<BenecifialOwners>
+          company as Partial<NonListedCompany>
         );
-        await api.company.saveSignatoryRights(
-          payloadBusinessId,
-          signatoryRights as Partial<SignatoryRights>
-        );
-
-        setSaveIsSuccess(true);
-        toast({
-          status: 'neutral',
-          title: 'Success',
-          content: 'Company information saved successfully!',
-        });
-      } catch (error: any) {
-        toast({
-          status: 'error',
-          title: 'Error',
-          content: error?.message || 'Something went wrong.',
-        });
-      } finally {
-        setIsSaving(false);
       }
-    },
-    [businessId, toast, values]
-  );
+      // continue to create / update beneficial owners / signatory rights with businessId, productizer calls
+      await api.company.saveBeneficialOwners(
+        payloadBusinessId,
+        beneficialOwners as Partial<BenecifialOwners>
+      );
+      await api.company.saveSignatoryRights(
+        payloadBusinessId,
+        signatoryRights as Partial<SignatoryRights>
+      );
+
+      setSaveIsSuccess(true);
+      toast({
+        status: 'neutral',
+        title: 'Success',
+        content: 'Company information saved successfully!',
+      });
+    } catch (error: any) {
+      toast({
+        status: 'error',
+        title: 'Error',
+        content: error?.message || 'Something went wrong.',
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  }, [businessId, toast, values]);
 
   const setContextValues = useCallback(
     (newValues: Partial<CompanyContextValues>) => {

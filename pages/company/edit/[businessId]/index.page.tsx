@@ -43,9 +43,7 @@ export default function CompanyEditPage() {
                   est laborum.
                 </Text>
 
-                {!isSaving && !saveIsSuccess && (
-                  <Preview previewType="all" isCompanyEdit />
-                )}
+                {!isSaving && <Preview previewType="all" />}
 
                 {isSaving && (
                   <div className="w-full flex items-center justify-center h-[212px]">
@@ -54,16 +52,14 @@ export default function CompanyEditPage() {
                 )}
 
                 <div className="flex flex-col w-full">
-                  {!saveIsSuccess && (
-                    <div className="mt-5 border-t pt-5">
-                      <Button
-                        disabled={!allStepsDone || isSaving}
-                        onClick={saveCompany}
-                      >
-                        Save
-                      </Button>
-                    </div>
-                  )}
+                  <div className="mt-5 border-t pt-5">
+                    <Button
+                      disabled={!allStepsDone || isSaving}
+                      onClick={saveCompany}
+                    >
+                      Save
+                    </Button>
+                  </div>
                 </div>
               </div>
             </Block>

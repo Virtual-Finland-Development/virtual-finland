@@ -5,15 +5,14 @@ import PreviewExpander from './preview-expander/preview-expander';
 
 interface Props {
   previewType: 'all' | 'company' | 'beneficialOwners' | 'signatoryRights';
-  isCompanyEdit?: boolean;
 }
 
 export default function Preview(props: Props) {
-  const { previewType, isCompanyEdit } = props;
+  const { previewType } = props;
   const { clearValues } = useCompanyContext();
   const router = useRouter();
   const { businessId } = router.query;
-  const editUrlBase = !isCompanyEdit
+  const editUrlBase = !businessId
     ? '/company/establishment'
     : `/company/edit/${businessId}`;
 
@@ -29,7 +28,10 @@ export default function Preview(props: Props) {
           title={previewType === 'all' ? '1. Details' : 'Details'}
           showEditButtons={previewType === 'all'}
           onEditClick={() => router.push(`${editUrlBase}/details`)}
-          onClearClick={() => clearValues('company')}
+          onClearClick={() => {
+            clearValues('company');
+            window.scrollTo(0, 0);
+          }}
         />
       )}
 
@@ -41,7 +43,10 @@ export default function Preview(props: Props) {
           }
           showEditButtons={previewType === 'all'}
           onEditClick={() => router.push(`${editUrlBase}/beneficial-owners`)}
-          onClearClick={() => clearValues('beneficialOwners')}
+          onClearClick={() => {
+            clearValues('beneficialOwners');
+            window.scrollTo(0, 0);
+          }}
         />
       )}
 
@@ -53,7 +58,10 @@ export default function Preview(props: Props) {
           }
           showEditButtons={previewType === 'all'}
           onEditClick={() => router.push(`${editUrlBase}/signatory-rights`)}
-          onClearClick={() => clearValues('signatoryRights')}
+          onClearClick={() => {
+            clearValues('signatoryRights');
+            window.scrollTo(0, 0);
+          }}
         />
       )}
     </div>

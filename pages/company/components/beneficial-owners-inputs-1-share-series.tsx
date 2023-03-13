@@ -117,6 +117,7 @@ export default function BeneficialOwnersShareSeries() {
               control={control}
               rules={{
                 required: 'Number of shares is required.',
+                valueAsNumber: true,
                 validate: value => value > -1,
               }}
               labelText="Number of shares"
@@ -125,7 +126,11 @@ export default function BeneficialOwnersShareSeries() {
               type="number"
               name={`beneficialOwners.shareSeries.${index}.votesPerShare`}
               control={control}
-              rules={{ required: 'Votes per share is required.' }}
+              rules={{
+                required: 'Votes per share is required.',
+                valueAsNumber: true,
+                validate: value => value > -1,
+              }}
               labelText="Votes per share"
             />
           </div>

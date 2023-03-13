@@ -92,6 +92,7 @@ export default function CompanyDetails() {
           control={control}
           rules={{
             required: 'Share capital is required.',
+            valueAsNumber: true,
             validate: value => value > -1,
           }}
           labelText="Share capital"
@@ -116,7 +117,7 @@ export default function CompanyDetails() {
           type="number"
           name={`company.companyDetails.settlementDeposit`}
           control={control}
-          rules={{ validate: value => value > -1 }}
+          rules={{ valueAsNumber: true, validate: value => value > -1 }}
           labelText="Settlement deposit"
           optionalText="optional"
           hintText="Deposit paid during the establishment"

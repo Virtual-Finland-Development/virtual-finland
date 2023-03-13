@@ -111,6 +111,7 @@ export default function CompanyShareSeries() {
               control={control}
               rules={{
                 required: 'Number of shares is required.',
+                valueAsNumber: true,
                 validate: value => value > -1,
               }}
               labelText="Number of shares"
@@ -121,6 +122,7 @@ export default function CompanyShareSeries() {
               control={control}
               rules={{
                 required: 'Share value is required.',
+                valueAsNumber: true,
                 validate: value => value > -1,
               }}
               labelText="Share value"

@@ -82,8 +82,6 @@ interface CompanyProviderProps {
   children: ReactNode;
 }
 
-const LAST_STEP = 11;
-
 const CompanyContext = createContext<CompanyContextProps | undefined>(
   undefined
 );
@@ -193,7 +191,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   );
 
   const saveCompanyData = useCallback(
-    async (values: Partial<CompanyContextValues>) => {
+    async (/* values: Partial<CompanyContextValues> */) => {
       setIsLoading(true);
       const { company, beneficialOwners, signatoryRights } = values;
       let payloadBusinessId: string = '';
@@ -234,7 +232,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
         setIsLoading(false);
       }
     },
-    [businessId, toast]
+    [businessId, toast, values]
   );
 
   const setContextValues = useCallback(
@@ -319,9 +317,4 @@ function useCompanyContext() {
 }
 
 export type { Step };
-export {
-  CompanyContextProvider,
-  CompanyContextConsumer,
-  useCompanyContext,
-  LAST_STEP,
-};
+export { CompanyContextProvider, CompanyContextConsumer, useCompanyContext };

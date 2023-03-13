@@ -172,7 +172,11 @@ function Ownerships({ index }: { index: number }) {
             type="number"
             name={`beneficialOwners.shareholders.${index}.shareOwnership.${i}.quantity`}
             control={control}
-            rules={{ required: true, validate: value => value > -1 }}
+            rules={{
+              required: true,
+              valueAsNumber: true,
+              validate: value => value > -1,
+            }}
             labelText="Quantity"
             showStatusText={false}
           />

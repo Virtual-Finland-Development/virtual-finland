@@ -1,19 +1,30 @@
+import { useRouter } from 'next/router';
 import { useFormContext } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
-import { LAST_STEP, useCompanyContext } from '@/context/company-context';
+import { useCompanyContext } from '@/context/company-context';
 
 interface Props {
-  onFormActionClick: (next?: boolean, last?: boolean) => void;
+  onFormActionClick: (next?: boolean) => void;
+  isLastStep: boolean;
 }
 
-export default function FormActionButtons(props: Props) {
-  const { onFormActionClick } = props;
+export default function CompanyWizardActionButtons(props: Props) {
+  const { onFormActionClick, isLastStep } = props;
   const { step } = useCompanyContext();
   const {
     formState: { errors },
   } = useFormContext();
+  const router = useRouter();
 
   const buttonsDisabled = Boolean(Object.keys(errors).length);
+
+  const onNextClick = () => {
+    if (isLastStep) {
+      router.push('/company/establishment');
+    } else {
+      onFormActionClick(true);
+    }
+  };
 
   return (
     <>
@@ -27,11 +38,11 @@ export default function FormActionButtons(props: Props) {
         </Button>
       ) : null}
       <Button
-        {...(step < 10 && { iconRight: 'arrowRight' })}
-        onClick={() => onFormActionClick(true, step + 1 === LAST_STEP)}
+        iconRight="arrowRight"
+        onClick={onNextClick}
         disabled={buttonsDisabled}
       >
-        {step < 10 ? 'Next' : 'Submit'}
+        Next
       </Button>
     </>
   );

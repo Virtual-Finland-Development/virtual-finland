@@ -1,14 +1,14 @@
 import { useEffect, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import lodash_get from 'lodash.get';
-import type { Auditor } from '@/types';
+import type { AuditorDetails } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import CustomHeading from '@/components/ui/custom-heading';
 
 interface FieldProps {
   company: {
-    auditorDetails: Auditor;
+    auditorDetails: AuditorDetails;
   };
 }
 

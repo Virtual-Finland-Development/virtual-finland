@@ -12,8 +12,13 @@ export default function CompanyEditPage() {
   const router = useRouter();
   const { businessId } = router.query;
 
-  const { doneSteps, saveCompany, isSaving, saveIsSuccess, contextIsLoading } =
-    useCompanyContext();
+  const {
+    doneSteps,
+    saveCompany,
+    isSaving,
+    contextIsLoading,
+    values: { company },
+  } = useCompanyContext();
 
   const doneStepValues = Object.values(doneSteps);
   const allStepsDone = doneStepValues.every(isDone => isDone);
@@ -29,7 +34,9 @@ export default function CompanyEditPage() {
           <div className="md:border">
             <Block variant="section" className="px-4 lg:px-20 py-6 bg-white">
               <CustomHeading variant="h3">
-                Modify company information
+                Modify company{' '}
+                {company?.companyDetails?.name &&
+                  `(${company.companyDetails.name})`}
               </CustomHeading>
               <div className="flex flex-col mt-4 gap-6 items-start">
                 <Text>

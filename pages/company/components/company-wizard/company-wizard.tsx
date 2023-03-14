@@ -12,19 +12,19 @@ import {
   pickRandomName,
 } from '@/lib/utils';
 import { useCompanyContext } from '@/context/company-context';
-import BeneficialOwnersShareSeries from './beneficial-owners-inputs-1-share-series';
-import BeneficialOwnersShareholders from './beneficial-owners-inputs-2-share-holders';
-import CompanyRegistrant from './company-inputs-1-registrant';
-import CompanyDetails from './company-inputs-2-company-details';
-import CompanyAddress from './company-inputs-3-company-address';
-import CompanyShares from './company-inputs-4-share-series';
-import CompanyDirectors from './company-inputs-5-managing-directors';
-import CompanyMembers from './company-inputs-6-board-members';
-import CompanyAuditor from './company-inputs-7-auditor';
+import BeneficialOwnersShareSeries from '../form-inputs/beneficial-owners-inputs-1-share-series';
+import BeneficialOwnersShareholders from '../form-inputs/beneficial-owners-inputs-2-share-holders';
+import CompanyRegistrant from '../form-inputs/company-inputs-1-registrant';
+import CompanyDetails from '../form-inputs/company-inputs-2-company-details';
+import CompanyAddress from '../form-inputs/company-inputs-3-company-address';
+import CompanyShares from '../form-inputs/company-inputs-4-share-series';
+import CompanyDirectors from '../form-inputs/company-inputs-5-managing-directors';
+import CompanyMembers from '../form-inputs/company-inputs-6-board-members';
+import CompanyAuditor from '../form-inputs/company-inputs-7-auditor';
+import SignatoryRightsSigningRights from '../form-inputs/signatory-rights-inputs-1-signing-rights';
+import Preview from '../preview/preview';
 import CompanyWizardActionButtons from './company-wizard-action-buttons';
 import CompanyWizardNav from './company-wizard-nav';
-import Preview from './preview';
-import SignatoryRightsSigningRights from './signatory-rights-inputs-1-signing-rights';
 
 interface FormProps {
   company: Partial<NonListedCompany>;

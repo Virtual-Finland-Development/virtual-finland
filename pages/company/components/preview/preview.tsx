@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useCompanyContext } from '@/context/company-context';
 import CustomHeading from '@/components/ui/custom-heading';
-import PreviewExpander from './preview-expander/preview-expander';
+import PreviewExpander from './preview-expander';
 
 interface Props {
   previewType: 'all' | 'company' | 'beneficialOwners' | 'signatoryRights';

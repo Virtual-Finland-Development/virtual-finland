@@ -4,7 +4,7 @@ import { useCompanyContext } from '@/context/company-context';
 import AuthSentry from '@/components/auth-sentry';
 import Page from '@/components/layout/page';
 import Loading from '@/components/ui/loading';
-import CompanyWizard from '../../components/company-wizard';
+import CompanyWizard from '../../components/company-wizard/company-wizard';
 
 export default function SignatoryRightsPage() {
   const router = useRouter();

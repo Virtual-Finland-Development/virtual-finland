@@ -1,13 +1,25 @@
+import { useRouter } from 'next/router';
 import { CompanyContextProvider } from '@/context/company-context';
+import { useCompanyContext } from '@/context/company-context';
 import AuthSentry from '@/components/auth-sentry';
 import Page from '@/components/layout/page';
+import Loading from '@/components/ui/loading';
 import CompanyWizard from '../../components/company-wizard';
 
 export default function SignatoryRightsPage() {
+  const router = useRouter();
+  const { businessId } = router.query;
+  const { contextIsLoading } = useCompanyContext();
+  if (!businessId) return null;
+
   return (
     <AuthSentry redirectPath="/company">
       <Page title="Company edit - signatory rights" withBorder={false}>
-        <CompanyWizard wizardType="signatoryRights" />
+        {contextIsLoading ? (
+          <Loading />
+        ) : (
+          <CompanyWizard wizardType="signatoryRights" />
+        )}
       </Page>
     </AuthSentry>
   );

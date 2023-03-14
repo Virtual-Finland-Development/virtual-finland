@@ -95,6 +95,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const [doneSteps, setDoneSteps] = useState(doneStepsInitial);
   const [isSaving, setIsSaving] = useState(false);
   const [saveIsSuccess, setSaveIsSuccess] = useState(false);
+  const [contextIsLoading, setContextIsLoading] = useState(false);
   const router = useRouter();
   const businessId = router.query.businessId
     ? (router.query.businessId as string)
@@ -130,7 +131,13 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const companyDataLoading =
     companyLoading || beneficialOwnersLoading || signatoryRightsLoading;
   const codeSetsLoading = currenciesLoading || countriesLoading;
-  const contextIsLoading = companyDataLoading || codeSetsLoading;
+
+  /**
+   * Company context loading state, track company data / codesets loading states.
+   */
+  useEffect(() => {
+    setContextIsLoading(companyDataLoading || codeSetsLoading);
+  }, [codeSetsLoading, companyDataLoading]);
 
   /**
    * Set fetched company related data to state, if businessId was provided and if data exists.

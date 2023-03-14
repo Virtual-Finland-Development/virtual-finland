@@ -11,7 +11,7 @@ interface Props {
   showHeading?: boolean;
 }
 
-export default function Page(props: Props) {
+function Page(props: Props) {
   const { title, withBorder = true, showHeading = true, children } = props;
 
   return (
@@ -38,3 +38,23 @@ export default function Page(props: Props) {
     </>
   );
 }
+
+interface PageBlockProps {
+  className?: string;
+  children: ReactNode;
+}
+
+function PageBlock(props: PageBlockProps) {
+  const { className: propsClassName = '', children } = props;
+  const className = `px-4 lg:px-20 py-6 ${propsClassName}`;
+
+  return (
+    <Block variant="section" className={className}>
+      {children}
+    </Block>
+  );
+}
+
+Page.Block = PageBlock;
+
+export default Page;

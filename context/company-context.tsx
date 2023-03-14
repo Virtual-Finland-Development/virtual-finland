@@ -152,9 +152,9 @@ function CompanyContextProvider(props: CompanyProviderProps) {
       signatoryRightsData
     ) {
       setValues({
-        ...(companyData && { company: companyData }),
-        ...(beneficialOwnersData && { beneficialOwners: beneficialOwnersData }),
-        ...(signatoryRightsData && { signatoryRights: signatoryRightsData }),
+        company: companyData,
+        beneficialOwners: beneficialOwnersData,
+        signatoryRights: signatoryRightsData,
       });
       setDoneSteps(prev => {
         return Object.keys(prev).reduce((acc, key) => {
@@ -198,11 +198,11 @@ function CompanyContextProvider(props: CompanyProviderProps) {
         case 'company.auditorDetails':
           return isStepDone('company.boardMembers');
         case 'beneficialOwners.shareSeries':
-          return isStepDone('company.auditorDetails');
+          return true;
         case 'beneficialOwners.shareholders':
           return isStepDone('beneficialOwners.shareSeries');
         case 'signatoryRights.signingRights':
-          return isStepDone('beneficialOwners.shareholders');
+          return true;
         default:
           return false;
       }

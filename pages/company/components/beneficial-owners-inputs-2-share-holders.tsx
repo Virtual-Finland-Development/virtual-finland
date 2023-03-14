@@ -69,7 +69,7 @@ export default function BeneficialOwnersShareholders() {
   return (
     <div className="flex flex-col gap-4 items-start">
       <div>
-        <CustomHeading variant="h4">Stage 2.2</CustomHeading>
+        <CustomHeading variant="h4">Stage 2/3</CustomHeading>
         <CustomHeading variant="h2">
           Beneficial owners - Shareholders
         </CustomHeading>

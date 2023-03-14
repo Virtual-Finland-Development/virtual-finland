@@ -5,10 +5,11 @@ import PreviewExpander from './preview-expander/preview-expander';
 
 interface Props {
   previewType: 'all' | 'company' | 'beneficialOwners' | 'signatoryRights';
+  stageHeader?: string;
 }
 
 export default function Preview(props: Props) {
-  const { previewType } = props;
+  const { previewType, stageHeader } = props;
   const { clearValues } = useCompanyContext();
   const router = useRouter();
   const { businessId } = router.query;
@@ -19,7 +20,12 @@ export default function Preview(props: Props) {
   return (
     <div className="flex flex-col gap-4 w-full">
       {previewType !== 'all' && (
-        <CustomHeading variant="h2">Preview</CustomHeading>
+        <div>
+          {stageHeader && (
+            <CustomHeading variant="h4">{stageHeader}</CustomHeading>
+          )}
+          <CustomHeading variant="h2">Preview</CustomHeading>
+        </div>
       )}
 
       {['all', 'company'].includes(previewType) && (

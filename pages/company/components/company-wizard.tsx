@@ -41,16 +41,16 @@ const WIZARD_STEPS = {
     <CompanyDirectors key="5" />,
     <CompanyMembers key="6" />,
     <CompanyAuditor key="7" />,
-    <Preview key="8" previewType="company" />,
+    <Preview key="8" previewType="company" stageHeader="Stage 8/8" />,
   ],
   beneficialOwners: [
     <BeneficialOwnersShareSeries key="1" />,
     <BeneficialOwnersShareholders key="2" />,
-    <Preview key="4" previewType="beneficialOwners" />,
+    <Preview key="4" previewType="beneficialOwners" stageHeader="Stage 3/3" />,
   ],
   signatoryRights: [
     <SignatoryRightsSigningRights key="1" />,
-    <Preview key="2" previewType="signatoryRights" />,
+    <Preview key="2" previewType="signatoryRights" stageHeader="Stage 2/2" />,
   ],
 };
 

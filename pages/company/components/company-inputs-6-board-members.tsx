@@ -76,7 +76,7 @@ export default function CompanyBoardMembers() {
   return (
     <div className="flex flex-col gap-4 items-start">
       <div>
-        <CustomHeading variant="h4">Stage 1.6</CustomHeading>
+        <CustomHeading variant="h4">Stage 6/8</CustomHeading>
         <CustomHeading variant="h2">Board members</CustomHeading>
       </div>
 

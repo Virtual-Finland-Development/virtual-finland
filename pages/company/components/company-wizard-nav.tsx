@@ -52,7 +52,7 @@ const BENEFICIAL_OWNER_STEPS: NavStep[] = [
 
 const SIGNATORY_RIGHTS_STEPS: NavStep[] = [
   {
-    label: '1. Signin rights',
+    label: '1. Signing rights',
     step: 'signatoryRights.signingRights',
   },
 ];

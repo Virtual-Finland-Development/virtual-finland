@@ -70,7 +70,7 @@ export default function BeneficialOwnersShareSeries() {
   return (
     <div className="flex flex-col gap-4 items-start">
       <div>
-        <CustomHeading variant="h4">Stage 2.1</CustomHeading>
+        <CustomHeading variant="h4">Stage 1/3</CustomHeading>
         <CustomHeading variant="h2">
           Beneficial owners - Share series
         </CustomHeading>

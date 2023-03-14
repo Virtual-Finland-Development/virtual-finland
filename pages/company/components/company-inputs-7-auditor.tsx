@@ -32,7 +32,7 @@ export default function CompanyAuditor() {
   return (
     <div className="flex flex-col gap-4 items-start">
       <div>
-        <CustomHeading variant="h4">Stage 1.7</CustomHeading>
+        <CustomHeading variant="h4">Stage 7/8</CustomHeading>
         <CustomHeading variant="h2">Auditor</CustomHeading>
       </div>
       <FormInput

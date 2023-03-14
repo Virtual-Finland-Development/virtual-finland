@@ -76,7 +76,7 @@ export default function CompanyManagingDirectors() {
   return (
     <div className="flex flex-col gap-4 items-start">
       <div>
-        <CustomHeading variant="h4">Stage 1.5</CustomHeading>
+        <CustomHeading variant="h4">Stage 5/8</CustomHeading>
         <CustomHeading variant="h2">Managing directors</CustomHeading>
       </div>
 

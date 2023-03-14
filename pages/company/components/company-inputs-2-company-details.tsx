@@ -44,7 +44,7 @@ export default function CompanyDetails() {
   return (
     <div className="flex flex-col gap-4 items-start">
       <div>
-        <CustomHeading variant="h4">Stage 1.2</CustomHeading>
+        <CustomHeading variant="h4">Stage 2/8</CustomHeading>
         <CustomHeading variant="h2">Company details</CustomHeading>
       </div>
       <div className="grid sm:grid-cols-2 gap-6">

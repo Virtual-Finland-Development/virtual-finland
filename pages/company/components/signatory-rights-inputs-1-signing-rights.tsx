@@ -77,10 +77,8 @@ export default function SignatoryRightsSigningRights() {
   return (
     <div className="flex flex-col gap-4 items-start">
       <div>
-        <CustomHeading variant="h4">Stage 3.1</CustomHeading>
-        <CustomHeading variant="h2">
-          Signatory rights - Signin rights
-        </CustomHeading>
+        <CustomHeading variant="h4">Stage 1/2</CustomHeading>
+        <CustomHeading variant="h2">Signing rights</CustomHeading>
       </div>
 
       {fields.map((field, index) => (
@@ -93,8 +91,7 @@ export default function SignatoryRightsSigningRights() {
               name={`signatoryRights.signingRights.${index}.role`}
               control={control}
               rules={{ required: 'Role is required.' }}
-              labelText="Nationality"
-              hintText="Filter by typing or select from dropdown"
+              labelText="Role"
               items={SIGNING_RIGHTS_ROLE_OPTIONS}
             />
             <FormInput
@@ -121,6 +118,8 @@ export default function SignatoryRightsSigningRights() {
               rules={{ required: 'Last name is required.' }}
               labelText="Last name"
             />
+          </div>
+          <div className="grid sm:grid-cols-2 gap-6">
             <FormInput
               type="date"
               name={`signatoryRights.signingRights.${index}.dateOfBirth`}
@@ -144,6 +143,8 @@ export default function SignatoryRightsSigningRights() {
                   : []
               }
             />
+          </div>
+          <div className="grid sm:grid-cols-2 gap-6">
             <FormInput
               name={`signatoryRights.signingRights.${index}.fullAddress`}
               control={control}

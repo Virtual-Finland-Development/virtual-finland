@@ -1,6 +1,5 @@
 import ExportedImage from 'next-image-export-optimizer';
 import { useState } from 'react';
-// import Image from 'next/image';
 import { Button, Text } from 'suomifi-ui-components';
 import { StaticIcon } from 'suomifi-ui-components';
 import api from '@/lib/api';
@@ -45,14 +44,6 @@ export default function NotAuthenticated() {
             </Button>
           </div>
           <div className="hidden md:block relative">
-            {/* <Image
-              src="/images/man-laptop.jpg"
-              alt="Man with laptop"
-              className="object-cover h-full w-full"
-              width={537}
-              height={395}
-              priority
-            /> */}
             <ExportedImage
               src={manLaptopImage}
               alt="Man with laptop"

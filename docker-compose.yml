@@ -21,6 +21,8 @@ services:
       - vfd-network
     labels:
       - traefik.http.routers.app.rule=Host(`living-in-finland.localhost`)
+    environment:
+      - NEXT_PUBLIC_APP_BASE_URL=http://virtualfinland.localhost
 
 networks:
   vfd-network:

@@ -1,4 +1,5 @@
 import ExportedImage from 'next-image-export-optimizer';
+import { useState } from 'react';
 // import Image from 'next/image';
 import { Button, Text } from 'suomifi-ui-components';
 import { StaticIcon } from 'suomifi-ui-components';
@@ -9,7 +10,10 @@ import CustomText from '@/components/ui/custom-text';
 import manLaptopImage from '../../../public/images/man-laptop.jpg';
 
 export default function NotAuthenticated() {
+  const [isLoading, setLoading] = useState(false);
+
   const loginHandler = () => {
+    setLoading(true);
     api.auth.directToAuthGwLogin('/company');
   };
 
@@ -31,8 +35,13 @@ export default function NotAuthenticated() {
               Identify yourself into Company. You can then establish a company
               or modify existing company information.
             </CustomText>
-            <Button icon="login" variant="inverted" onClick={loginHandler}>
-              Identification
+            <Button
+              icon="login"
+              variant="inverted"
+              onClick={loginHandler}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Redirecting...' : 'Identification'}
             </Button>
           </div>
           <div className="hidden md:block relative">

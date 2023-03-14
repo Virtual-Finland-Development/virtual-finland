@@ -1,15 +1,9 @@
 import { useRouter } from 'next/router';
 import { Block, Button, Text } from 'suomifi-ui-components';
-import { useCompanies } from '@/lib/hooks/companies';
 import CustomHeading from '@/components/ui/custom-heading';
-import CustomLink from '@/components/ui/custom-link';
-import Loading from '@/components/ui/loading';
 
 export default function Authenticated() {
   const router = useRouter();
-
-  const { data: companies, isLoading } = useCompanies();
-  console.log(companies);
 
   return (
     <>

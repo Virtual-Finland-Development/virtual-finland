@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import lodash_get from 'lodash.get';
 import { Button } from 'suomifi-ui-components';
 import type { BoardMember } from '@/types';
+import { BOARD_MEMBERS_ROLE_OPTIONS } from '@/lib/constants';
 import { pickRandomDateString, pickRandomName } from '@/lib/utils';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
@@ -22,12 +23,6 @@ const REQUIRED_FIELDS = [
   'lastName',
   'dateOfBirth',
   'nationality',
-];
-
-const ROLE_OPTIONS = [
-  { labelText: 'Chair person', uniqueItemId: 'chairperson' },
-  { labelText: 'Member', uniqueItemId: 'member' },
-  { labelText: 'Debuty member', uniqueItemId: 'debuty member' },
 ];
 
 export default function CompanyBoardMembers() {
@@ -95,7 +90,7 @@ export default function CompanyBoardMembers() {
               name={`company.boardMembers.${index}.role`}
               control={control}
               rules={{ required: 'Role is required.' }}
-              items={ROLE_OPTIONS}
+              items={BOARD_MEMBERS_ROLE_OPTIONS}
               labelText="Role"
             />
             <FormInput

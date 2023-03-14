@@ -12,8 +12,6 @@ interface FieldProps {
   };
 }
 
-// const REQUIRED_FIELDS = ['companyName', 'nationalIdentifier'];
-
 export default function CompanyAuditor() {
   const {
     values: { company },
@@ -23,9 +21,6 @@ export default function CompanyAuditor() {
   const { invalid } = getFieldState('company.auditorDetails', formState);
 
   const isStepDone = useMemo(() => {
-    /*  const hasContextValues = REQUIRED_FIELDS.every(field =>
-      lodash_get(company?.auditor, field)
-    ); */
     const hasContextValues = lodash_get(company, 'auditorDetails');
     return hasContextValues ? !invalid : formState.isValid;
   }, [company, formState.isValid, invalid]);
@@ -43,14 +38,12 @@ export default function CompanyAuditor() {
       <FormInput
         name={`company.auditorDetails.companyName`}
         control={control}
-        // rules={{ required: 'Auditor company name is required.' }}
         labelText="Auditor company name"
         optionalText="Optional"
       />
       <FormInput
         name={`company.auditorDetails.nationalIdentifier`}
         control={control}
-        // rules={{ required: 'National identifier is required.' }}
         labelText="National identifier"
         hintText="The national identifier of the non-listed company issued by the trade register"
         optionalText="Optional"
@@ -58,14 +51,12 @@ export default function CompanyAuditor() {
       <FormInput
         name={`company.auditorDetails.givenName`}
         control={control}
-        // rules={{ required: 'National identifier is required.' }}
         labelText="Auditor given name"
         optionalText="Optional"
       />
       <FormInput
         name={`company.auditorDetails.lastName`}
         control={control}
-        // rules={{ required: 'National identifier is required.' }}
         labelText="Auditor last name"
         optionalText="Optional"
       />

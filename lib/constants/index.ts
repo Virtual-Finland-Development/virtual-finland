@@ -55,80 +55,44 @@ export const COMPANY_DATA_LABELS: Record<string, any> = {
   shareValueCurrency: 'Share value currency',
 };
 
-type RequiredFields = Record<
-  string,
-  { multiLevel: boolean; requiredFields: string[] }
->;
+export const SHARE_SERIES_CLASS_OPTIONS = [
+  {
+    labelText: 'A',
+    uniqueItemId: 'A',
+  },
+  {
+    labelText: 'B',
+    uniqueItemId: 'B',
+  },
+  {
+    labelText: 'C',
+    uniqueItemId: 'C',
+  },
+  {
+    labelText: 'D',
+    uniqueItemId: 'D',
+  },
+  {
+    labelText: 'E',
+    uniqueItemId: 'E',
+  },
+];
 
-export const COMPANY_REQUIRED_FIELDS: RequiredFields = {
-  registrant: {
-    multiLevel: false,
-    requiredFields: ['givenName', 'lastName', 'email', 'phoneNumber'],
-  },
-  companyDetails: {
-    multiLevel: false,
-    requiredFields: [
-      'name',
-      'foundingDate',
-      'industrySector',
-      'shareCapital',
-      'capitalCurrency',
-    ],
-  },
-  shareSeries: {
-    multiLevel: true,
-    requiredFields: [
-      'shareSeriesClass',
-      'numberOfShares',
-      'shareValue',
-      'shareValueCurrency',
-    ],
-  },
-  managingDirectors: {
-    multiLevel: true,
-    requiredFields: [
-      'role',
-      'givenName',
-      'middleNames',
-      'lastName',
-      'dateOfBirth',
-      'nationality',
-    ],
-  },
-  boardMembers: {
-    multiLevel: true,
-    requiredFields: [
-      'role',
-      'givenName',
-      'middleNames',
-      'lastName',
-      'dateOfBirth',
-      'nationality',
-    ],
-  },
-};
+export const MANAGING_DIRECTORS_ROLE_OPTIONS = [
+  { labelText: 'Director', uniqueItemId: 'director' },
+  { labelText: 'Debuty director', uniqueItemId: 'debuty director' },
+];
 
-export const BENEFICIAL_OWNERS_REQUIRED_FIELDS: RequiredFields = {
-  shareSeries: {
-    multiLevel: true,
-    requiredFields: ['shareSeriesClass', 'numberOfShares', 'votesPerShare'],
-  },
-  shareholders: {
-    multiLevel: true,
-    requiredFields: ['name', 'shareOwnership'],
-  },
-};
+export const BOARD_MEMBERS_ROLE_OPTIONS = [
+  { labelText: 'Chair person', uniqueItemId: 'chairperson' },
+  { labelText: 'Member', uniqueItemId: 'member' },
+  { labelText: 'Debuty member', uniqueItemId: 'debuty member' },
+];
 
-export const SIGNATORY_RIGHTS_REQUIRED_FIELDS: RequiredFields = {
-  signinRights: {
-    multiLevel: true,
-    requiredFields: [
-      'role',
-      'givenName',
-      'middleNames',
-      'lastName',
-      'dateOfBirth',
-      'nationality',
-    ],
-  },
-};
+export const SIGNING_RIGHTS_ROLE_OPTIONS = [
+  { labelText: 'Director', uniqueItemId: 'director' },
+  { labelText: 'Debuty director', uniqueItemId: 'debuty director' },
+  { labelText: 'Board member', uniqueItemId: 'board member' },
+  { labelText: 'Debuty board member', uniqueItemId: 'deputy board member' },
+  { labelText: 'Other', uniqueItemId: 'other' },
+];

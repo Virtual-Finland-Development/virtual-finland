@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import lodash_get from 'lodash.get';
 import { Button } from 'suomifi-ui-components';
 import type { Shareholder } from '@/types';
+import { SHARE_SERIES_CLASS_OPTIONS } from '@/lib/constants';
 import { pickRandomName } from '@/lib/utils';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
@@ -16,29 +17,6 @@ interface FieldProps {
 }
 
 const REQUIRED_FIELDS = ['name'];
-
-const SHARE_SERIES_CLASS_OPTIONS = [
-  {
-    labelText: 'A',
-    uniqueItemId: 'A',
-  },
-  {
-    labelText: 'B',
-    uniqueItemId: 'B',
-  },
-  {
-    labelText: 'C',
-    uniqueItemId: 'C',
-  },
-  {
-    labelText: 'D',
-    uniqueItemId: 'D',
-  },
-  {
-    labelText: 'E',
-    uniqueItemId: 'E',
-  },
-];
 
 export default function BeneficialOwnersShareholders() {
   const {
@@ -70,7 +48,7 @@ export default function BeneficialOwnersShareholders() {
 
   const isStepDone = useMemo(() => {
     const hasContextValues = (() => {
-      const shareSeriesArr = lodash_get(beneficialOwners, 'shareholders');
+      const shareSeriesArr = lodash_get(beneficialOwners, 'shareholder');
 
       if (Array.isArray(shareSeriesArr)) {
         return shareSeriesArr.every(i => {

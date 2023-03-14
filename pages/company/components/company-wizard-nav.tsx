@@ -9,49 +9,51 @@ import useDimensions from '@/lib/hooks/use-dimensions';
 import { useCompanyContext } from '@/context/company-context';
 import { Step } from '@/context/company-context';
 
-const COMPANY_STEPS = [
+type NavStep = { label: string; step: Step };
+
+const COMPANY_STEPS: NavStep[] = [
   {
     label: '1. Registrant',
-    step: 'company.registrant' as Step,
+    step: 'company.registrant',
   },
   {
     label: '2. Company details',
-    step: 'company.companyDetails' as Step,
+    step: 'company.companyDetails',
   },
   {
     label: '3. Company address',
-    step: 'company.companyAddress' as Step,
+    step: 'company.companyAddress',
   },
   {
     label: '4. Share series',
-    step: 'company.shareSeries' as Step,
+    step: 'company.shareSeries',
   },
   {
     label: '5. Managing directors',
-    step: 'company.managingDirectors' as Step,
+    step: 'company.managingDirectors',
   },
   {
     label: '6. Board members',
-    step: 'company.boardMembers' as Step,
+    step: 'company.boardMembers',
   },
   {
     label: '7. Auditor',
-    step: 'company.auditorDetails' as Step,
+    step: 'company.auditorDetails',
   },
 ];
 
-const BENEFICIAL_OWNER_STEPS = [
-  { label: '1. Share series', step: 'beneficialOwners.shareSeries' as Step },
+const BENEFICIAL_OWNER_STEPS: NavStep[] = [
+  { label: '1. Share series', step: 'beneficialOwners.shareSeries' },
   {
     label: '2. Shareholders',
-    step: 'beneficialOwners.shareholders' as Step,
+    step: 'beneficialOwners.shareholders',
   },
 ];
 
-const SIGNATORY_RIGHTS_STEPS = [
+const SIGNATORY_RIGHTS_STEPS: NavStep[] = [
   {
     label: '1. Signin rights',
-    step: 'signatoryRights.signingRights' as Step,
+    step: 'signatoryRights.signingRights',
   },
 ];
 

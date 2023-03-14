@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import lodash_get from 'lodash.get';
 import { Button } from 'suomifi-ui-components';
 import type { SigningRight } from '@/types';
+import { SIGNING_RIGHTS_ROLE_OPTIONS } from '@/lib/constants';
 import { pickRandomDateString, pickRandomName } from '@/lib/utils';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
@@ -30,14 +31,6 @@ const REQUIRED_FIELDS = [
   'lastName',
   'dateOfBirth',
   'nationality',
-];
-
-const ROLE_OPTIONS = [
-  { labelText: 'Director', uniqueItemId: 'director' },
-  { labelText: 'Debuty director', uniqueItemId: 'debuty director' },
-  { labelText: 'Board member', uniqueItemId: 'board member' },
-  { labelText: 'Debuty board member', uniqueItemId: 'deputy board member' },
-  { labelText: 'Other', uniqueItemId: 'other' },
 ];
 
 export default function SignatoryRightsSigninRights() {
@@ -102,7 +95,7 @@ export default function SignatoryRightsSigninRights() {
               rules={{ required: 'Role is required.' }}
               labelText="Nationality"
               hintText="Filter by typing or select from dropdown"
-              items={ROLE_OPTIONS}
+              items={SIGNING_RIGHTS_ROLE_OPTIONS}
             />
             <FormInput
               name={`signatoryRights.signingRights.${index}.personalID`}

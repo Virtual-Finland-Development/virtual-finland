@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { Block } from 'suomifi-ui-components';
 import type {
@@ -12,7 +12,6 @@ import {
   pickRandomName,
 } from '@/lib/utils';
 import { useCompanyContext } from '@/context/company-context';
-import Loading from '@/components/ui/loading';
 import BeneficialOwnersShareSeries from './beneficial-owners-inputs-1-share-series';
 import BeneficialOwnersShareholders from './beneficial-owners-inputs-2-share-holders';
 import CompanyRegistrant from './company-inputs-1-registrant';

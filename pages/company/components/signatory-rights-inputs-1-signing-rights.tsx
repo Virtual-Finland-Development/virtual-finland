@@ -33,7 +33,7 @@ const REQUIRED_FIELDS = [
   'nationality',
 ];
 
-export default function SignatoryRightsSigninRights() {
+export default function SignatoryRightsSigningRights() {
   const {
     values: { signatoryRights },
     setIsCurrentStepDone,

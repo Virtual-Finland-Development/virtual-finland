@@ -24,7 +24,7 @@ import CompanyAuditor from './company-inputs-7-auditor';
 import CompanyWizardActionButtons from './company-wizard-action-buttons';
 import CompanyWizardNav from './company-wizard-nav';
 import Preview from './preview';
-import SignatoryRightsSigninRights from './signatory-rights-inputs-1-signin-rights';
+import SignatoryRightsSigningRights from './signatory-rights-inputs-1-signing-rights';
 
 interface FormProps {
   company: Partial<NonListedCompany>;
@@ -49,7 +49,7 @@ const WIZARD_STEPS = {
     <Preview key="4" previewType="beneficialOwners" />,
   ],
   signatoryRights: [
-    <SignatoryRightsSigninRights key="1" />,
+    <SignatoryRightsSigningRights key="1" />,
     <Preview key="2" previewType="signatoryRights" />,
   ],
 };

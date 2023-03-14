@@ -156,7 +156,7 @@ export default function CompanyWizard(props: Props) {
     mode: 'onSubmit',
     defaultValues: {
       [wizardType]: {
-        ...DEFAULT_VALUES[wizardType],
+        ...(!businessId && DEFAULT_VALUES[wizardType]),
         ...values[wizardType],
       },
     },

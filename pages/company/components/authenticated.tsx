@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
-import { Block, Button, Text } from 'suomifi-ui-components';
+import { Button, Text } from 'suomifi-ui-components';
+import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 
 export default function Authenticated() {
@@ -7,7 +8,7 @@ export default function Authenticated() {
 
   return (
     <>
-      <Block variant="section" className="px-4 py-6 bg-white">
+      <Page.Block className="bg-white">
         <div className="flex flex-col gap-6 items-start">
           <CustomHeading variant="h2" suomiFiBlue="dark">
             Company establishment
@@ -44,7 +45,7 @@ export default function Authenticated() {
             Modify existing companies
           </Button>
         </div>
-      </Block>
+      </Page.Block>
     </>
   );
 }

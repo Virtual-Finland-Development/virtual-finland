@@ -1,7 +1,7 @@
 import ExportedImage from 'next-image-export-optimizer';
 // import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Block, Button, StaticIcon, Text } from 'suomifi-ui-components';
+import { Button, StaticIcon, Text } from 'suomifi-ui-components';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 import CustomLink from '@/components/ui/custom-link';
@@ -12,7 +12,7 @@ export default function HomePage() {
 
   return (
     <Page title="Home" showHeading={false}>
-      <Block variant="section" className="bg-suomifi-blue-bg-light px-4 py-6">
+      <Page.Block className="bg-suomifi-blue-bg-light">
         <CustomHeading variant="h2" suomiFiBlue="dark">
           The only service you need for moving into Finland
         </CustomHeading>
@@ -45,9 +45,9 @@ export default function HomePage() {
             access to your personal data at anytime and from anywhere.
           </Text>
         </div>
-      </Block>
+      </Page.Block>
 
-      <Block variant="section" className="bg-suomifi-blue-bg-light px-4 py-6">
+      <Page.Block className="bg-suomifi-blue-bg-light">
         <CustomHeading variant="h2" suomiFiBlue="dark">
           Start by creating your profile
         </CustomHeading>
@@ -56,9 +56,9 @@ export default function HomePage() {
             Create profile
           </Button>
         </div>
-      </Block>
+      </Page.Block>
 
-      <Block variant="section" className="bg-white px-4 py-6">
+      <Page.Block className="bg-white">
         {/* <Image
           src="/images/woman-laptop.jpg"
           alt="Woman with laptop"
@@ -108,9 +108,9 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </Block>
+      </Page.Block>
 
-      <Block variant="section" className="bg-white px-4 py-6">
+      <Page.Block className="bg-white">
         <CustomHeading variant="h2" suomiFiBlue="dark">
           I’m coming to Finland to
         </CustomHeading>
@@ -146,7 +146,7 @@ export default function HomePage() {
             </CustomLink>
           </div>
         </div>
-      </Block>
+      </Page.Block>
     </Page>
   );
 }

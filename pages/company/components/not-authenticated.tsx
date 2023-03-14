@@ -1,8 +1,9 @@
 import ExportedImage from 'next-image-export-optimizer';
 // import Image from 'next/image';
-import { Block, Button, Text } from 'suomifi-ui-components';
+import { Button, Text } from 'suomifi-ui-components';
 import { StaticIcon } from 'suomifi-ui-components';
 import api from '@/lib/api';
+import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 import CustomText from '@/components/ui/custom-text';
 import manLaptopImage from '../../../public/images/man-laptop.jpg';
@@ -14,8 +15,8 @@ export default function NotAuthenticated() {
 
   return (
     <>
-      <Block variant="section" className="px-4 py-6 bg-white">
-        <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1">
+      <Page.Block className="bg-white">
+        <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 lg:-mx-20 lg:-mt-6">
           <div className="bg-suomifi-light text-white flex flex-col gap-8 items-center justify-center px-4 py-8">
             <div className="hidden md:block">
               <StaticIcon
@@ -67,7 +68,7 @@ export default function NotAuthenticated() {
             mollit anim id est laborum.
           </Text>
         </div>
-      </Block>
+      </Page.Block>
     </>
   );
 }

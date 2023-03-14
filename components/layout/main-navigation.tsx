@@ -108,10 +108,10 @@ function DesktopNavigation() {
                 (item.href === '/' && router.pathname === item.href) ||
                 (item.href !== '/' && router.pathname.includes(item.href))
               }
+              role="button"
+              onClick={() => router.push(item.href)}
             >
-              <Link href={item.href}>
-                <Text>{item.name}</Text>
-              </Link>
+              <Text>{item.name}</Text>
             </DesktopNavItem>
           ))}
         </ul>
